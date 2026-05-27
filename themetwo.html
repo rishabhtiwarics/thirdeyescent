@@ -1,0 +1,1604 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Third Eye Scent – Pre-Fall 2026</title>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300&family=Montserrat:wght@300;400;500&display=swap"
+    rel="stylesheet" />
+
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html,
+    body {
+      height: 100%;
+      font-family: 'Montserrat', sans-serif;
+      background: transparent;
+    }
+
+    /* ══ GLASS HEADER ══ */
+    #site-header-wrap {
+      position: absolute;
+      top: 29px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 200;
+      width: calc(100% - 48px);
+      max-width: 1320px;
+      padding-top: 0;
+    }
+
+    #site-header {
+      position: relative;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.10);
+      backdrop-filter: blur(20px) saturate(160%);
+      -webkit-backdrop-filter: blur(20px) saturate(160%);
+      border-radius: 15px;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+      padding: 17px 28px;
+      overflow: visible;
+    }
+
+    .hdr-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+
+    .header-left .nav-btn {
+      background: none;
+      border: none;
+      color: #fff;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 0;
+      transition: opacity .2s;
+    }
+
+    .header-left .nav-btn:hover {
+      opacity: .6;
+    }
+
+    .header-left .nav-btn i {
+      font-size: 13px;
+    }
+
+    .header-logo {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translateX(-50%) translateY(-50%);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 108px;
+      height: 108px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.30), inset 0 1px 0 rgba(255, 255, 255, 0.22), 0 0 0 6px rgba(255, 255, 255, 0.06);
+      z-index: 10;
+      transition: box-shadow .3s, transform .3s;
+    }
+
+    .header-logo:hover {
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.38), inset 0 1px 0 rgba(255, 255, 255, 0.28), 0 0 0 6px rgba(255, 255, 255, 0.10);
+      transform: translateX(-50%) translateY(-50%) scale(1.04);
+    }
+
+    .header-logo .logo-img {
+      height: 72px;
+      width: auto;
+      display: block;
+      filter: brightness(0) invert(1);
+      object-fit: contain;
+    }
+
+    .header-logo .logo-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 13px;
+      font-weight: 400;
+      letter-spacing: .12em;
+      color: #fff;
+      text-transform: uppercase;
+      white-space: nowrap;
+      text-align: center;
+      line-height: 1.2;
+    }
+
+    .header-logo .logo-text span {
+      display: block;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 7px;
+      letter-spacing: .38em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.55);
+      text-align: center;
+      margin-top: 3px;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+    }
+
+    .header-right .icon-btn {
+      background: none;
+      border: none;
+      color: #fff;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 0;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 11px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      transition: opacity .2s;
+    }
+
+    .header-right .icon-btn:hover {
+      opacity: .6;
+    }
+
+    .header-right .icon-btn i {
+      font-size: 15px;
+    }
+
+    /* ══ HERO ══ */
+    #hero {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+      display: flex;
+      align-items: stretch;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+    }
+
+    .hero-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 60%, rgba(30, 20, 10, 0) 30%, rgba(0, 0, 0, 0.7) 100%);
+    }
+
+    .hero-grid {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 0;
+    }
+
+    .hero-col-side {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-col-side img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+      transition: transform 8s ease;
+    }
+
+    .hero-col-side:hover img {
+      transform: scale(1.04);
+    }
+
+    .hero-col-side::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .hero-col-side.left::after {
+      background: linear-gradient(to right, rgba(0, 0, 0, 0.55) 0%, rgba(0, 0, 0, 0.10) 100%);
+    }
+
+    .hero-col-side.right::after {
+      background: linear-gradient(to left, rgba(0, 0, 0, 0.55) 0%, rgba(0, 0, 0, 0.10) 100%);
+    }
+
+    .side-label {
+      position: absolute;
+      bottom: 40px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 10px;
+      letter-spacing: .3em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.65);
+      z-index: 2;
+    }
+
+    .hero-col-side.left .side-label {
+      left: 32px;
+    }
+
+    .hero-col-side.right .side-label {
+      right: 32px;
+      text-align: right;
+    }
+
+    .hero-col-center {
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      padding-bottom: 52px;
+    }
+
+    .center-swiper {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .center-swiper .swiper-wrapper {
+      height: 100%;
+    }
+
+    .center-swiper .swiper-slide {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    .center-swiper .swiper-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+    }
+
+    .center-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+      background: linear-gradient(to bottom, rgba(0, 0, 0, 0.08) 0%, rgba(0, 0, 0, 0.0) 35%, rgba(0, 0, 0, 0.65) 80%, rgba(0, 0, 0, 0.82) 100%);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      color: #fff;
+      padding: 0 24px;
+    }
+
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(28px, 3.2vw, 58px);
+      font-weight: 300;
+      letter-spacing: .06em;
+      line-height: 1.05;
+      margin-bottom: 20px;
+    }
+
+    .hero-cta {
+      display: inline-block;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 10px;
+      font-weight: 400;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: #fff;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.65);
+      padding-bottom: 3px;
+      transition: border-color .25s, opacity .25s;
+    }
+
+    .hero-cta:hover {
+      opacity: .65;
+      border-color: rgba(255, 255, 255, 0.2);
+      color: #fff;
+    }
+
+    .hero-content .swiper-pagination {
+      position: static;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 12px;
+      width: 100%;
+    }
+
+    .hero-content .swiper-pagination-bullet {
+      background: rgba(255, 255, 255, 0.45);
+      opacity: 1;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      transition: background .3s, transform .3s;
+      margin: 0 !important;
+    }
+
+    .hero-content .swiper-pagination-bullet-active {
+      background: #fff;
+      transform: scale(1.5);
+    }
+
+    .hero-col-center,
+    .hero-col-side {
+      min-height: 85vh;
+    }
+
+    @media (max-width: 768px) {
+      .hero-grid {
+        grid-template-columns: 0 1fr 0;
+      }
+
+      .hero-col-side {
+        display: none;
+      }
+
+      #site-header-wrap {
+        width: calc(100% - 24px);
+        top: 12px;
+      }
+
+      .header-left .nav-btn span,
+      .header-right .icon-btn span {
+        display: none;
+      }
+
+      .hero-col-center {
+        min-height: 75vh;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .header-logo {
+        width: 88px;
+        height: 88px;
+        top: 50%;
+      }
+
+      #site-header-wrap {
+        padding-top: 0;
+      }
+
+      .header-logo .logo-img {
+        height: 58px;
+      }
+    }
+
+    /* ══ GALLERY STRIP ══ */
+    #gallery-strip {
+      padding: 48px 0 56px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    #gallery-strip::after {
+      content: '';
+      display: block;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 5px;
+      background: linear-gradient(90deg, #0f0d0b 0%, #3d2a10 20%, #c9a96e 50%, #3d2a10 80%, #0f0d0b 100%);
+    }
+
+    .gallery-strip-head {
+      padding: 0 40px;
+      margin-bottom: 24px;
+      text-align: center;
+    }
+
+    .gallery-strip-label {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 10px;
+      letter-spacing: .40em;
+      text-transform: uppercase;
+      color: rgba(0, 0, 0, 0.40);
+      margin-bottom: 6px;
+    }
+
+    .gallery-strip-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(22px, 2.6vw, 38px);
+      font-weight: 300;
+      letter-spacing: .05em;
+      color: #1a1410;
+    }
+
+    .gallery-strip-wrap {
+      position: relative;
+      width: 100%;
+    }
+
+    .gallery-swiper {
+      width: 100%;
+      overflow: hidden;
+      padding: 0 !important;
+    }
+
+    .gallery-swiper .swiper-slide {
+      width: calc((100vw - 20px) / 6);
+      height: 280px;
+      flex-shrink: 0;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .gallery-swiper .swiper-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+      transition: transform .8s ease;
+    }
+
+    .gallery-swiper .swiper-slide:hover img {
+      transform: scale(1.05);
+    }
+
+    .gallery-strip-wrap .swiper-button-prev,
+    .gallery-strip-wrap .swiper-button-next {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 20;
+      width: 44px;
+      height: 44px;
+      background: rgba(255, 255, 255, 0.10);
+      backdrop-filter: blur(20px) saturate(160%);
+      -webkit-backdrop-filter: blur(20px) saturate(160%);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      border-radius: 50%;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+      color: #fff;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background .25s, box-shadow .25s, opacity .25s;
+    }
+
+    .gallery-strip-wrap .swiper-button-prev:hover,
+    .gallery-strip-wrap .swiper-button-next:hover {
+      background: rgba(255, 255, 255, 0.20);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.28);
+    }
+
+    .gallery-strip-wrap .swiper-button-prev::after,
+    .gallery-strip-wrap .swiper-button-next::after {
+      font-size: 11px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .gallery-strip-wrap .swiper-button-prev {
+      left: 8px;
+    }
+
+    .gallery-strip-wrap .swiper-button-next {
+      right: 8px;
+    }
+
+    @media (max-width: 992px) {
+      .gallery-swiper .swiper-slide {
+        width: calc((100vw - 16px) / 4);
+        height: 240px;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .gallery-swiper .swiper-slide {
+        width: calc((100vw - 8px) / 2);
+        height: 200px;
+      }
+
+      .gallery-strip-head {
+        padding: 0 16px;
+      }
+    }
+
+    /* ══ COLLECTION SECTION ══ */
+    #collection {
+      padding: 72px 0 80px;
+      background: #fff;
+    }
+
+    .collection-head {
+      text-align: center;
+      margin-bottom: 44px;
+    }
+
+    .collection-label {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 10px;
+      letter-spacing: .40em;
+      text-transform: uppercase;
+      color: rgba(0, 0, 0, 0.35);
+      margin-bottom: 8px;
+    }
+
+    .collection-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(26px, 3vw, 42px);
+      font-weight: 300;
+      letter-spacing: .06em;
+      color: #1a1410;
+      margin-bottom: 8px;
+    }
+
+    .collection-sub {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 10px;
+      letter-spacing: .14em;
+      color: rgba(0, 0, 0, 0.35);
+    }
+
+    /* ── CARDS ROW: no gap ── */
+    .collection-row {
+      display: flex;
+      flex-wrap: nowrap;
+    }
+
+    .product-card {
+      flex: 1 1 0;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      background: #fff;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      cursor: pointer;
+      transition: box-shadow .38s ease, transform .38s ease;
+      overflow: hidden;
+    }
+
+    /* remove left border on adjacent cards to avoid double borders */
+    .product-card+.product-card {
+      border-left: none;
+    }
+
+    .product-card:hover {
+      box-shadow: 0 20px 52px rgba(0, 0, 0, 0.12);
+      transform: translateY(-5px);
+    }
+
+    /* ── IMAGE AREA ── */
+    .card-img-wrap {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 3/4;
+      overflow: hidden;
+      background: #f2ede6;
+    }
+
+    .card-img-wrap img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      transition: opacity .55s ease, transform .65s ease;
+    }
+
+    .card-img-wrap .img-primary {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .card-img-wrap .img-hover {
+      opacity: 0;
+      transform: scale(1.06);
+    }
+
+    .product-card:hover .img-primary {
+      opacity: 0;
+      transform: scale(1.04);
+    }
+
+    .product-card:hover .img-hover {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    /* ── WISHLIST ── */
+    .card-wishlist {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      z-index: 4;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(8px);
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background .2s, transform .25s, opacity .25s;
+      opacity: 0;
+      transform: scale(.8);
+    }
+
+    .product-card:hover .card-wishlist {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .card-wishlist:hover {
+      background: #fff;
+    }
+
+    .card-wishlist i {
+      font-size: 12px;
+      color: #1a1410;
+      transition: color .2s;
+    }
+
+    .card-wishlist.active i,
+    .card-wishlist:hover i {
+      color: #b34a4a;
+    }
+
+    /* ── CARD BODY ── */
+    .card-body-custom {
+      padding: 16px 16px 18px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      background: #fff;
+    }
+
+    .card-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 18px;
+      font-weight: 400;
+      letter-spacing: .04em;
+      color: #0f0d0b;
+      line-height: 1.15;
+      margin-bottom: 6px;
+    }
+
+    .card-desc {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 9.5px;
+      line-height: 1.7;
+      color: rgba(0, 0, 0, 0.45);
+      letter-spacing: .02em;
+      flex: 1;
+    }
+
+    /* ── FOOTER ROW: price + cart ── */
+    .card-footer-row {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px solid rgba(0, 0, 0, 0.07);
+    }
+
+    .card-price-wrap {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card-price {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px;
+      font-weight: 400;
+      letter-spacing: .02em;
+      color: #0f0d0b;
+      line-height: 1;
+    }
+
+    /* ── ADD TO CART ── */
+    .btn-cart {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: #fff;
+      background: #1a1410;
+      border: none;
+      padding: 8px 13px;
+      cursor: pointer;
+      transition: background .25s, transform .15s;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .btn-cart:hover {
+      background: #3d2a10;
+      transform: scale(.97);
+    }
+
+    .btn-cart.added {
+      background: #2e6b45;
+    }
+
+    /* ── VIEW ALL ── */
+    .collection-view-all {
+      text-align: center;
+      margin-top: 44px;
+    }
+
+    .view-all-link {
+      display: inline-block;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 10px;
+      font-weight: 400;
+      letter-spacing: .28em;
+      text-transform: uppercase;
+      color: #1a1410;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.40);
+      padding-bottom: 3px;
+      transition: border-color .25s, opacity .25s;
+    }
+
+    .view-all-link:hover {
+      opacity: .50;
+      border-color: transparent;
+      color: #1a1410;
+    }
+
+    /* ── COLLECTION RESPONSIVE ── */
+    @media (max-width: 992px) {
+      .collection-row {
+        flex-wrap: wrap;
+      }
+
+      .product-card {
+        flex: 0 0 calc(33.333% - 1px);
+      }
+
+      .product-card+.product-card {
+        border-left: none;
+      }
+
+      .product-card:nth-child(3n+1) {
+        border-left: 1px solid rgba(0, 0, 0, 0.08);
+        margin-top: 18px;
+      }
+
+      .product-card:nth-child(1) {
+        margin-top: 0;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .product-card {
+        flex: 0 0 calc(50% - 1px);
+      }
+
+      .product-card:nth-child(2n+1) {
+        border-left: 1px solid rgba(0, 0, 0, 0.08);
+        margin-top: 18px;
+      }
+
+      .product-card:nth-child(1) {
+        margin-top: 0;
+      }
+
+      .btn-cart span {
+        display: none;
+      }
+
+      .btn-cart {
+        padding: 8px 10px;
+      }
+    }
+
+    /* ══ FOOTER ══ */
+    #site-footer {
+      background: linear-gradient(160deg, #0f0d0b 0%, #1a1510 40%, #0a0807 100%);
+      color: rgba(255, 255, 255, 0.75);
+    }
+
+    .footer-top-wrap {
+      background: linear-gradient(120deg, rgba(61, 42, 16, 0.70) 0%, rgba(105, 74, 32, 0.45) 40%, rgba(45, 30, 10, 0.65) 70%, rgba(20, 14, 6, 0.50) 100%);
+      border-bottom: 1px solid rgba(201, 169, 110, 0.30);
+    }
+
+    .footer-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 40px;
+      padding: 20px 0 18px;
+    }
+
+    .footer-top-logo {
+      flex-shrink: 0;
+    }
+
+    .footer-logo-img {
+      height: 100px;
+      width: auto;
+      filter: brightness(0) invert(1);
+    }
+
+    .footer-logo-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 26px;
+      font-weight: 400;
+      letter-spacing: .18em;
+      color: rgba(255, 255, 255, 0.85);
+      text-transform: uppercase;
+      text-decoration: none;
+      display: block;
+    }
+
+    .footer-logo-text span {
+      display: block;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 8px;
+      letter-spacing: .45em;
+      color: rgba(255, 255, 255, 0.40);
+      margin-top: 3px;
+    }
+
+    .footer-top-newsletter {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      flex: 1;
+      justify-content: flex-end;
+    }
+
+    .footer-col-text {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      flex-shrink: 0;
+    }
+
+    .footer-col-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 17px;
+      font-weight: 400;
+      letter-spacing: .07em;
+      color: #fff;
+      white-space: nowrap;
+      margin: 0;
+    }
+
+    .footer-col-body {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 10px;
+      line-height: 1.65;
+      color: rgba(255, 255, 255, 0.38);
+      max-width: 220px;
+      margin: 0;
+    }
+
+    .newsletter-form {
+      display: flex;
+      flex-shrink: 0;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .newsletter-form input {
+      width: 190px;
+      background: rgba(255, 255, 255, 0.05);
+      border: none;
+      outline: none;
+      padding: 10px 14px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 10px;
+      letter-spacing: .1em;
+      color: #fff;
+    }
+
+    .newsletter-form input::placeholder {
+      color: rgba(255, 255, 255, 0.32);
+    }
+
+    .newsletter-form button {
+      background: rgba(255, 255, 255, 0.10);
+      border: none;
+      border-left: 1px solid rgba(255, 255, 255, 0.14);
+      padding: 10px 16px;
+      color: #fff;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 10px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background .2s;
+    }
+
+    .newsletter-form button:hover {
+      background: rgba(255, 255, 255, 0.20);
+    }
+
+    .footer-main-wrap {
+      width: 100%;
+      position: relative;
+      z-index: 2;
+      background: linear-gradient(to bottom, #1a1410 0px, #1a1410 6px, #e8e3dc 6px, #f5f2ee 48px, #ffffff 50%, #ffffff calc(100% - 48px), #e8e3dc calc(100% - 6px), #1a1410 calc(100% - 6px), #1a1410 100%);
+    }
+
+    .footer-main {
+      display: grid;
+      grid-template-columns: 1.1fr 1.6fr 1.1fr;
+      gap: 52px;
+      padding: 56px 0 60px;
+      align-items: start;
+      background: transparent;
+    }
+
+    .footer-section-title {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: .28em;
+      text-transform: uppercase;
+      color: rgba(0, 0, 0, 0.72);
+      margin-bottom: 18px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+      padding-bottom: 10px;
+    }
+
+    .footer-about-text {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 11px;
+      line-height: 1.9;
+      color: #3a3530;
+    }
+
+    .footer-about-text strong {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px;
+      font-weight: 400;
+      letter-spacing: .06em;
+      color: #0f0d0b;
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    .footer-social-row {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+
+    .footer-social-row a {
+      width: 30px;
+      height: 30px;
+      border: 1px solid rgba(0, 0, 0, 0.18);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #3a3530;
+      font-size: 11px;
+      text-decoration: none;
+      transition: background .25s, color .25s, border-color .25s;
+    }
+
+    .footer-social-row a:hover {
+      background: rgba(0, 0, 0, 0.07);
+      color: #000;
+      border-color: rgba(0, 0, 0, 0.40);
+    }
+
+    .footer-cat-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+    }
+
+    .footer-cat-item {
+      position: relative;
+      overflow: hidden;
+      border-radius: 2px;
+      aspect-ratio: 3/4;
+      cursor: pointer;
+    }
+
+    .footer-cat-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+      filter: grayscale(20%);
+      transition: transform .7s ease, filter .5s ease;
+    }
+
+    .footer-cat-item:hover img {
+      transform: scale(1.06);
+      filter: grayscale(0%);
+    }
+
+    .footer-cat-item::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.55) 0%, rgba(0, 0, 0, 0) 55%);
+      pointer-events: none;
+    }
+
+    .footer-cat-label {
+      position: absolute;
+      bottom: 10px;
+      left: 0;
+      right: 0;
+      z-index: 2;
+      text-align: center;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 9px;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.88);
+    }
+
+    .footer-contact-list {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .footer-contact-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 11px;
+    }
+
+    .footer-contact-icon {
+      width: 28px;
+      height: 28px;
+      flex-shrink: 0;
+      border: 1px solid rgba(0, 0, 0, 0.15);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #3a3530;
+      font-size: 10px;
+      margin-top: 2px;
+    }
+
+    .footer-contact-label {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 8.5px;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: rgba(0, 0, 0, 0.38);
+      margin-bottom: 3px;
+    }
+
+    .footer-contact-value {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 15px;
+      font-weight: 400;
+      letter-spacing: .03em;
+      color: #0f0d0b;
+      line-height: 1.3;
+    }
+
+    .footer-contact-sub {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 9px;
+      letter-spacing: .05em;
+      color: rgba(0, 0, 0, 0.42);
+      margin-top: 2px;
+    }
+
+    .footer-bottom {
+      background: linear-gradient(120deg, rgba(61, 42, 16, 0.70) 0%, rgba(105, 74, 32, 0.45) 40%, rgba(45, 30, 10, 0.65) 70%, rgba(20, 14, 6, 0.50) 100%);
+      border-top: 1px solid rgba(201, 169, 110, 0.30);
+      padding: 18px 0;
+    }
+
+    .footer-copy {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 10px;
+      letter-spacing: .12em;
+      color: rgba(255, 255, 255, 0.65);
+      text-transform: uppercase;
+    }
+
+    .footer-bottom-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .footer-bottom-links a {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 10px;
+      letter-spacing: .10em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.60);
+      text-decoration: none;
+      transition: color .2s;
+    }
+
+    .footer-bottom-links a:hover {
+      color: #fff;
+    }
+
+    @media (max-width: 1100px) {
+      .footer-top-newsletter {
+        gap: 20px;
+      }
+
+      .footer-col-body {
+        display: none;
+      }
+    }
+
+    @media (max-width: 992px) {
+      .footer-top {
+        flex-wrap: wrap;
+        gap: 20px;
+      }
+
+      .footer-top-newsletter {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+
+      .footer-col-body {
+        display: block;
+        max-width: 100%;
+      }
+
+      .newsletter-form input {
+        width: 160px;
+      }
+
+      .footer-main {
+        grid-template-columns: 1fr 1fr;
+        gap: 36px;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .footer-main {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+
+      .footer-bottom .d-flex {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+      }
+
+      .footer-bottom-links {
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 14px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ══ HERO ══ -->
+  <section id="hero">
+    <div class="hero-bg"></div>
+    <div id="site-header-wrap">
+      <header id="site-header">
+        <a href="#" class="header-logo">
+          <img src="img/logo/logo.png" alt="Third Eye Scent" class="logo-img"
+            onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" />
+          <div class="logo-text" style="display:none;">
+            Third Eye Scent<span>Luxury Fragrance</span>
+          </div>
+        </a>
+        <div class="hdr-row">
+          <div class="header-left">
+            <button class="nav-btn"><i class="fa-solid fa-bars"></i><span>Menu</span></button>
+            <button class="nav-btn"><i class="fa-solid fa-magnifying-glass"></i><span>Search</span></button>
+          </div>
+          <div class="header-right">
+            <button class="icon-btn"><span>Call Us</span></button>
+            <button class="icon-btn"><i class="fa-regular fa-heart"></i></button>
+            <button class="icon-btn"><i class="fa-regular fa-user"></i></button>
+          </div>
+        </div>
+      </header>
+    </div>
+
+    <div class="hero-grid">
+      <div class="hero-col-side left">
+        <img src="img/hero/herofirst.png" alt="Collection Left" />
+        <span class="side-label">Alpha Mail</span>
+      </div>
+      <div class="hero-col-center">
+        <div class="swiper center-swiper">
+          <div class="swiper-wrapper">
+            <div class="swiper-slide"><img
+                src="https://www.louisvuitton.com/images/is/image/lv/FRAGRANCE_ELLES_VISUAL06_WORN_LVCOM_1600x2000_DII.jpg?wid=800"
+                alt="Slide 1" /></div>
+
+                   <div class="swiper-slide"><img
+                src="https://www.louisvuitton.com/images/is/image/lv/FRAGRANCE_ELLES_VISUAL06_WORN_LVCOM_1600x2000_DII.jpg?wid=800"
+                alt="Slide 1" /></div>
+                  <div class="swiper-slide"><img
+                src="https://www.louisvuitton.com/images/is/image/lv/FRAGRANCE_ELLES_VISUAL06_WORN_LVCOM_1600x2000_DII.jpg?wid=800"
+                alt="Slide 1" /></div>
+
+          </div>
+        </div>
+        <div class="center-overlay"></div>
+        <div class="hero-content">
+          <div class="swiper-pagination"></div>
+          <h1 class="hero-title">Pre-Fall 2026</h1>
+          <a href="#" class="hero-cta">Discover the Collection</a>
+        </div>
+      </div>
+      <div class="hero-col-side right">
+        <img src="img/hero/herothird.png" alt="Collection Right" />
+        <span class="side-label">Alpha Mail</span>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══ COLLECTION ══ -->
+  <section id="collection">
+    <div class="container-fluid px-0">
+
+      <div class="collection-head">
+        <p class="collection-label">Signature Range</p>
+        <h2 class="collection-title">The Collection</h2>
+        <p class="collection-sub">Pre-Fall 2026 &nbsp;·&nbsp; Five Signatures</p>
+      </div>
+
+      <div class="collection-row">
+
+        <!-- Card 1 -->
+        <div class="product-card">
+          <div class="card-img-wrap">
+            <img class="img-primary" src="img/prodimg/violet1.png" alt="Oud Noir" />
+            <img class="img-hover" src="img/prodimg/violet1.1.png" alt="Oud Noir Hover" />
+            <button class="card-wishlist" aria-label="Wishlist" onclick="toggleWish(this)"><i
+                class="fa-regular fa-heart"></i></button>
+          </div>
+          <div class="card-body-custom">
+            <h3 class="card-name">Oud Noir</h3>
+            <p class="card-desc">Dark resins, smoked oud &amp; black musk — a trail that commands silence.</p>
+            <div class="card-footer-row">
+              <div class="card-price-wrap">
+                <span class="card-price">₹4,800</span>
+              </div>
+              <button class="btn-cart" onclick="addToCart(this)">
+                <i class="fa-solid fa-bag-shopping"></i><span>Add</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="product-card">
+          <div class="card-img-wrap">
+            <img class="img-primary" src="img/prodimg/fotthree.png" alt="Oud Noir" />
+            <img class="img-hover" src="img/prodimg/red2.2.png" alt="Oud Noir Hover" />
+            <button class="card-wishlist" aria-label="Wishlist" onclick="toggleWish(this)"><i
+                class="fa-regular fa-heart"></i></button>
+          </div>
+          <div class="card-body-custom">
+            <h3 class="card-name">Rose Éternelle</h3>
+            <p class="card-desc">Bulgarian rose petals deepened with warm amber and sandalwood.</p>
+            <div class="card-footer-row">
+              <div class="card-price-wrap">
+                <span class="card-price">₹5,200</span>
+              </div>
+              <button class="btn-cart" onclick="addToCart(this)">
+                <i class="fa-solid fa-bag-shopping"></i><span>Add</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="product-card">
+          <div class="card-img-wrap">
+           <img class="img-primary" src="img/prodimg/fottwo.png" alt="Oud Noir" />
+            <img class="img-hover" src="img/prodimg/yllow1.2.png" alt="Oud Noir Hover" />
+            <button class="card-wishlist" aria-label="Wishlist" onclick="toggleWish(this)"><i
+                class="fa-regular fa-heart"></i></button>
+          </div>
+          <div class="card-body-custom">
+            <h3 class="card-name">Vetiver Blanc</h3>
+            <p class="card-desc">Crisp Haitian vetiver cut with white cedar and sea minerals.</p>
+            <div class="card-footer-row">
+              <div class="card-price-wrap">
+                <span class="card-price">₹3,950</span>
+              </div>
+              <button class="btn-cart" onclick="addToCart(this)">
+                <i class="fa-solid fa-bag-shopping"></i><span>Add</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="product-card">
+          <div class="card-img-wrap">
+         <img class="img-primary" src="img/prodimg/fotone.png" alt="Oud Noir" />
+            <img class="img-hover" src="img/prodimg/yllow1.2.png" alt="Oud Noir Hover" />
+            <button class="card-wishlist" aria-label="Wishlist" onclick="toggleWish(this)"><i
+                class="fa-regular fa-heart"></i></button>
+          </div>
+          <div class="card-body-custom">
+            <h3 class="card-name">Musc Sacré</h3>
+            <p class="card-desc">Skin-close white musks layered with iris and soft cashmere.</p>
+            <div class="card-footer-row">
+              <div class="card-price-wrap">
+                <span class="card-price">₹4,200</span>
+              </div>
+              <button class="btn-cart" onclick="addToCart(this)">
+                <i class="fa-solid fa-bag-shopping"></i><span>Add</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="product-card">
+          <div class="card-img-wrap">
+            <img class="img-primary" src="img/prodimg/fotthree.png" alt="Oud Noir" />
+            <img class="img-hover" src="img/prodimg/red2.2.png" alt="Oud Noir Hover" />
+            <button class="card-wishlist" aria-label="Wishlist" onclick="toggleWish(this)"><i
+                class="fa-regular fa-heart"></i></button>
+          </div>
+          <div class="card-body-custom">
+            <h3 class="card-name">Encens Royal</h3>
+            <p class="card-desc">Sacred frankincense, pink pepper and golden benzoin resin.</p>
+            <div class="card-footer-row">
+              <div class="card-price-wrap">
+                <span class="card-price">₹5,800</span>
+              </div>
+              <button class="btn-cart" onclick="addToCart(this)">
+                <i class="fa-solid fa-bag-shopping"></i><span>Add</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /.collection-row -->
+
+      <div class="collection-view-all">
+        <a href="#" class="view-all-link">View Full Collection</a>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ══ GALLERY STRIP ══ -->
+  <section id="gallery-strip">
+    <div class="gallery-strip-head">
+      <p class="gallery-strip-label">The Edit</p>
+      <h2 class="gallery-strip-title">Pre-Fall 2026 — Campaign</h2>
+    </div>
+    <div class="gallery-strip-wrap">
+      <div class="swiper gallery-swiper">
+        <div class="swiper-wrapper">
+          <div class="swiper-slide"><img src="img/prefallimg/one.png" alt="Look 1" /></div>
+          <div class="swiper-slide"><img src="img/prefallimg/two.png" alt="Look 2" /></div>
+          <div class="swiper-slide"><img src="img/prefallimg/three.png" alt="Look 3" /></div>
+          <div class="swiper-slide"><img src="img/prefallimg/four.png" alt="Look 4" /></div>
+          <div class="swiper-slide"><img src="img/prefallimg/five.png" alt="Look 5" /></div>
+          <div class="swiper-slide"><img src="img/prefallimg/six.png" alt="Look 6" /></div>
+          <div class="swiper-slide"><img src="img/prefallimg/seven.png" alt="Look 7" /></div>
+          <div class="swiper-slide"><img src="img/prefallimg/eight.png" alt="Look 8" /></div>
+        </div>
+      </div>
+      <div class="swiper-button-prev"></div>
+      <div class="swiper-button-next"></div>
+    </div>
+  </section>
+
+
+  <!-- ══ FOOTER ══ -->
+  <footer id="site-footer">
+
+    <div class="footer-top-wrap">
+      <div class="container">
+        <div class="footer-top">
+          <div class="footer-top-logo">
+            <a href="#">
+              <img src="img/logo/logo.png" alt="Third Eye Scent" class="footer-logo-img"
+                onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" />
+              <span class="footer-logo-text" style="display:none;">Third Eye Scent<span>Luxury Fragrance</span></span>
+            </a>
+          </div>
+          <div class="footer-top-newsletter">
+            <div class="footer-col-text">
+              <p class="footer-col-title">Stay in the World of Third Eye Scent</p>
+              <p class="footer-col-body">Exclusive updates on new collections &amp; events curated for you.</p>
+            </div>
+            <div class="newsletter-form">
+              <input type="email" placeholder="Your e-mail address" />
+              <button type="button">Subscribe</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-main-wrap">
+      <div class="footer-main container">
+        <div>
+          <p class="footer-section-title">About</p>
+          <div class="footer-about-text">
+            <strong>Third Eye Scent</strong>
+            A fragrance house born from the intersection of intuition and artistry. Every scent is a meditation —
+            crafted to awaken the senses, transcend the ordinary, and leave an impression that lingers long after you've
+            gone.
+          </div>
+          <div class="footer-social-row">
+            <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+            <a href="#" aria-label="Pinterest"><i class="fa-brands fa-pinterest-p"></i></a>
+            <a href="#" aria-label="X / Twitter"><i class="fa-brands fa-x-twitter"></i></a>
+            <a href="#" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+            <a href="#" aria-label="WeChat"><i class="fa-brands fa-weixin"></i></a>
+          </div>
+        </div>
+        <div>
+          <p class="footer-section-title">Collections</p>
+          <div class="footer-cat-grid">
+            <div class="footer-cat-item">
+              <img src="img/footerimg/fotone.png" alt="Women" />
+              <span class="footer-cat-label">Women</span>
+            </div>
+            <div class="footer-cat-item">
+              <img src="img/footerimg/fottwo.png" alt="Men" />
+              <span class="footer-cat-label">Men</span>
+            </div>
+            <div class="footer-cat-item">
+              <img src="img/footerimg/fotthree.png" alt="Scents" />
+              <span class="footer-cat-label">Scents</span>
+            </div>
+          </div>
+        </div>
+        <div>
+          <p class="footer-section-title">Contact</p>
+          <div class="footer-contact-list">
+            <div class="footer-contact-row">
+              <div class="footer-contact-icon"><i class="fa-solid fa-location-dot"></i></div>
+              <div>
+                <p class="footer-contact-label">Flagship</p>
+                <p class="footer-contact-value">101 Ave. des Champs-Élysées</p>
+                <p class="footer-contact-sub">75008 Paris, France</p>
+              </div>
+            </div>
+            <div class="footer-contact-row">
+              <div class="footer-contact-icon"><i class="fa-solid fa-phone"></i></div>
+              <div>
+                <p class="footer-contact-label">Client Services</p>
+                <p class="footer-contact-value">+1 866 884 8866</p>
+                <p class="footer-contact-sub">Mon – Sat &nbsp;|&nbsp; 10:00 – 19:00</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="container d-flex align-items-center justify-content-between flex-wrap gap-2">
+        <span class="footer-copy">© 2026 Third Eye Scent. All rights reserved.</span>
+        <div class="footer-bottom-links">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Cookie Settings</a>
+          <a href="#">Legal</a>
+          <a href="#">Accessibility</a>
+          <a href="#">Sitemap</a>
+        </div>
+      </div>
+    </div>
+
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <script>
+    new Swiper('.center-swiper', {
+      direction: 'vertical', loop: true, speed: 1100,
+      autoplay: { delay: 3800, disableOnInteraction: false },
+      pagination: { el: '.hero-content .swiper-pagination', clickable: true },
+    });
+
+    new Swiper('.gallery-swiper', {
+      slidesPerView: 'auto', spaceBetween: 4, loop: true, speed: 700,
+      autoplay: { delay: 3200, disableOnInteraction: false },
+      navigation: {
+        nextEl: '.gallery-strip-wrap .swiper-button-next',
+        prevEl: '.gallery-strip-wrap .swiper-button-prev',
+      },
+    });
+
+    function toggleWish(btn) {
+      btn.classList.toggle('active');
+      const i = btn.querySelector('i');
+      if (btn.classList.contains('active')) {
+        i.classList.replace('fa-regular', 'fa-solid');
+      } else {
+        i.classList.replace('fa-solid', 'fa-regular');
+      }
+    }
+
+    function addToCart(btn) {
+      if (btn.classList.contains('added')) return;
+      btn.classList.add('added');
+      btn.querySelector('i').className = 'fa-solid fa-check';
+      const sp = btn.querySelector('span');
+      if (sp) sp.textContent = 'Added';
+      setTimeout(() => {
+        btn.classList.remove('added');
+        btn.querySelector('i').className = 'fa-solid fa-bag-shopping';
+        if (sp) sp.textContent = 'Add';
+      }, 2000);
+    }
+  </script>
+</body>
+
+</html>
