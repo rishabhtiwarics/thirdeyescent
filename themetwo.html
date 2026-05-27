@@ -271,6 +271,7 @@
       padding-bottom: 52px;
     }
 
+    /* ── VIDEO SWIPER ── */
     .center-swiper {
       position: absolute;
       inset: 0;
@@ -288,7 +289,8 @@
       overflow: hidden;
     }
 
-    .center-swiper .swiper-slide img {
+    /* video fills the slide exactly like the old img did */
+    .hero-video {
       width: 100%;
       height: 100%;
       object-fit: cover;
@@ -581,7 +583,6 @@
       color: rgba(0, 0, 0, 0.35);
     }
 
-    /* ── CARDS ROW: no gap ── */
     .collection-row {
       display: flex;
       flex-wrap: nowrap;
@@ -599,7 +600,6 @@
       overflow: hidden;
     }
 
-    /* remove left border on adjacent cards to avoid double borders */
     .product-card+.product-card {
       border-left: none;
     }
@@ -609,7 +609,6 @@
       transform: translateY(-5px);
     }
 
-    /* ── IMAGE AREA ── */
     .card-img-wrap {
       position: relative;
       width: 100%;
@@ -648,7 +647,6 @@
       transform: scale(1);
     }
 
-    /* ── WISHLIST ── */
     .card-wishlist {
       position: absolute;
       top: 12px;
@@ -689,7 +687,6 @@
       color: #b34a4a;
     }
 
-    /* ── CARD BODY ── */
     .card-body-custom {
       padding: 16px 16px 18px;
       display: flex;
@@ -717,7 +714,6 @@
       flex: 1;
     }
 
-    /* ── FOOTER ROW: price + cart ── */
     .card-footer-row {
       display: flex;
       align-items: flex-end;
@@ -741,7 +737,6 @@
       line-height: 1;
     }
 
-    /* ── ADD TO CART ── */
     .btn-cart {
       display: inline-flex;
       align-items: center;
@@ -770,7 +765,6 @@
       background: #2e6b45;
     }
 
-    /* ── VIEW ALL ── */
     .collection-view-all {
       text-align: center;
       margin-top: 44px;
@@ -796,7 +790,6 @@
       color: #1a1410;
     }
 
-    /* ── COLLECTION RESPONSIVE ── */
     @media (max-width: 992px) {
       .collection-row {
         flex-wrap: wrap;
@@ -1264,23 +1257,53 @@
     </div>
 
     <div class="hero-grid">
+
+      <!-- Left side column -->
       <div class="hero-col-side left">
         <img src="img/hero/herofirst.png" alt="Collection Left" />
         <span class="side-label">Alpha Mail</span>
       </div>
+
+      <!-- ── CENTER COLUMN — VIDEO SWIPER ── -->
       <div class="hero-col-center">
         <div class="swiper center-swiper">
           <div class="swiper-wrapper">
-            <div class="swiper-slide"><img
-                src="https://www.louisvuitton.com/images/is/image/lv/FRAGRANCE_ELLES_VISUAL06_WORN_LVCOM_1600x2000_DII.jpg?wid=800"
-                alt="Slide 1" /></div>
 
-                   <div class="swiper-slide"><img
-                src="https://www.louisvuitton.com/images/is/image/lv/FRAGRANCE_ELLES_VISUAL06_WORN_LVCOM_1600x2000_DII.jpg?wid=800"
-                alt="Slide 1" /></div>
-                  <div class="swiper-slide"><img
-                src="https://www.louisvuitton.com/images/is/image/lv/FRAGRANCE_ELLES_VISUAL06_WORN_LVCOM_1600x2000_DII.jpg?wid=800"
-                alt="Slide 1" /></div>
+            <!-- Slide 1 -->
+            <div class="swiper-slide">
+              <video
+                class="hero-video"
+                src="img/hero/sliderhero/one.mp4"
+                muted
+                playsinline
+                loop
+                preload="metadata">
+              </video>
+            </div>
+
+            <!-- Slide 2 -->
+            <div class="swiper-slide">
+              <video
+                class="hero-video"
+              src="img/hero/sliderhero/one.mp4"
+                muted
+                playsinline
+                loop
+                preload="metadata">
+              </video>
+            </div>
+
+            <!-- Slide 3 -->
+            <div class="swiper-slide">
+              <video
+                class="hero-video"
+         src="img/hero/sliderhero/one.mp4"
+                muted
+                playsinline
+                loop
+                preload="metadata">
+              </video>
+            </div>
 
           </div>
         </div>
@@ -1291,10 +1314,13 @@
           <a href="#" class="hero-cta">Discover the Collection</a>
         </div>
       </div>
+
+      <!-- Right side column -->
       <div class="hero-col-side right">
         <img src="img/hero/herothird.png" alt="Collection Right" />
         <span class="side-label">Alpha Mail</span>
       </div>
+
     </div>
   </section>
 
@@ -1336,8 +1362,8 @@
         <!-- Card 2 -->
         <div class="product-card">
           <div class="card-img-wrap">
-            <img class="img-primary" src="img/prodimg/fotthree.png" alt="Oud Noir" />
-            <img class="img-hover" src="img/prodimg/red2.2.png" alt="Oud Noir Hover" />
+            <img class="img-primary" src="img/prodimg/fotthree.png" alt="Rose Éternelle" />
+            <img class="img-hover" src="img/prodimg/red2.2.png" alt="Rose Éternelle Hover" />
             <button class="card-wishlist" aria-label="Wishlist" onclick="toggleWish(this)"><i
                 class="fa-regular fa-heart"></i></button>
           </div>
@@ -1358,8 +1384,8 @@
         <!-- Card 3 -->
         <div class="product-card">
           <div class="card-img-wrap">
-           <img class="img-primary" src="img/prodimg/fottwo.png" alt="Oud Noir" />
-            <img class="img-hover" src="img/prodimg/yllow1.2.png" alt="Oud Noir Hover" />
+            <img class="img-primary" src="img/prodimg/fottwo.png" alt="Vetiver Blanc" />
+            <img class="img-hover" src="img/prodimg/yllow1.2.png" alt="Vetiver Blanc Hover" />
             <button class="card-wishlist" aria-label="Wishlist" onclick="toggleWish(this)"><i
                 class="fa-regular fa-heart"></i></button>
           </div>
@@ -1380,8 +1406,8 @@
         <!-- Card 4 -->
         <div class="product-card">
           <div class="card-img-wrap">
-         <img class="img-primary" src="img/prodimg/fotone.png" alt="Oud Noir" />
-            <img class="img-hover" src="img/prodimg/yllow1.2.png" alt="Oud Noir Hover" />
+            <img class="img-primary" src="img/prodimg/fotone.png" alt="Musc Sacré" />
+            <img class="img-hover" src="img/prodimg/yllow1.2.png" alt="Musc Sacré Hover" />
             <button class="card-wishlist" aria-label="Wishlist" onclick="toggleWish(this)"><i
                 class="fa-regular fa-heart"></i></button>
           </div>
@@ -1402,8 +1428,8 @@
         <!-- Card 5 -->
         <div class="product-card">
           <div class="card-img-wrap">
-            <img class="img-primary" src="img/prodimg/fotthree.png" alt="Oud Noir" />
-            <img class="img-hover" src="img/prodimg/red2.2.png" alt="Oud Noir Hover" />
+            <img class="img-primary" src="img/prodimg/fotthree.png" alt="Encens Royal" />
+            <img class="img-hover" src="img/prodimg/red2.2.png" alt="Encens Royal Hover" />
             <button class="card-wishlist" aria-label="Wishlist" onclick="toggleWish(this)"><i
                 class="fa-regular fa-heart"></i></button>
           </div>
@@ -1560,15 +1586,42 @@
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
   <script>
-    new Swiper('.center-swiper', {
-      direction: 'vertical', loop: true, speed: 1100,
-      autoplay: { delay: 3800, disableOnInteraction: false },
+    /* ── HERO VIDEO SWIPER ── */
+    const centerSwiper = new Swiper('.center-swiper', {
+      direction: 'vertical',
+      loop: true,
+      speed: 1100,
+      autoplay: { delay: 5000, disableOnInteraction: false },
       pagination: { el: '.hero-content .swiper-pagination', clickable: true },
+      on: {
+        /* Play the first video as soon as Swiper is ready */
+        afterInit(swiper) {
+          const activeVideo = swiper.slides[swiper.activeIndex]?.querySelector('video');
+          if (activeVideo) activeVideo.play();
+        },
+        /* Pause & reset ALL videos the moment a slide change begins */
+        slideChangeTransitionStart(swiper) {
+          swiper.slides.forEach(slide => {
+            const v = slide.querySelector('video');
+            if (v) { v.pause(); v.currentTime = 0; }
+          });
+        },
+        /* Play only the newly active slide's video once the transition ends */
+        slideChangeTransitionEnd(swiper) {
+          const activeVideo = swiper.slides[swiper.activeIndex]?.querySelector('video');
+          if (activeVideo) activeVideo.play();
+        }
+      }
     });
 
+    /* ── GALLERY STRIP SWIPER ── */
     new Swiper('.gallery-swiper', {
-      slidesPerView: 'auto', spaceBetween: 4, loop: true, speed: 700,
+      slidesPerView: 'auto',
+      spaceBetween: 4,
+      loop: true,
+      speed: 700,
       autoplay: { delay: 3200, disableOnInteraction: false },
       navigation: {
         nextEl: '.gallery-strip-wrap .swiper-button-next',
@@ -1576,6 +1629,7 @@
       },
     });
 
+    /* ── WISHLIST TOGGLE ── */
     function toggleWish(btn) {
       btn.classList.toggle('active');
       const i = btn.querySelector('i');
@@ -1586,6 +1640,7 @@
       }
     }
 
+    /* ── ADD TO CART ── */
     function addToCart(btn) {
       if (btn.classList.contains('added')) return;
       btn.classList.add('added');
@@ -1599,6 +1654,6 @@
       }, 2000);
     }
   </script>
-</body>
 
+</body>
 </html>
