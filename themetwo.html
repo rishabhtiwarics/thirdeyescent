@@ -29,6 +29,41 @@
       background: transparent;
     }
 
+    @keyframes imageBreath {
+
+      0%,
+      100% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.035);
+      }
+    }
+
+    .hero-col-side img,
+    .card-img-wrap img,
+    .gallery-swiper .swiper-slide img,
+    .campaign-shop-img img,
+    .footer-cat-item img,
+    .banner-image-single img {
+      transform-origin: center;
+      animation: imageBreath 6.5s ease-in-out infinite;
+      will-change: transform;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+
+      .hero-col-side img,
+      .card-img-wrap img,
+      .gallery-swiper .swiper-slide img,
+      .campaign-shop-img img,
+      .footer-cat-item img,
+      .banner-image-single img {
+        animation: none;
+      }
+    }
+
     /* ══ GLASS HEADER ══ */
     #site-header-wrap {
       position: absolute;
@@ -47,7 +82,6 @@
       background: rgba(255, 255, 255, 0.10);
       backdrop-filter: blur(20px) saturate(160%);
       -webkit-backdrop-filter: blur(20px) saturate(160%);
-      border-radius: 15px;
       border: 1px solid rgba(255, 255, 255, 0.22);
       box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.18);
       padding: 17px 28px;
@@ -178,10 +212,496 @@
       font-size: 15px;
     }
 
+    .header-right .icon-btn .icon-outline {
+      color: transparent;
+      -webkit-text-stroke: 1px #fff;
+      text-shadow: none;
+    }
+
+    body.menu-open,
+    body.search-open {
+      overflow: hidden;
+    }
+
+    .search-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 360;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 110px 24px 32px;
+      background: rgba(0, 0, 0, 0.58);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .32s ease;
+    }
+
+    .search-open .search-modal {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .search-panel {
+      width: min(760px, 100%);
+      color: #1a1410;
+      background: linear-gradient(180deg, rgba(255, 252, 247, 0.98) 0%, rgba(245, 242, 237, 0.98) 100%);
+      backdrop-filter: blur(24px) saturate(160%);
+      -webkit-backdrop-filter: blur(24px) saturate(160%);
+      border: 1px solid rgba(201, 169, 110, 0.28);
+      box-shadow: 0 28px 90px rgba(0, 0, 0, 0.46), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+      transform: translateY(-18px) scale(.98);
+      transition: transform .34s cubic-bezier(.2, .8, .2, 1);
+    }
+
+    .search-open .search-panel {
+      transform: translateY(0) scale(1);
+    }
+
+    .search-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 24px 26px 18px;
+      background: linear-gradient(120deg, rgba(61, 42, 16, 0.70) 0%, rgba(105, 74, 32, 0.45) 40%, rgba(45, 30, 10, 0.65) 70%, rgba(20, 14, 6, 0.50) 100%);
+      border-bottom: 1px solid rgba(201, 169, 110, 0.26);
+    }
+
+    .search-brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 0;
+    }
+
+    .search-brand img {
+      width: 58px;
+      height: 58px;
+      object-fit: contain;
+      filter: brightness(0) invert(1);
+      flex-shrink: 0;
+    }
+
+    .search-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(21px, 3vw, 30px);
+      font-weight: 300;
+      line-height: 1;
+      letter-spacing: .06em;
+      color: #fff;
+      margin: 0 0 6px;
+    }
+
+    .search-subtitle {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 9px;
+      line-height: 1.5;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.62);
+      margin: 0;
+    }
+
+    .search-close {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.24);
+      background: rgba(255, 255, 255, 0.10);
+      color: #fff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background .25s, transform .25s;
+      flex-shrink: 0;
+    }
+
+    .search-close:hover {
+      background: rgba(255, 255, 255, 0.18);
+      transform: rotate(90deg);
+    }
+
+    .search-body {
+      padding: 28px 26px 30px;
+      background: linear-gradient(180deg, rgba(255, 252, 247, 0.98) 0%, rgba(245, 242, 237, 0.98) 100%);
+    }
+
+    .search-form {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-height: 58px;
+      padding: 0 18px;
+      background: rgba(255, 255, 255, 0.72);
+      border: 1px solid rgba(26, 20, 16, 0.16);
+      box-shadow: none;
+    }
+
+    .search-form i {
+      color: rgba(26, 20, 16, 0.48);
+      font-size: 15px;
+      flex-shrink: 0;
+    }
+
+    .search-form input {
+      width: 100%;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: #1a1410;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 13px;
+      letter-spacing: .08em;
+    }
+
+    .search-form input::placeholder {
+      color: rgba(26, 20, 16, 0.42);
+    }
+
+    .search-submit {
+      border: 0;
+      background: transparent;
+      color: #1a1410;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 9px;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      cursor: pointer;
+      padding: 0;
+      white-space: nowrap;
+    }
+
+    .search-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 22px;
+    }
+
+    .search-tags a {
+      color: rgba(26, 20, 16, 0.62);
+      text-decoration: none;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 10px;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      padding: 10px 13px;
+      border: 1px solid rgba(26, 20, 16, 0.14);
+      background: rgba(255, 255, 255, 0.54);
+      transition: color .2s, background .2s, border-color .2s;
+    }
+
+    .search-tags a:hover {
+      color: #1a1410;
+      background: rgba(255, 255, 255, 0.86);
+      border-color: rgba(61, 42, 16, 0.24);
+    }
+
+    @media (max-width: 576px) {
+      .search-modal {
+        padding: 92px 14px 24px;
+      }
+
+      .search-head,
+      .search-body {
+        padding-left: 18px;
+        padding-right: 18px;
+      }
+
+      .search-form {
+        min-height: 54px;
+        padding: 0 14px;
+      }
+
+      .search-submit {
+        display: none;
+      }
+    }
+
+    .menu-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 300;
+      background: rgba(0, 0, 0, 0.52);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .35s ease;
+    }
+
+    .menu-drawer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 310;
+      width: min(440px, 92vw);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      color: #fff;
+      background: linear-gradient(160deg, #0f0d0b 0%, #1a1510 40%, #0a0807 100%);
+      backdrop-filter: blur(24px) saturate(160%);
+      -webkit-backdrop-filter: blur(24px) saturate(160%);
+      border-right: 1px solid rgba(201, 169, 110, 0.26);
+      box-shadow: 22px 0 70px rgba(0, 0, 0, 0.42);
+      transform: translateX(-104%);
+      transition: transform .48s cubic-bezier(.2, .8, .2, 1);
+      overflow-y: auto;
+    }
+
+    .menu-open .menu-backdrop {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .menu-open .menu-drawer {
+      transform: translateX(0);
+    }
+
+    .drawer-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 26px 28px 22px;
+      background: linear-gradient(120deg, rgba(61, 42, 16, 0.70) 0%, rgba(105, 74, 32, 0.45) 40%, rgba(45, 30, 10, 0.65) 70%, rgba(20, 14, 6, 0.50) 100%);
+      border-bottom: 1px solid rgba(201, 169, 110, 0.30);
+    }
+
+    .drawer-logo {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      color: #fff;
+      text-decoration: none;
+    }
+
+    .drawer-logo img {
+      width: 54px;
+      height: 54px;
+      object-fit: contain;
+      filter: brightness(0) invert(1);
+    }
+
+    .drawer-logo span {
+      display: block;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 21px;
+      line-height: 1;
+      letter-spacing: .08em;
+    }
+
+    .drawer-logo small {
+      display: block;
+      margin-top: 5px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 8px;
+      letter-spacing: .32em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.58);
+    }
+
+    .drawer-close {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.24);
+      background: rgba(255, 255, 255, 0.10);
+      backdrop-filter: blur(18px) saturate(160%);
+      -webkit-backdrop-filter: blur(18px) saturate(160%);
+      color: #fff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background .25s, transform .25s;
+    }
+
+    .drawer-close:hover {
+      background: rgba(255, 255, 255, 0.18);
+      transform: rotate(90deg);
+    }
+
+    .drawer-body {
+      flex: 1;
+      padding: 34px 28px 24px;
+      background: linear-gradient(180deg, rgba(255, 252, 247, 0.94) 0%, rgba(245, 242, 237, 0.96) 100%);
+    }
+
+    .drawer-kicker {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 10px;
+      letter-spacing: .36em;
+      text-transform: uppercase;
+      color: rgba(26, 20, 16, 0.42);
+      margin-bottom: 16px;
+    }
+
+    .drawer-categories {
+      margin: 0;
+    }
+
+    .drawer-category-toggle {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0;
+      color: rgba(26, 20, 16, 0.58);
+      background: transparent;
+      border: 0;
+      cursor: pointer;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 11px;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      transition: color .2s, padding-left .2s;
+    }
+
+    .drawer-category-toggle:hover,
+    .drawer-category-toggle.active {
+      color: #1a1410;
+      padding-left: 6px;
+    }
+
+    .drawer-category-toggle span {
+      font: inherit;
+      letter-spacing: inherit;
+    }
+
+    .drawer-category-toggle i {
+      font-size: 12px;
+      color: rgba(26, 20, 16, 0.52);
+      transition: transform .25s ease;
+    }
+
+    .drawer-category-toggle.active i {
+      transform: rotate(180deg);
+    }
+
+    .drawer-categories-panel {
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows .34s ease;
+    }
+
+    .drawer-categories-panel.open {
+      grid-template-rows: 1fr;
+    }
+
+    .drawer-categories-inner {
+      overflow: hidden;
+      display: grid;
+      gap: 0;
+    }
+
+    .drawer-categories-inner a {
+      display: block;
+      padding: 12px 0 0 16px;
+      color: rgba(26, 20, 16, 0.66);
+      text-decoration: none;
+      background: transparent;
+      border: 0;
+      transition: color .2s, padding-left .2s;
+    }
+
+    .drawer-categories-inner a:first-child {
+      margin-top: 2px;
+    }
+
+    .drawer-categories-inner a:hover {
+      color: #1a1410;
+      padding-left: 22px;
+    }
+
+    .drawer-categories-inner span {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 10px;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+    }
+
+    .drawer-categories-inner small {
+      display: none;
+    }
+
+    .drawer-nav {
+      display: grid;
+      gap: 14px;
+      padding-top: 22px;
+      border-top: 1px solid rgba(26, 20, 16, 0.12);
+    }
+
+    .drawer-nav a {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 11px;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: rgba(26, 20, 16, 0.58);
+      text-decoration: none;
+      transition: color .2s, padding-left .2s;
+    }
+
+    .drawer-nav a:hover {
+      color: #1a1410;
+      padding-left: 6px;
+    }
+
+    .drawer-foot {
+      padding: 20px 28px 26px;
+      border-top: 1px solid rgba(201, 169, 110, 0.30);
+      background: linear-gradient(120deg, rgba(61, 42, 16, 0.70) 0%, rgba(105, 74, 32, 0.45) 40%, rgba(45, 30, 10, 0.65) 70%, rgba(20, 14, 6, 0.50) 100%);
+    }
+
+    .drawer-foot-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 21px;
+      letter-spacing: .04em;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+
+    .drawer-foot-text {
+      max-width: 310px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 10px;
+      line-height: 1.8;
+      letter-spacing: .04em;
+      color: rgba(255, 255, 255, 0.58);
+      margin-bottom: 14px;
+    }
+
+    .drawer-foot-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 9px;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: #fff;
+      text-decoration: none;
+    }
+
+    @media (max-width: 576px) {
+
+      .drawer-head,
+      .drawer-body,
+      .drawer-foot {
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+
+      .drawer-category-toggle span {
+        font-size: 11px;
+      }
+    }
+
     /* ══ HERO ══ */
     #hero {
       position: relative;
       width: 100%;
+      min-height: 100svh;
       overflow: hidden;
       display: flex;
       align-items: stretch;
@@ -206,6 +726,7 @@
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
       gap: 0;
+      min-height: 100svh;
     }
 
     .hero-col-side {
@@ -370,38 +891,110 @@
 
     .hero-col-center,
     .hero-col-side {
-      min-height: 85vh;
+      min-height: 100svh;
     }
 
     @media (max-width: 768px) {
+      #hero {
+        display: block;
+        min-height: auto;
+        overflow: visible;
+      }
+
       .hero-grid {
-        grid-template-columns: 0 1fr 0;
+        grid-template-columns: 1fr;
+        min-height: auto;
       }
 
       .hero-col-side {
-        display: none;
-      }
-
-      #site-header-wrap {
-        width: calc(100% - 24px);
-        top: 12px;
-      }
-
-      .header-left .nav-btn span,
-      .header-right .icon-btn span {
-        display: none;
+        display: block;
+        min-height: 52svh;
       }
 
       .hero-col-center {
-        min-height: 75vh;
+        order: 1;
+        min-height: 88svh;
+      }
+
+      .hero-col-side.left {
+        order: 2;
+      }
+
+      .hero-col-side.right {
+        order: 3;
+      }
+
+      #site-header-wrap {
+        top: 0;
+        left: 0;
+        transform: none;
+        width: 100%;
+        max-width: none;
+      }
+
+      #site-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 72px;
+        padding: 12px 16px;
+        border-radius: 0;
+        background: linear-gradient(120deg, rgba(61, 42, 16, 0.90) 0%, rgba(105, 74, 32, 0.62) 42%, rgba(20, 14, 6, 0.88) 100%);
+      }
+
+      .hdr-row {
+        width: auto;
+        flex: 0 0 auto;
+        justify-content: flex-end;
+      }
+
+      .header-logo {
+        position: static;
+        left: auto;
+        top: auto;
+        transform: none;
+        width: auto;
+        height: 46px;
+        border-radius: 0;
+        background: transparent;
+        border: 0;
+        box-shadow: none;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+        flex: 0 0 auto;
+      }
+
+      .header-logo:hover {
+        transform: none;
+        box-shadow: none;
+      }
+
+      .header-logo .logo-img {
+        height: 44px;
+      }
+
+      .header-left {
+        gap: 0;
+        order: 2;
+      }
+
+      .header-left .nav-btn span {
+        display: none;
+      }
+
+      .header-left .nav-btn i {
+        font-size: 18px;
+      }
+
+      .header-right {
+        display: none;
       }
     }
 
     @media (max-width: 576px) {
       .header-logo {
-        width: 88px;
-        height: 88px;
-        top: 50%;
+        width: auto;
+        height: 42px;
       }
 
       #site-header-wrap {
@@ -409,7 +1002,20 @@
       }
 
       .header-logo .logo-img {
-        height: 58px;
+        height: 40px;
+      }
+
+      .hero-col-center {
+        min-height: 82svh;
+        padding-bottom: 38px;
+      }
+
+      .hero-col-side {
+        min-height: 48svh;
+      }
+
+      .side-label {
+        bottom: 24px;
       }
     }
 
@@ -418,17 +1024,6 @@
       padding: 48px 0 56px;
       overflow: hidden;
       position: relative;
-    }
-
-    #gallery-strip::after {
-      content: '';
-      display: block;
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 5px;
-      background: linear-gradient(90deg, #0f0d0b 0%, #3d2a10 20%, #c9a96e 50%, #3d2a10 80%, #0f0d0b 100%);
     }
 
     .gallery-strip-head {
@@ -484,6 +1079,56 @@
 
     .gallery-swiper .swiper-slide:hover img {
       transform: scale(1.05);
+    }
+
+    .gallery-shop-overlay {
+      position: absolute;
+      inset: 10px;
+      z-index: 3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.10);
+      backdrop-filter: blur(18px) saturate(160%);
+      -webkit-backdrop-filter: blur(18px) saturate(160%);
+      border: 1px solid rgba(255, 255, 255, 0.24);
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.26), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+      opacity: 0;
+      transform: scale(.12);
+      transform-origin: center;
+      transition: opacity .38s ease, transform .45s cubic-bezier(.2, .8, .2, 1);
+      text-decoration: none;
+    }
+
+    .gallery-swiper .swiper-slide:hover .gallery-shop-overlay {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .gallery-shop-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 118px;
+      min-height: 38px;
+      padding: 11px 18px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: #fff;
+      background: rgba(15, 13, 11, 0.32);
+      backdrop-filter: blur(16px) saturate(150%);
+      -webkit-backdrop-filter: blur(16px) saturate(150%);
+      border: 1px solid rgba(255, 255, 255, 0.34);
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.24), inset 0 1px 0 rgba(255, 255, 255, 0.20);
+      transition: background .25s ease, transform .25s ease;
+    }
+
+    .gallery-shop-overlay:hover .gallery-shop-btn {
+      background: rgba(15, 13, 11, 0.48);
+      transform: translateY(-1px);
     }
 
     .gallery-strip-wrap .swiper-button-prev,
@@ -547,6 +1192,140 @@
       }
     }
 
+    /* Campaign shop cards */
+    #campaign-shop {
+      position: relative;
+      padding: 64px 0 72px;
+      background: linear-gradient(180deg, #fff 0%, #f7f2eb 100%);
+    }
+
+    #campaign-shop::after {
+      content: '';
+      display: block;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 5px;
+      background: linear-gradient(90deg, #0f0d0b 0%, #3d2a10 20%, #c9a96e 50%, #3d2a10 80%, #0f0d0b 100%);
+    }
+
+    .campaign-shop-head {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .campaign-shop-label {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 10px;
+      letter-spacing: .40em;
+      text-transform: uppercase;
+      color: rgba(0, 0, 0, 0.40);
+      margin-bottom: 6px;
+    }
+
+    .campaign-shop-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(22px, 2.6vw, 38px);
+      font-weight: 300;
+      letter-spacing: .05em;
+      color: #1a1410;
+      margin: 0;
+    }
+
+    .campaign-shop-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .campaign-shop-card {
+      overflow: hidden;
+      transition: transform .35s ease, box-shadow .35s ease;
+    }
+
+    .campaign-shop-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 24px 58px rgba(15, 13, 11, 0.14);
+    }
+
+    .campaign-shop-img {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 4 / 5;
+      overflow: hidden;
+      background: #f2ede6;
+    }
+
+    .campaign-shop-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+      transition: transform .75s ease;
+    }
+
+    .campaign-shop-card:hover .campaign-shop-img img {
+      transform: scale(1.04);
+    }
+
+    .campaign-shop-btn {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 58px;
+      margin-top: 10px;
+      overflow: hidden;
+      color: #1a1410;
+      text-decoration: none;
+      background: 
+        linear-gradient(#fff, #fff) padding-box,
+        linear-gradient(90deg, #0f0d0b 0%, #3d2a10 24%, #c9a96e 50%, #3d2a10 76%, #0f0d0b 100%) border-box;
+      border: 1px solid transparent;
+      transition: color .25s ease, background .25s ease, transform .25s ease, box-shadow .25s ease;
+    }
+
+    .campaign-shop-btn span {
+      position: relative;
+      z-index: 1;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+    }
+
+    .campaign-shop-btn:hover {
+      color: #fff;
+      background: 
+        linear-gradient(#1a1410, #1a1410) padding-box,
+        linear-gradient(90deg, #0f0d0b 0%, #3d2a10 24%, #c9a96e 50%, #3d2a10 76%, #0f0d0b 100%) border-box;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(15, 13, 11, 0.15);
+    }
+
+    @media (max-width: 992px) {
+      .campaign-shop-grid {
+        gap: 14px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      #campaign-shop {
+        padding: 44px 0 54px;
+      }
+
+      .campaign-shop-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .campaign-shop-img {
+        aspect-ratio: 4 / 4.6;
+      }
+    }
+
     /* ══ COLLECTION SECTION ══ */
     #collection {
       padding: 72px 0 80px;
@@ -594,15 +1373,12 @@
       display: flex;
       flex-direction: column;
       background: #fff;
-      border: 1px solid rgba(0, 0, 0, 0.08);
       cursor: pointer;
       transition: box-shadow .38s ease, transform .38s ease;
       overflow: hidden;
     }
 
-    .product-card+.product-card {
-      border-left: none;
-    }
+
 
     .product-card:hover {
       box-shadow: 0 20px 52px rgba(0, 0, 0, 0.12);
@@ -688,51 +1464,64 @@
     }
 
     .card-body-custom {
-      padding: 16px 16px 18px;
-      display: flex;
-      flex-direction: column;
+      position: relative;
+      padding: 18px 18px 20px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      grid-template-areas:
+        "name name"
+        "desc desc"
+        "price cart";
+      align-items: center;
+      column-gap: 12px;
       flex: 1;
-      background: #fff;
+      background: linear-gradient(180deg, #fffaf4 0%, #ffffff 58%, #f7f2eb 100%);
+    }
+
+    .card-body-custom::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 18px;
+      right: 18px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent 0%, rgba(201, 169, 110, 0.55) 50%, transparent 100%);
     }
 
     .card-name {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 18px;
-      font-weight: 400;
-      letter-spacing: .04em;
+      font-size: 21px;
+      font-weight: 500;
+      letter-spacing: .05em;
       color: #0f0d0b;
-      line-height: 1.15;
-      margin-bottom: 6px;
+      line-height: 1.05;
+      margin-bottom: 8px;
+      grid-area: name;
     }
 
     .card-desc {
       font-family: 'Montserrat', sans-serif;
-      font-size: 9.5px;
-      line-height: 1.7;
-      color: rgba(0, 0, 0, 0.45);
-      letter-spacing: .02em;
-      flex: 1;
-    }
-
-    .card-footer-row {
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
-      margin-top: 14px;
-      padding-top: 12px;
-      border-top: 1px solid rgba(0, 0, 0, 0.07);
+      font-size: 9.8px;
+      line-height: 1.75;
+      color: rgba(15, 13, 11, 0.52);
+      letter-spacing: .04em;
+      grid-area: desc;
+      margin: 0 0 13px;
+      padding: 0;
+      border: 0;
     }
 
     .card-price-wrap {
       display: flex;
       flex-direction: column;
+      grid-area: price;
     }
 
     .card-price {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 20px;
-      font-weight: 400;
-      letter-spacing: .02em;
+      font-size: 24px;
+      font-weight: 500;
+      letter-spacing: .03em;
       color: #0f0d0b;
       line-height: 1;
     }
@@ -747,17 +1536,20 @@
       letter-spacing: .16em;
       text-transform: uppercase;
       color: #fff;
-      background: #1a1410;
-      border: none;
-      padding: 8px 13px;
+      background: linear-gradient(120deg, #1a1410 0%, #3d2a10 100%);
+      border: 1px solid rgba(201, 169, 110, 0.22);
+      padding: 9px 14px;
       cursor: pointer;
-      transition: background .25s, transform .15s;
+      box-shadow: 0 10px 22px rgba(15, 13, 11, 0.16);
+      transition: box-shadow .25s, transform .15s, opacity .25s;
       white-space: nowrap;
       flex-shrink: 0;
+      grid-area: cart;
+      justify-self: end;
     }
 
     .btn-cart:hover {
-      background: #3d2a10;
+      box-shadow: 0 14px 30px rgba(15, 13, 11, 0.24);
       transform: scale(.97);
     }
 
@@ -799,12 +1591,9 @@
         flex: 0 0 calc(33.333% - 1px);
       }
 
-      .product-card+.product-card {
-        border-left: none;
-      }
+
 
       .product-card:nth-child(3n+1) {
-        border-left: 1px solid rgba(0, 0, 0, 0.08);
         margin-top: 18px;
       }
 
@@ -819,7 +1608,6 @@
       }
 
       .product-card:nth-child(2n+1) {
-        border-left: 1px solid rgba(0, 0, 0, 0.08);
         margin-top: 18px;
       }
 
@@ -833,6 +1621,248 @@
 
       .btn-cart {
         padding: 8px 10px;
+      }
+    }
+
+    /* Middle banner */
+    #middle-banner {
+      position: relative;
+      width: 100%;
+      min-height: 600px;
+      padding: 90px 0;
+      display: flex;
+      align-items: center;
+      background-image: url("img/hero/mddlebnr.png");
+      background-attachment: fixed;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      overflow: hidden;
+    }
+
+    @media (max-width: 1024px) {
+      #middle-banner {
+        background-attachment: scroll;
+        min-height: auto;
+        padding: 60px 0;
+      }
+    }
+
+    .banner-overlay {
+      position: absolute;
+      inset: 0;
+      /* Blends a light-cream theme color on the left to a dark luxury tint on the right, allowing the background parallax image to remain visible */
+      background: linear-gradient(to right, rgba(255, 252, 247, 0.35) 0%, rgba(20, 15, 12, 0.5) 45%, rgba(15, 13, 11, 0.72) 100%);
+      backdrop-filter: blur(2px);
+      -webkit-backdrop-filter: blur(2px);
+      z-index: 1;
+    }
+
+    .banner-container {
+      position: relative;
+      z-index: 2;
+      max-width: 1320px;
+      /* Aligns with header max-width */
+      margin: 0 auto;
+      padding: 0 24px;
+      width: 100%;
+    }
+
+    .banner-grid-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 40px;
+    }
+
+    /* 60% Images Column */
+    .banner-col-images {
+      flex: 0 0 calc(60% - 20px);
+      max-width: calc(60% - 20px);
+    }
+
+    /* 40% Content Column */
+    .banner-col-content {
+      flex: 0 0 calc(40% - 20px);
+      max-width: calc(40% - 20px);
+    }
+
+    .banner-image-single-wrap {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+
+    .banner-image-single {
+      position: relative;
+      width: 100%;
+      height: 440px;
+      overflow: hidden;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.35);
+      outline: 1px solid rgba(201, 169, 110, 0.3);
+      /* thin gold outline matching the theme */
+      outline-offset: 4px;
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.6s ease, outline-color 0.6s ease;
+    }
+
+    .banner-image-single img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .banner-image-single:hover {
+      transform: translateY(-6px) scale(1.01);
+      box-shadow: 0 35px 70px rgba(0, 0, 0, 0.45);
+      outline-color: rgba(201, 169, 110, 0.6);
+    }
+
+    /* Content styling */
+    .banner-text-content {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 20px;
+      color: #fff;
+      padding-left: 20px;
+      /* offset from images */
+    }
+
+    .banner-sub-label {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: .45em;
+      text-transform: uppercase;
+      color: #c9a96e;
+      /* Luxury Gold theme color */
+    }
+
+    .banner-heading {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(32px, 3.8vw, 48px);
+      font-weight: 300;
+      line-height: 1.15;
+      letter-spacing: .04em;
+      color: #ffffff;
+      margin: 0;
+    }
+
+    /* Elegant gold divider line */
+    .banner-heading::after {
+      content: '';
+      display: block;
+      width: 60px;
+      height: 1px;
+      background: linear-gradient(90deg, #c9a96e, transparent);
+      margin-top: 15px;
+    }
+
+    .banner-paragraph {
+      font-family: 'Montserrat', sans-serif;
+      font-size: clamp(12px, 1.1vw, 14.5px);
+      line-height: 1.9;
+      color: rgba(255, 255, 255, 0.8);
+      letter-spacing: .02em;
+      margin: 0 0 10px 0;
+    }
+
+    /* Elegant white/gold Shop Now Button */
+    .banner-shop-btn {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      color: #ffffff;
+      text-decoration: none;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: .25em;
+      text-transform: uppercase;
+      padding: 14px 30px;
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      background: transparent;
+      overflow: hidden;
+      transition: color .35s ease, border-color .35s ease, transform .25s ease;
+      z-index: 1;
+    }
+
+    .banner-shop-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #c9a96e;
+      /* slides in gold background */
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform .4s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: -1;
+    }
+
+    .banner-shop-btn:hover {
+      color: #0f0d0b;
+      border-color: #c9a96e;
+      transform: translateY(-2px);
+    }
+
+    .banner-shop-btn:hover::before {
+      transform: scaleX(1);
+      transform-origin: left;
+    }
+
+    .banner-shop-btn i {
+      font-size: 10px;
+      transition: transform .3s ease;
+    }
+
+    .banner-shop-btn:hover i {
+      transform: translateX(4px);
+    }
+
+    /* Responsiveness */
+    @media (max-width: 991px) {
+      .banner-overlay {
+        /* On vertical stack, we use a top-to-bottom gradient so it fits the layout flow */
+        background: linear-gradient(to bottom, rgba(255, 252, 247, 0.4) 0%, rgba(20, 15, 12, 0.6) 40%, rgba(15, 13, 11, 0.8) 100%);
+      }
+
+      .banner-col-images,
+      .banner-col-content {
+        flex: 0 0 100%;
+        max-width: 100%;
+      }
+
+      .banner-grid-row {
+        gap: 44px;
+      }
+
+      .banner-image-single {
+        height: 380px;
+      }
+
+      .banner-text-content {
+        padding-left: 0;
+        padding-top: 20px;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .banner-image-single {
+        height: 280px;
+      }
+
+      .banner-heading {
+        font-size: 26px;
+      }
+
+      .banner-paragraph {
+        font-size: 12px;
       }
     }
 
@@ -1244,16 +2274,96 @@
         </a>
         <div class="hdr-row">
           <div class="header-left">
-            <button class="nav-btn"><i class="fa-solid fa-bars"></i><span>Menu</span></button>
-            <button class="nav-btn"><i class="fa-solid fa-magnifying-glass"></i><span>Search</span></button>
+            <button class="nav-btn" type="button" aria-label="Open menu" onclick="openMenuDrawer()"><i
+                class="fa-solid fa-bars"></i><span>Menu</span></button>
           </div>
           <div class="header-right">
-            <button class="icon-btn"><span>Call Us</span></button>
-            <button class="icon-btn"><i class="fa-regular fa-heart"></i></button>
+            <button class="icon-btn" type="button" aria-label="Search" onclick="openSearchModal()"><i
+                class="fa-solid fa-magnifying-glass icon-outline"></i></button>
+            <button class="icon-btn" type="button" aria-label="Call"><i
+                class="fa-solid fa-phone icon-outline"></i></button>
             <button class="icon-btn"><i class="fa-regular fa-user"></i></button>
           </div>
         </div>
       </header>
+    </div>
+
+    <div class="menu-backdrop" onclick="closeMenuDrawer()" aria-hidden="true"></div>
+    <aside class="menu-drawer" id="menuDrawer" aria-label="Main menu" aria-hidden="true">
+      <div class="drawer-head">
+        <a href="#" class="drawer-logo">
+          <img src="img/logo/logo.png" alt="Third Eye Scent" />
+          <span>Third Eye Scent<small>Luxury Fragrance</small></span>
+        </a>
+        <button class="drawer-close" type="button" aria-label="Close menu" onclick="closeMenuDrawer()">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="drawer-body">
+        <p class="drawer-kicker">Perfume Boutique</p>
+
+        <nav class="drawer-nav" aria-label="Secondary menu">
+          <div class="drawer-categories" aria-label="Shop categories">
+            <button class="drawer-category-toggle" type="button" aria-expanded="false"
+              onclick="toggleDrawerCategories(this)">
+              <span>Shop</span>
+              <i class="fa-solid fa-chevron-down"></i>
+            </button>
+            <div class="drawer-categories-panel" id="drawerCategories">
+              <div class="drawer-categories-inner">
+                <a href="#collection" onclick="closeMenuDrawer()">
+                  <span>Categories</span>
+                  <small>Perfume</small>
+                </a>
+              </div>
+            </div>
+          </div>
+          <a href="#hero" onclick="closeMenuDrawer()">Home</a>
+          <a href="#middle-banner" onclick="closeMenuDrawer()">New Arrivals</a>
+          <a href="#gallery-strip" onclick="closeMenuDrawer()">Campaign</a>
+          <a href="#site-footer" onclick="closeMenuDrawer()">Contact</a>
+        </nav>
+      </div>
+
+      <div class="drawer-foot">
+        <p class="drawer-foot-title">Private Scent Rituals</p>
+        <p class="drawer-foot-text">Discover extrait, oud, musk and amber compositions crafted for a lasting signature.
+        </p>
+        <a href="#collection" class="drawer-foot-link" onclick="closeMenuDrawer()">Explore Collection <i
+            class="fa-solid fa-arrow-right-long"></i></a>
+      </div>
+    </aside>
+
+    <div class="search-modal" id="searchModal" aria-hidden="true" onclick="closeSearchModal()">
+      <div class="search-panel" role="dialog" aria-modal="true" aria-labelledby="searchTitle"
+        onclick="event.stopPropagation()">
+        <div class="search-head">
+          <div class="search-brand" id="searchTitle">
+            <img src="img/logo/logo.png" alt="Third Eye Scent" />
+            <div>
+              <p class="search-title">Third Eye Scent</p>
+              <p class="search-subtitle">Search perfume notes, collections and gifts</p>
+            </div>
+          </div>
+          <button class="search-close" type="button" aria-label="Close search" onclick="closeSearchModal()">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+        <div class="search-body">
+          <form class="search-form">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input id="searchInput" type="search" placeholder="Search perfume, oud, musk, amber..." />
+            <button class="search-submit" type="submit">Search</button>
+          </form>
+          <div class="search-tags" aria-label="Popular searches">
+            <a href="#collection" onclick="closeSearchModal()">Oud Noir</a>
+            <a href="#collection" onclick="closeSearchModal()">Rose</a>
+            <a href="#collection" onclick="closeSearchModal()">Vetiver</a>
+            <a href="#collection" onclick="closeSearchModal()">Gift Sets</a>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div class="hero-grid">
@@ -1271,37 +2381,19 @@
 
             <!-- Slide 1 -->
             <div class="swiper-slide">
-              <video
-                class="hero-video"
-                src="img/hero/sliderhero/one.mp4"
-                muted
-                playsinline
-                loop
-                preload="metadata">
+              <video class="hero-video" src="img/hero/sliderhero/one.mp4" muted playsinline loop preload="metadata">
               </video>
             </div>
 
             <!-- Slide 2 -->
             <div class="swiper-slide">
-              <video
-                class="hero-video"
-              src="img/hero/sliderhero/one.mp4"
-                muted
-                playsinline
-                loop
-                preload="metadata">
+              <video class="hero-video" src="img/hero/sliderhero/one.mp4" muted playsinline loop preload="metadata">
               </video>
             </div>
 
             <!-- Slide 3 -->
             <div class="swiper-slide">
-              <video
-                class="hero-video"
-         src="img/hero/sliderhero/one.mp4"
-                muted
-                playsinline
-                loop
-                preload="metadata">
+              <video class="hero-video" src="img/hero/sliderhero/one.mp4" muted playsinline loop preload="metadata">
               </video>
             </div>
 
@@ -1347,15 +2439,13 @@
           </div>
           <div class="card-body-custom">
             <h3 class="card-name">Oud Noir</h3>
-            <p class="card-desc">Dark resins, smoked oud &amp; black musk — a trail that commands silence.</p>
-            <div class="card-footer-row">
-              <div class="card-price-wrap">
-                <span class="card-price">₹4,800</span>
-              </div>
-              <button class="btn-cart" onclick="addToCart(this)">
-                <i class="fa-solid fa-bag-shopping"></i><span>Add</span>
-              </button>
+            <div class="card-price-wrap">
+              <span class="card-price">₹4,800</span>
             </div>
+            <button class="btn-cart" onclick="addToCart(this)">
+              <i class="fa-solid fa-bag-shopping"></i><span>Add</span>
+            </button>
+            <p class="card-desc">Dark resins, smoked oud &amp; black musk — a trail that commands silence.</p>
           </div>
         </div>
 
@@ -1369,15 +2459,13 @@
           </div>
           <div class="card-body-custom">
             <h3 class="card-name">Rose Éternelle</h3>
-            <p class="card-desc">Bulgarian rose petals deepened with warm amber and sandalwood.</p>
-            <div class="card-footer-row">
-              <div class="card-price-wrap">
-                <span class="card-price">₹5,200</span>
-              </div>
-              <button class="btn-cart" onclick="addToCart(this)">
-                <i class="fa-solid fa-bag-shopping"></i><span>Add</span>
-              </button>
+            <div class="card-price-wrap">
+              <span class="card-price">₹5,200</span>
             </div>
+            <button class="btn-cart" onclick="addToCart(this)">
+              <i class="fa-solid fa-bag-shopping"></i><span>Add</span>
+            </button>
+            <p class="card-desc">Bulgarian rose petals deepened with warm amber and sandalwood.</p>
           </div>
         </div>
 
@@ -1391,15 +2479,13 @@
           </div>
           <div class="card-body-custom">
             <h3 class="card-name">Vetiver Blanc</h3>
-            <p class="card-desc">Crisp Haitian vetiver cut with white cedar and sea minerals.</p>
-            <div class="card-footer-row">
-              <div class="card-price-wrap">
-                <span class="card-price">₹3,950</span>
-              </div>
-              <button class="btn-cart" onclick="addToCart(this)">
-                <i class="fa-solid fa-bag-shopping"></i><span>Add</span>
-              </button>
+            <div class="card-price-wrap">
+              <span class="card-price">₹3,950</span>
             </div>
+            <button class="btn-cart" onclick="addToCart(this)">
+              <i class="fa-solid fa-bag-shopping"></i><span>Add</span>
+            </button>
+            <p class="card-desc">Crisp Haitian vetiver cut with white cedar and sea minerals.</p>
           </div>
         </div>
 
@@ -1413,15 +2499,13 @@
           </div>
           <div class="card-body-custom">
             <h3 class="card-name">Musc Sacré</h3>
-            <p class="card-desc">Skin-close white musks layered with iris and soft cashmere.</p>
-            <div class="card-footer-row">
-              <div class="card-price-wrap">
-                <span class="card-price">₹4,200</span>
-              </div>
-              <button class="btn-cart" onclick="addToCart(this)">
-                <i class="fa-solid fa-bag-shopping"></i><span>Add</span>
-              </button>
+            <div class="card-price-wrap">
+              <span class="card-price">₹4,200</span>
             </div>
+            <button class="btn-cart" onclick="addToCart(this)">
+              <i class="fa-solid fa-bag-shopping"></i><span>Add</span>
+            </button>
+            <p class="card-desc">Skin-close white musks layered with iris and soft cashmere.</p>
           </div>
         </div>
 
@@ -1435,15 +2519,13 @@
           </div>
           <div class="card-body-custom">
             <h3 class="card-name">Encens Royal</h3>
-            <p class="card-desc">Sacred frankincense, pink pepper and golden benzoin resin.</p>
-            <div class="card-footer-row">
-              <div class="card-price-wrap">
-                <span class="card-price">₹5,800</span>
-              </div>
-              <button class="btn-cart" onclick="addToCart(this)">
-                <i class="fa-solid fa-bag-shopping"></i><span>Add</span>
-              </button>
+            <div class="card-price-wrap">
+              <span class="card-price">₹5,800</span>
             </div>
+            <button class="btn-cart" onclick="addToCart(this)">
+              <i class="fa-solid fa-bag-shopping"></i><span>Add</span>
+            </button>
+            <p class="card-desc">Sacred frankincense, pink pepper and golden benzoin resin.</p>
           </div>
         </div>
 
@@ -1457,6 +2539,39 @@
   </section>
 
 
+  <!-- ══ MIDDLE BANNER ══ -->
+  <section id="middle-banner" aria-label="Third Eye Scent Banner">
+    <div class="banner-overlay"></div>
+    <div class="banner-container">
+      <div class="banner-grid-row">
+        <!-- 60% Images Column -->
+        <div class="banner-col-images">
+          <div class="banner-image-single-wrap">
+            <div class="banner-image-single">
+              <img src="img/hero/overlayimg.png" alt="Perfume Essence" />
+            </div>
+          </div>
+        </div>
+        <!-- 40% Content Column -->
+        <div class="banner-col-content">
+          <div class="banner-text-content">
+            <span class="banner-sub-label">Artisan Extraction</span>
+            <h2 class="banner-heading">Alchemical Essence of the Soul</h2>
+            <p class="banner-paragraph">
+              Crafted in limited batches, each decant of Third Eye Scent marries rare botanical oils with rich resins to
+              create a scent profile that transcends the physical realm and evokes spiritual awakening.
+            </p>
+            <a href="#collection" class="banner-shop-btn">
+              <span>Shop Now</span>
+              <i class="fa-solid fa-arrow-right"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
   <!-- ══ GALLERY STRIP ══ -->
   <section id="gallery-strip">
     <div class="gallery-strip-head">
@@ -1466,18 +2581,82 @@
     <div class="gallery-strip-wrap">
       <div class="swiper gallery-swiper">
         <div class="swiper-wrapper">
-          <div class="swiper-slide"><img src="img/prefallimg/one.png" alt="Look 1" /></div>
-          <div class="swiper-slide"><img src="img/prefallimg/two.png" alt="Look 2" /></div>
-          <div class="swiper-slide"><img src="img/prefallimg/three.png" alt="Look 3" /></div>
-          <div class="swiper-slide"><img src="img/prefallimg/four.png" alt="Look 4" /></div>
-          <div class="swiper-slide"><img src="img/prefallimg/five.png" alt="Look 5" /></div>
-          <div class="swiper-slide"><img src="img/prefallimg/six.png" alt="Look 6" /></div>
-          <div class="swiper-slide"><img src="img/prefallimg/seven.png" alt="Look 7" /></div>
-          <div class="swiper-slide"><img src="img/prefallimg/eight.png" alt="Look 8" /></div>
+          <div class="swiper-slide">
+            <img src="img/prefallimg/one.png" alt="Look 1" />
+            <a href="#" class="gallery-shop-overlay"><span class="gallery-shop-btn">Shop Now</span></a>
+          </div>
+          <div class="swiper-slide">
+            <img src="img/prefallimg/two.png" alt="Look 2" />
+            <a href="#" class="gallery-shop-overlay"><span class="gallery-shop-btn">Shop Now</span></a>
+          </div>
+          <div class="swiper-slide">
+            <img src="img/prefallimg/three.png" alt="Look 3" />
+            <a href="#" class="gallery-shop-overlay"><span class="gallery-shop-btn">Shop Now</span></a>
+          </div>
+          <div class="swiper-slide">
+            <img src="img/prefallimg/four.png" alt="Look 4" />
+            <a href="#" class="gallery-shop-overlay"><span class="gallery-shop-btn">Shop Now</span></a>
+          </div>
+          <div class="swiper-slide">
+            <img src="img/prefallimg/five.png" alt="Look 5" />
+            <a href="#" class="gallery-shop-overlay"><span class="gallery-shop-btn">Shop Now</span></a>
+          </div>
+          <div class="swiper-slide">
+            <img src="img/prefallimg/six.png" alt="Look 6" />
+            <a href="#" class="gallery-shop-overlay"><span class="gallery-shop-btn">Shop Now</span></a>
+          </div>
+          <div class="swiper-slide">
+            <img src="img/prefallimg/seven.png" alt="Look 7" />
+            <a href="#" class="gallery-shop-overlay"><span class="gallery-shop-btn">Shop Now</span></a>
+          </div>
+          <div class="swiper-slide">
+            <img src="img/prefallimg/eight.png" alt="Look 8" />
+            <a href="#" class="gallery-shop-overlay"><span class="gallery-shop-btn">Shop Now</span></a>
+          </div>
         </div>
       </div>
       <div class="swiper-button-prev"></div>
       <div class="swiper-button-next"></div>
+    </div>
+  </section>
+
+
+  <!-- ══ CAMPAIGN SHOP ══ -->
+  <section id="campaign-shop">
+    <div class="container">
+      <div class="campaign-shop-head">
+        <p class="campaign-shop-label">Fragrance Edit</p>
+        <h2 class="campaign-shop-title">Shop the Campaign</h2>
+      </div>
+
+      <div class="campaign-shop-grid">
+        <div class="campaign-shop-card">
+          <div class="campaign-shop-img">
+            <img src="img/newsection/one.png" alt="Oud Noir Campaign" />
+          </div>
+          <a href="#collection" class="campaign-shop-btn">
+            <span>Oud Noir · ₹4,800</span>
+          </a>
+        </div>
+
+        <div class="campaign-shop-card">
+          <div class="campaign-shop-img">
+            <img src="img/newsection/three.png" alt="Rose Éternelle Campaign" />
+          </div>
+          <a href="#collection" class="campaign-shop-btn">
+            <span>Rose Éternelle · ₹5,200</span>
+          </a>
+        </div>
+
+        <div class="campaign-shop-card">
+          <div class="campaign-shop-img">
+            <img src="img/newsection/two.png" alt="Vetiver Blanc Campaign" />
+          </div>
+          <a href="#collection" class="campaign-shop-btn">
+            <span>Vetiver Blanc · ₹4,500</span>
+          </a>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -1588,6 +2767,49 @@
   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
   <script>
+    function openMenuDrawer() {
+      document.body.classList.add('menu-open');
+      const drawer = document.getElementById('menuDrawer');
+      if (drawer) drawer.setAttribute('aria-hidden', 'false');
+    }
+
+    function closeMenuDrawer() {
+      document.body.classList.remove('menu-open');
+      const drawer = document.getElementById('menuDrawer');
+      if (drawer) drawer.setAttribute('aria-hidden', 'true');
+    }
+
+    function openSearchModal() {
+      document.body.classList.add('search-open');
+      const modal = document.getElementById('searchModal');
+      const input = document.getElementById('searchInput');
+      if (modal) modal.setAttribute('aria-hidden', 'false');
+      setTimeout(() => {
+        if (input) input.focus();
+      }, 120);
+    }
+
+    function closeSearchModal() {
+      document.body.classList.remove('search-open');
+      const modal = document.getElementById('searchModal');
+      if (modal) modal.setAttribute('aria-hidden', 'true');
+    }
+
+    function toggleDrawerCategories(btn) {
+      const panel = document.getElementById('drawerCategories');
+      if (!panel) return;
+      const isOpen = panel.classList.toggle('open');
+      btn.classList.toggle('active', isOpen);
+      btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    }
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        closeMenuDrawer();
+        closeSearchModal();
+      }
+    });
+
     /* ── HERO VIDEO SWIPER ── */
     const centerSwiper = new Swiper('.center-swiper', {
       direction: 'vertical',
@@ -1656,4 +2878,5 @@
   </script>
 
 </body>
+
 </html>
