@@ -36,7 +36,7 @@ export default function LoginForm() {
 
   return (
     <div className="w-full">
-      <div className="text-center mb-8">
+      <div className="text-center mb-5">
         <h2 className="font-cormorant text-[28px] font-light tracking-[.06em] text-[#d4af37]">
           Sign In
         </h2>
@@ -51,7 +51,7 @@ export default function LoginForm() {
         </div>
       )}
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-3.5">
         <div>
           <label className="block text-[9px] tracking-[.2em] uppercase text-[#a39282] mb-1.5 font-medium">
             Email Address
@@ -59,7 +59,7 @@ export default function LoginForm() {
           <input
             type="email"
             {...register('email')}
-            className={`w-full bg-[#f9f8f6] border ${errors.email ? 'border-[#e35f5f]' : 'border-[#e0ddd8]'} focus:border-[#b39874] text-[#1a1410] px-4 py-3 text-xs tracking-wider outline-none transition-all duration-300 placeholder:text-[#c5bfb8]`}
+            className={`w-full bg-[#f9f8f6] border ${errors.email ? 'border-[#e35f5f]' : 'border-[#e0ddd8]'} focus:border-[#b39874] text-[#1a1410] px-3 py-2 text-xs tracking-wider outline-none transition-all duration-300 placeholder:text-[#c5bfb8]`}
             placeholder="patron@luxury.com"
           />
           {errors.email && (
@@ -82,7 +82,7 @@ export default function LoginForm() {
           <input
             type="password"
             {...register('password')}
-            className={`w-full bg-[#f9f8f6] border ${errors.password ? 'border-[#e35f5f]' : 'border-[#e0ddd8]'} focus:border-[#b39874] text-[#1a1410] px-4 py-3 text-xs tracking-wider outline-none transition-all duration-300 placeholder:text-[#c5bfb8]`}
+            className={`w-full bg-[#f9f8f6] border ${errors.password ? 'border-[#e35f5f]' : 'border-[#e0ddd8]'} focus:border-[#b39874] text-[#1a1410] px-3 py-2 text-xs tracking-wider outline-none transition-all duration-300 placeholder:text-[#c5bfb8]`}
             placeholder="••••••••"
           />
           {errors.password && (
@@ -93,7 +93,7 @@ export default function LoginForm() {
         <button
           type="submit"
           disabled={isLoading}
-          className="w-full mt-2 inline-flex items-center justify-center gap-2 font-montserrat text-[10px] font-semibold tracking-[.2em] uppercase text-black bg-[#d4af37] hover:bg-[#c29e2d] py-3.5 px-4 cursor-pointer transition-all duration-300 disabled:opacity-50 active:scale-[0.98]"
+          className="w-full mt-1 inline-flex items-center justify-center gap-2 font-montserrat text-[10px] font-semibold tracking-[.2em] uppercase text-black bg-[#d4af37] hover:bg-[#c29e2d] py-2.5 px-4 cursor-pointer transition-all duration-300 disabled:opacity-50 active:scale-[0.98]"
         >
           {isLoading ? (
             <>
@@ -106,7 +106,7 @@ export default function LoginForm() {
         </button>
       </form>
 
-      <div className="mt-8 text-center border-t border-[#b39874]/10 pt-6">
+      <div className="mt-5 text-center border-t border-[#b39874]/10 pt-4">
         <p className="text-[10px] tracking-[.15em] text-[#a39282]">
           New to Third Eye Scent?{' '}
           <Link

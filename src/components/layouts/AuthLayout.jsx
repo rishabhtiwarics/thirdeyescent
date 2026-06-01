@@ -69,10 +69,10 @@ export default function AuthLayout() {
       {/* ── Content Layer ── */}
       <div className="relative z-10 min-h-screen flex items-center justify-center px-6 py-12">
 
-        {/* 1320px max-width, mx-auto, 2-col layout */}
+        {/* 1100px max-width, mx-auto, 2-col layout */}
         <div
           className="w-full flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-16"
-          style={{ maxWidth: '1320px', margin: '0 auto' }}
+          style={{ maxWidth: '1100px', margin: '0 auto' }}
         >
 
           {/* ══ LEFT: Brand Panel (desktop only) ══ */}
@@ -175,10 +175,7 @@ export default function AuthLayout() {
         </div>
       </div>
 
-      {/* Footer */}
-      <div className="absolute bottom-4 left-0 right-0 text-center text-[11px] text-[#6b6055] tracking-widest z-10">
-        © {new Date().getFullYear()} Third Eye Scent. All rights reserved.
-      </div>
+
     </div>
   )
 }

@@ -32,7 +32,7 @@ export default function ForgotPasswordForm() {
 
   return (
     <div className="w-full">
-      <div className="text-center mb-8">
+      <div className="text-center mb-5">
         <h2 className="font-cormorant text-[28px] font-light tracking-[.06em] text-[#d4af37]">
           Recover Password
         </h2>
@@ -42,19 +42,19 @@ export default function ForgotPasswordForm() {
       </div>
 
       {isSubmitted ? (
-        <div className="text-center space-y-6">
+        <div className="text-center space-y-4">
           <div className="p-4 bg-[#d4af37]/10 border border-[#d4af37]/30 text-[#d4af37] text-xs tracking-wider leading-relaxed">
             An email with recovery instructions has been dispatched to your address. Please verify your inbox.
           </div>
           <Link
             to="/login"
-            className="w-full inline-flex items-center justify-center font-montserrat text-[10px] font-semibold tracking-[.2em] uppercase text-black bg-[#d4af37] hover:bg-[#c29e2d] py-3.5 px-4 cursor-pointer transition-all duration-300 active:scale-[0.98]"
+            className="w-full inline-flex items-center justify-center font-montserrat text-[10px] font-semibold tracking-[.2em] uppercase text-black bg-[#d4af37] hover:bg-[#c29e2d] py-2.5 px-4 cursor-pointer transition-all duration-300 active:scale-[0.98]"
           >
             Return to Sign In
           </Link>
         </div>
       ) : (
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <p className="text-[11px] tracking-wide text-[#a39282] leading-relaxed text-center font-light">
             Provide your registered email address, and we will send you instructions to reset your password.
           </p>
@@ -66,7 +66,7 @@ export default function ForgotPasswordForm() {
             <input
               type="email"
               {...register('email')}
-              className={`w-full bg-[#f9f8f6] border ${errors.email ? 'border-[#e35f5f]' : 'border-[#e0ddd8]'} focus:border-[#b39874] text-[#1a1410] px-4 py-3 text-xs tracking-wider outline-none transition-all duration-300 placeholder:text-[#c5bfb8]`}
+              className={`w-full bg-[#f9f8f6] border ${errors.email ? 'border-[#e35f5f]' : 'border-[#e0ddd8]'} focus:border-[#b39874] text-[#1a1410] px-3 py-2 text-xs tracking-wider outline-none transition-all duration-300 placeholder:text-[#c5bfb8]`}
               placeholder="patron@luxury.com"
             />
             {errors.email && (
@@ -77,7 +77,7 @@ export default function ForgotPasswordForm() {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full inline-flex items-center justify-center gap-2 font-montserrat text-[10px] font-semibold tracking-[.2em] uppercase text-black bg-[#d4af37] hover:bg-[#c29e2d] py-3.5 px-4 cursor-pointer transition-all duration-300 disabled:opacity-50 active:scale-[0.98]"
+            className="w-full mt-1 inline-flex items-center justify-center gap-2 font-montserrat text-[10px] font-semibold tracking-[.2em] uppercase text-black bg-[#d4af37] hover:bg-[#c29e2d] py-2.5 px-4 cursor-pointer transition-all duration-300 disabled:opacity-50 active:scale-[0.98]"
           >
             {isLoading ? (
               <>

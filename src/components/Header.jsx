@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { Link, useNavigate } from 'react-router-dom'
+import { useSelector, useDispatch } from 'react-redux'
+import { logout } from '../store/slices/authSlice'
 import MiniCart from './cart/MiniCart'
 
 export default function Header() {
@@ -9,8 +10,12 @@ export default function Header() {
   const [categoriesOpen, setCategoriesOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMiniCartOpen, setIsMiniCartOpen] = useState(false)
+  const [userDropdownOpen, setUserDropdownOpen] = useState(false)
   
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
   const totalQuantity = useSelector(state => state.cart?.totalQuantity || 0)
+  const { isAuthenticated, user } = useSelector(state => state.auth)
 
   React.useEffect(() => {
     const handleScroll = (e) => {
@@ -137,13 +142,107 @@ export default function Header() {
               >
                 <i className="fa-solid fa-magnifying-glass hdr-icon-outline" />
               </button>
-              <Link
-                to="/login"
-                className="bg-transparent border-none text-white cursor-pointer flex items-center gap-[7px] p-0 hover:opacity-60 transition-opacity"
-                aria-label="Account"
+              {/* User Icon with Hover Dropdown */}
+              <div
+                className="relative flex items-center"
+                onMouseEnter={() => setUserDropdownOpen(true)}
+                onMouseLeave={() => setUserDropdownOpen(false)}
               >
-                <i className="fa-regular fa-user text-[15px]" />
-              </Link>
+                {/* Trigger */}
+                <button
+                  type="button"
+                  className="bg-transparent border-none text-white cursor-pointer flex items-center gap-[7px] p-0 hover:opacity-80 transition-opacity"
+                  aria-label="Account"
+                >
+                  {isAuthenticated && user?.avatar ? (
+                    <img
+                      src={user.avatar}
+                      alt={user.name}
+                      className="w-[28px] h-[28px] rounded-full object-cover border border-[#b39874]/40"
+                    />
+                  ) : (
+                    <i className="fa-regular fa-user text-[15px]" />
+                  )}
+                </button>
+
+                {/* Glass Dropdown */}
+                <div
+                  className="absolute top-full right-0 pt-5 w-[220px] z-50 transition-all duration-200"
+                  style={{
+                    opacity: userDropdownOpen ? 1 : 0,
+                    pointerEvents: userDropdownOpen ? 'auto' : 'none',
+                    transform: userDropdownOpen ? 'translateY(0)' : 'translateY(-8px)',
+                  }}
+                >
+                  {/* Glass card */}
+                  <div
+                    style={{
+                      background: 'rgba(255, 255, 255, 0.10)',
+                      backdropFilter: 'blur(20px) saturate(160%)',
+                      WebkitBackdropFilter: 'blur(20px) saturate(160%)',
+                      border: '1px solid rgba(255, 255, 255, 0.22)',
+                      boxShadow: '0 8px 32px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.18)',
+                    }}
+                    className="rounded-sm overflow-hidden"
+                  >
+                    {isAuthenticated ? (
+                      <>
+                        {/* User info */}
+                        <div className="px-5 py-4 border-b border-[#c9a96e]/20">
+                          <p className="font-cormorant text-[15px] text-white font-semibold leading-tight tracking-wide truncate">
+                            {user?.name || 'Patron'}
+                          </p>
+                          <p className="font-montserrat text-[10px] text-[#c9a96e] tracking-wider mt-0.5 truncate">
+                            {user?.email || ''}
+                          </p>
+                        </div>
+                        {/* Logout button */}
+                        <button
+                          type="button"
+                          onClick={() => {
+                            dispatch(logout())
+                            setUserDropdownOpen(false)
+                            navigate('/')
+                          }}
+                          className="w-full flex items-center gap-3 px-5 py-3.5 font-montserrat text-[10px] tracking-[.18em] uppercase text-white hover:text-[#1a1410] hover:bg-[#c9a96e] transition-colors duration-200 cursor-pointer border-none bg-transparent text-left"
+                        >
+                          <i className="fa-solid fa-right-from-bracket text-[12px]" />
+                          Sign Out
+                        </button>
+                      </>
+                    ) : (
+                      <>
+                        {/* Guest welcome */}
+                        <div className="px-5 py-4 border-b border-[#c9a96e]/20">
+                          <p className="font-cormorant text-[15px] text-white font-light tracking-wide">
+                            Welcome, Patron
+                          </p>
+                          <p className="font-montserrat text-[10px] text-[#c9a96e] tracking-wider mt-0.5">
+                            Sign in to your sanctuary
+                          </p>
+                        </div>
+                        {/* Login button */}
+                        <div className="p-4">
+                          <Link
+                            to="/login"
+                            onClick={() => setUserDropdownOpen(false)}
+                            className="block w-full text-center font-montserrat text-[10px] font-bold tracking-[.2em] uppercase bg-[#c9a96e] text-[#1a1410] py-2.5 px-4 hover:bg-white transition-colors duration-200"
+                          >
+                            Sign In
+                          </Link>
+                          <Link
+                            to="/register"
+                            onClick={() => setUserDropdownOpen(false)}
+                            className="block w-full text-center font-montserrat text-[10px] tracking-[.2em] uppercase text-white border border-[#c9a96e]/40 py-2.5 px-4 mt-2 hover:bg-[#c9a96e] hover:text-[#1a1410] transition-colors duration-200"
+                          >
+                            Create Account
+                          </Link>
+                        </div>
+                      </>
+                    )}
+                  </div>
+                </div>
+              </div>
               <button
                 onClick={() => setIsMiniCartOpen(true)}
                 className="relative bg-transparent border-none text-white cursor-pointer flex items-center justify-center p-0 hover:opacity-60 transition-opacity"
