@@ -64,7 +64,7 @@ export default function RegisterForm() {
           <input
             type="text"
             {...register('name')}
-            className={`w-full bg-[#140e0b] border ${errors.name ? 'border-[#e35f5f]' : 'border-[#b39874]/30'} focus:border-[#d4af37] text-white px-4 py-2.5 text-xs tracking-wider outline-none transition-all duration-300`}
+            className={`w-full bg-[#f9f8f6] border ${errors.name ? 'border-[#e35f5f]' : 'border-[#e0ddd8]'} focus:border-[#b39874] text-[#1a1410] px-4 py-2.5 text-xs tracking-wider outline-none transition-all duration-300 placeholder:text-[#c5bfb8]`}
             placeholder="Alexandra Vance"
           />
           {errors.name && (
@@ -79,7 +79,7 @@ export default function RegisterForm() {
           <input
             type="email"
             {...register('email')}
-            className={`w-full bg-[#140e0b] border ${errors.email ? 'border-[#e35f5f]' : 'border-[#b39874]/30'} focus:border-[#d4af37] text-white px-4 py-2.5 text-xs tracking-wider outline-none transition-all duration-300`}
+            className={`w-full bg-[#f9f8f6] border ${errors.email ? 'border-[#e35f5f]' : 'border-[#e0ddd8]'} focus:border-[#b39874] text-[#1a1410] px-4 py-2.5 text-xs tracking-wider outline-none transition-all duration-300 placeholder:text-[#c5bfb8]`}
             placeholder="alexandra@luxury.com"
           />
           {errors.email && (
@@ -94,7 +94,7 @@ export default function RegisterForm() {
           <input
             type="password"
             {...register('password')}
-            className={`w-full bg-[#140e0b] border ${errors.password ? 'border-[#e35f5f]' : 'border-[#b39874]/30'} focus:border-[#d4af37] text-white px-4 py-2.5 text-xs tracking-wider outline-none transition-all duration-300`}
+            className={`w-full bg-[#f9f8f6] border ${errors.password ? 'border-[#e35f5f]' : 'border-[#e0ddd8]'} focus:border-[#b39874] text-[#1a1410] px-4 py-2.5 text-xs tracking-wider outline-none transition-all duration-300 placeholder:text-[#c5bfb8]`}
             placeholder="••••••••"
           />
           {errors.password && (
@@ -109,7 +109,7 @@ export default function RegisterForm() {
           <input
             type="password"
             {...register('confirmPassword')}
-            className={`w-full bg-[#140e0b] border ${errors.confirmPassword ? 'border-[#e35f5f]' : 'border-[#b39874]/30'} focus:border-[#d4af37] text-white px-4 py-2.5 text-xs tracking-wider outline-none transition-all duration-300`}
+            className={`w-full bg-[#f9f8f6] border ${errors.confirmPassword ? 'border-[#e35f5f]' : 'border-[#e0ddd8]'} focus:border-[#b39874] text-[#1a1410] px-4 py-2.5 text-xs tracking-wider outline-none transition-all duration-300 placeholder:text-[#c5bfb8]`}
             placeholder="••••••••"
           />
           {errors.confirmPassword && (

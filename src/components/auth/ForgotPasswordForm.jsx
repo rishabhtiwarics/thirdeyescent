@@ -66,7 +66,7 @@ export default function ForgotPasswordForm() {
             <input
               type="email"
               {...register('email')}
-              className={`w-full bg-[#140e0b] border ${errors.email ? 'border-[#e35f5f]' : 'border-[#b39874]/30'} focus:border-[#d4af37] text-white px-4 py-3 text-xs tracking-wider outline-none transition-all duration-300`}
+              className={`w-full bg-[#f9f8f6] border ${errors.email ? 'border-[#e35f5f]' : 'border-[#e0ddd8]'} focus:border-[#b39874] text-[#1a1410] px-4 py-3 text-xs tracking-wider outline-none transition-all duration-300 placeholder:text-[#c5bfb8]`}
               placeholder="patron@luxury.com"
             />
             {errors.email && (
