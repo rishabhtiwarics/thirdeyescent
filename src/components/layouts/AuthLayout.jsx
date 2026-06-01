@@ -144,8 +144,8 @@ export default function AuthLayout() {
                   borderBottomRightRadius: '50% 100%',
                   boxShadow: '0 0 0 9999px white',
                   backgroundColor: 'rgba(255, 255, 255, 0.05)',
-                  backdropFilter: 'blur(12px)',
-                  WebkitBackdropFilter: 'blur(12px)'
+                  backdropFilter: 'blur(4px)',
+                  WebkitBackdropFilter: 'blur(4px)'
                 }}
               >
                 {/* Logo — click to go home */}
