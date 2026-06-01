@@ -337,9 +337,9 @@ export default function Header() {
             <Link to="/about" onClick={closeMenu} className="drawer-nav-link">
               About
             </Link>
-            <a href="#site-footer" onClick={closeMenu} className="drawer-nav-link">
+            <Link to="/contact" onClick={closeMenu} className="drawer-nav-link">
               Contact
-            </a>
+            </Link>
           </nav>
         </div>
 

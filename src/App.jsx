@@ -14,6 +14,7 @@ import ForgotPassword from './pages/ForgotPassword'
 import ProductDetails from './pages/ProductDetails'
 import Cart from './pages/Cart'
 import Checkout from './pages/Checkout'
+import Contact from './pages/Contact'
 
 export default function App() {
   return (
@@ -27,6 +28,7 @@ export default function App() {
             <Route path="product/:id" element={<ProductDetails />} />
             <Route path="cart" element={<Cart />} />
             <Route path="checkout" element={<Checkout />} />
+            <Route path="contact" element={<Contact />} />
           </Route>
 
           {/* Authentication layout routing (no header/footer) */}
