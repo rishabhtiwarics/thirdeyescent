@@ -1,0 +1,319 @@
+import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import MiniCart from './cart/MiniCart'
+
+export default function Header() {
+  const [menuOpen, setMenuOpen] = useState(false)
+  const [searchOpen, setSearchOpen] = useState(false)
+  const [categoriesOpen, setCategoriesOpen] = useState(false)
+  const [isScrolled, setIsScrolled] = useState(false)
+  const [isMiniCartOpen, setIsMiniCartOpen] = useState(false)
+  
+  const totalQuantity = useSelector(state => state.cart?.totalQuantity || 0)
+
+  React.useEffect(() => {
+    const handleScroll = (e) => {
+      let st = 0
+      if (e && e.target && typeof e.target.scrollTop === 'number') {
+        st = e.target.scrollTop
+      } else {
+        st = window.scrollY || document.documentElement.scrollTop || 0
+      }
+      setIsScrolled(st > 50)
+    }
+    window.addEventListener('scroll', handleScroll, true)
+    return () => window.removeEventListener('scroll', handleScroll, true)
+  }, [])
+
+  const openMenu = () => {
+    setMenuOpen(true)
+    document.body.classList.add('overflow-hidden')
+  }
+  const closeMenu = () => {
+    setMenuOpen(false)
+    document.body.classList.remove('overflow-hidden')
+  }
+  const openSearch = () => {
+    setSearchOpen(true)
+    document.body.classList.add('overflow-hidden')
+    setTimeout(() => document.getElementById('searchInput')?.focus(), 120)
+  }
+  const closeSearch = () => {
+    setSearchOpen(false)
+    document.body.classList.remove('overflow-hidden')
+  }
+
+  React.useEffect(() => {
+    const handler = (e) => {
+      if (e.key === 'Escape') { closeMenu(); closeSearch() }
+    }
+    document.addEventListener('keydown', handler)
+    return () => document.removeEventListener('keydown', handler)
+  }, [])
+
+  return (
+    <>
+      {/* MOBILE HEADER */}
+      <div
+        className={`md:hidden fixed top-0 left-0 w-full flex items-center justify-between px-5 py-3 shadow-md hdr-mobile-bar z-[100] transition-colors duration-300 ${isScrolled ? 'bg-white/95 backdrop-blur-md' : 'bg-white'}`}
+      >
+        <Link to="/" className="flex items-center">
+          <img
+            src="/img/logo/logo.png"
+            alt="Third Eye Scent"
+            className="h-[42px] w-auto object-contain brightness-0"
+            onError={(e) => { e.target.style.display = 'none' }}
+          />
+        </Link>
+        <div className="flex items-center gap-4">
+          <button 
+            type="button"
+            onClick={() => setIsMiniCartOpen(true)}
+            className="relative bg-transparent border-none text-black p-1 flex items-center justify-center cursor-pointer"
+          >
+            <i className="fa-solid fa-bag-shopping text-[20px]" />
+            {totalQuantity > 0 && (
+              <span className="absolute -top-1 -right-1 bg-[#c9a96e] text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
+                {totalQuantity}
+              </span>
+            )}
+          </button>
+          <button
+            type="button"
+            onClick={openMenu}
+            className="bg-transparent border-none text-black p-1 flex items-center justify-center cursor-pointer"
+          >
+            <i className="fa-solid fa-bars text-[24px]" />
+          </button>
+        </div>
+      </div>
+
+      {/* HEADER WRAP (DESKTOP) */}
+      <div
+        className="hidden md:block hdr-desktop-wrap"
+        style={{ opacity: isScrolled ? 0 : 1, pointerEvents: isScrolled ? 'none' : 'auto' }}
+      >
+        <header className="hdr-glass">
+          {/* Logo — centered absolutely */}
+          <Link to="/" className="hdr-logo-circle">
+            <img
+              src="/img/logo/logo.png"
+              alt="Third Eye Scent"
+              className="h-[72px] w-auto block object-contain brightness-0 invert"
+              onError={(e) => {
+                e.target.style.display = 'none'
+                e.target.nextElementSibling.style.display = 'block'
+              }}
+            />
+            <div className="hdr-logo-fallback">
+              Third Eye Scent
+              <span className="hdr-logo-fallback-sub">Luxury Fragrance</span>
+            </div>
+          </Link>
+
+          {/* Header row */}
+          <div className="flex items-center justify-between">
+            {/* Left */}
+            <div className="flex items-center gap-7">
+              <button
+                type="button"
+                aria-label="Open menu"
+                onClick={openMenu}
+                className="bg-transparent border-none text-white font-montserrat text-[11px] tracking-[.14em] uppercase cursor-pointer flex items-center gap-[7px] p-0 hover:opacity-60 transition-opacity"
+              >
+                <i className="fa-solid fa-bars text-[13px]" />
+                <span>Menu</span>
+              </button>
+            </div>
+
+            {/* Right */}
+            <div className="flex items-center gap-[22px]">
+              <button
+                type="button"
+                aria-label="Search"
+                onClick={openSearch}
+                className="bg-transparent border-none text-white cursor-pointer flex items-center gap-[7px] p-0 hover:opacity-60 transition-opacity"
+              >
+                <i className="fa-solid fa-magnifying-glass hdr-icon-outline" />
+              </button>
+              <Link
+                to="/login"
+                className="bg-transparent border-none text-white cursor-pointer flex items-center gap-[7px] p-0 hover:opacity-60 transition-opacity"
+                aria-label="Account"
+              >
+                <i className="fa-regular fa-user text-[15px]" />
+              </Link>
+              <button
+                onClick={() => setIsMiniCartOpen(true)}
+                className="relative bg-transparent border-none text-white cursor-pointer flex items-center justify-center p-0 hover:opacity-60 transition-opacity"
+                aria-label="Cart"
+              >
+                <i className="fa-solid fa-bag-shopping hdr-icon-outline" />
+                {totalQuantity > 0 && (
+                  <span className="absolute -top-[6px] -right-[8px] bg-[#c9a96e] text-white text-[9px] font-bold w-[16px] h-[16px] rounded-full flex items-center justify-center leading-none">
+                    {totalQuantity}
+                  </span>
+                )}
+              </button>
+            </div>
+          </div>
+        </header>
+      </div>
+
+      {/* MENU BACKDROP */}
+      <div
+        onClick={closeMenu}
+        aria-hidden="true"
+        className="menu-backdrop"
+        style={{ opacity: menuOpen ? 1 : 0, pointerEvents: menuOpen ? 'auto' : 'none' }}
+      />
+
+      {/* MENU DRAWER */}
+      <aside
+        id="menuDrawer"
+        aria-label="Main menu"
+        aria-hidden={!menuOpen}
+        className="menu-drawer"
+        style={{ transform: menuOpen ? 'translateX(0)' : 'translateX(-120%)' }}
+      >
+        {/* Drawer Head */}
+        <div className="drawer-head">
+          <Link to="/" onClick={closeMenu} className="flex items-center gap-[14px] text-white no-underline">
+            <img src="/img/logo/logo.png" alt="Third Eye Scent" className="drawer-logo-img" />
+            <span>
+              <span className="drawer-logo-name">Third Eye Scent</span>
+              <small className="drawer-logo-sub">Luxury Fragrance</small>
+            </span>
+          </Link>
+          <button type="button" aria-label="Close menu" onClick={closeMenu} className="drawer-close-btn">
+            <i className="fa-solid fa-xmark" />
+          </button>
+        </div>
+
+        {/* Drawer Body */}
+        <div className="drawer-body">
+          <p className="drawer-kicker">Perfume Boutique</p>
+
+          <nav className="drawer-nav">
+            <Link to="/" onClick={closeMenu} className="drawer-nav-link">
+              Home
+            </Link>
+            
+            {/* Shop accordion */}
+            <div>
+              <button
+                type="button"
+                onClick={() => setCategoriesOpen(!categoriesOpen)}
+                aria-expanded={categoriesOpen}
+                className="drawer-cat-toggle"
+                style={{ color: categoriesOpen ? '#fff' : 'rgba(255,255,255,0.65)' }}
+              >
+                <span>Shop</span>
+                <i
+                  className="fa-solid fa-chevron-down text-[12px] text-white/60 transition-transform duration-[250ms]"
+                  style={{ transform: categoriesOpen ? 'rotate(180deg)' : 'rotate(0)' }}
+                />
+              </button>
+              <div
+                className="drawer-cat-panel"
+                style={{ gridTemplateRows: categoriesOpen ? '1fr' : '0fr' }}
+              >
+                <div className="overflow-hidden flex flex-col">
+                  <Link to="/shop" onClick={closeMenu} className="drawer-cat-link">
+                    All Products
+                  </Link>
+                  <Link to="/shop?category=Oud" onClick={closeMenu} className="drawer-cat-link">
+                    Oud
+                  </Link>
+                  <Link to="/shop?category=Rose" onClick={closeMenu} className="drawer-cat-link">
+                    Rose
+                  </Link>
+                  <Link to="/shop?category=Musk" onClick={closeMenu} className="drawer-cat-link">
+                    Musk
+                  </Link>
+                </div>
+              </div>
+            </div>
+            <Link to="/about" onClick={closeMenu} className="drawer-nav-link">
+              About
+            </Link>
+            <a href="#site-footer" onClick={closeMenu} className="drawer-nav-link">
+              Contact
+            </a>
+          </nav>
+        </div>
+
+        {/* Drawer Foot */}
+        <div className="drawer-foot">
+          <p className="drawer-foot-title">Private Scent Rituals</p>
+          <p className="drawer-foot-text">
+            Discover extrait, oud, musk and amber compositions crafted for a lasting signature.
+          </p>
+          <Link to="/shop" onClick={closeMenu} className="drawer-foot-link">
+            Explore Collection <i className="fa-solid fa-arrow-right-long" />
+          </Link>
+        </div>
+      </aside>
+
+      {/* SEARCH MODAL */}
+      <div
+        id="searchModal"
+        aria-hidden={!searchOpen}
+        onClick={closeSearch}
+        className="search-modal-wrap"
+        style={{ opacity: searchOpen ? 1 : 0, pointerEvents: searchOpen ? 'auto' : 'none' }}
+      >
+        <div
+          role="dialog"
+          aria-modal="true"
+          onClick={(e) => e.stopPropagation()}
+          className="search-panel"
+          style={{ transform: searchOpen ? 'translateY(0) scale(1)' : 'translateY(-18px) scale(.98)' }}
+        >
+          {/* Search head */}
+          <div className="search-head">
+            <div className="flex items-center gap-[14px] min-w-0">
+              <img
+                src="/img/logo/logo.png"
+                alt="Third Eye Scent"
+                className="w-[58px] h-[58px] object-contain brightness-0 invert flex-shrink-0"
+              />
+              <div>
+                <p className="search-brand-title">Third Eye Scent</p>
+                <p className="search-brand-sub">Search perfume notes, collections and gifts</p>
+              </div>
+            </div>
+            <button type="button" aria-label="Close search" onClick={closeSearch} className="search-close-btn">
+              <i className="fa-solid fa-xmark" />
+            </button>
+          </div>
+
+          {/* Search body */}
+          <div className="search-body">
+            <div className="search-form-wrap">
+              <i className="fa-solid fa-magnifying-glass search-form-icon" />
+              <input
+                id="searchInput"
+                type="search"
+                placeholder="Search perfume, oud, musk, amber..."
+                className="search-input"
+              />
+              <button type="submit" className="search-submit-btn">Search</button>
+            </div>
+            <div className="flex flex-wrap gap-[10px] mt-[22px]">
+              {['Oud Noir', 'Rose', 'Vetiver', 'Gift Sets'].map((tag) => (
+                <a key={tag} href="#collection" onClick={closeSearch} className="search-tag-link">
+                  {tag}
+                </a>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* MINI CART DRAWER */}
+      <MiniCart isOpen={isMiniCartOpen} onClose={() => setIsMiniCartOpen(false)} />
+    </>
+  )
+}

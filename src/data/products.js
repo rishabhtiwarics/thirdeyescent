@@ -1,0 +1,42 @@
+export const products = [
+  {
+    id: 1,
+    name: 'Oud Noir',
+    price: '₹4,800',
+    desc: 'Dark resins, smoked oud & black musk — a trail that commands silence.',
+    imgPrimary: '/img/prodimg/violet1.png',
+    imgHover: '/img/prodimg/violet1.1.png',
+  },
+  {
+    id: 2,
+    name: 'Rose Éternelle',
+    price: '₹5,200',
+    desc: 'Bulgarian rose petals deepened with warm amber and sandalwood.',
+    imgPrimary: '/img/prodimg/fotthree.png',
+    imgHover: '/img/prodimg/red2.2.png',
+  },
+  {
+    id: 3,
+    name: 'Vetiver Blanc',
+    price: '₹3,950',
+    desc: 'Crisp Haitian vetiver cut with white cedar and sea minerals.',
+    imgPrimary: '/img/prodimg/fottwo.png',
+    imgHover: '/img/prodimg/yllow1.2.png',
+  },
+  {
+    id: 4,
+    name: 'Musc Sacré',
+    price: '₹4,200',
+    desc: 'Skin-close white musks layered with iris and soft cashmere.',
+    imgPrimary: '/img/prodimg/fotone.png',
+    imgHover: '/img/prodimg/yllow1.2.png',
+  },
+  {
+    id: 5,
+    name: 'Encens Royal',
+    price: '₹5,800',
+    desc: 'Sacred frankincense, pink pepper and golden benzoin resin.',
+    imgPrimary: '/img/prodimg/fotthree.png',
+    imgHover: '/img/prodimg/red2.2.png',
+  },
+]

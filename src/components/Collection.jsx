@@ -1,0 +1,33 @@
+import React from 'react'
+import { Link } from 'react-router-dom'
+import ProductCard from './ProductCard'
+import { products } from '../data/products'
+
+export default function Collection() {
+  return (
+    <section id="collection" className="py-[72px] pb-[80px] bg-white">
+      <div className="px-0">
+        <div className="text-center mb-[44px]">
+          <p className="font-montserrat text-[10px] tracking-[.40em] uppercase mb-2 collection-label-color">Signature Range</p>
+          <h2 className="font-cormorant font-light tracking-[.06em] text-[#1a1410] mb-2 collection-title">The Collection</h2>
+          <p className="font-montserrat text-[10px] tracking-[.14em] collection-sub-color">Pre-Fall 2026 &nbsp;·&nbsp; Five Signatures</p>
+        </div>
+
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5">
+          {products.map((p, idx) => (
+            <ProductCard key={p.id} product={p} className={idx === 4 ? 'hidden lg:flex' : ''} />
+          ))}
+        </div>
+
+        <div className="text-center mt-[44px]">
+          <Link
+            to="/shop"
+            className="font-montserrat text-[10px] tracking-[.28em] uppercase text-[#1a1410] no-underline pb-[3px] transition-all hover:opacity-50 view-all-border"
+          >
+            View Full Collection
+          </Link>
+        </div>
+      </div>
+    </section>
+  )
+}
