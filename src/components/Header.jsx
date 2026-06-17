@@ -61,25 +61,25 @@ export default function Header() {
     <>
       {/* MOBILE HEADER */}
       <div
-        className={`md:hidden fixed top-0 left-0 w-full flex items-center justify-between px-5 py-3 shadow-md hdr-mobile-bar z-[100] transition-colors duration-300 ${isScrolled ? 'bg-white/95 backdrop-blur-md' : 'bg-white'}`}
+        className={`md:hidden fixed top-0 left-0 w-full flex items-center justify-between px-5 py-3 z-[100] transition-all duration-300 bg-transparent ${isScrolled ? 'opacity-0 pointer-events-none -translate-y-full' : 'opacity-100 translate-y-0'}`}
       >
         <Link to="/" className="flex items-center">
           <img
             src="/img/logo/logo.png"
             alt="Third Eye Scent"
-            className="h-[42px] w-auto object-contain brightness-0"
+            className="h-[36px] w-auto object-contain brightness-0 invert drop-shadow-md"
             onError={(e) => { e.target.style.display = 'none' }}
           />
         </Link>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
           <button 
             type="button"
             onClick={() => setIsMiniCartOpen(true)}
-            className="relative bg-transparent border-none text-black p-1 flex items-center justify-center cursor-pointer"
+            className="relative bg-transparent border-none text-white p-1 flex items-center justify-center cursor-pointer drop-shadow-md"
           >
-            <i className="fa-solid fa-bag-shopping text-[20px]" />
+            <i className="fa-solid fa-bag-shopping text-[22px]" />
             {totalQuantity > 0 && (
-              <span className="absolute -top-1 -right-1 bg-[#c9a96e] text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
+              <span className="absolute -top-1 -right-2 bg-[#c9a96e] text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
                 {totalQuantity}
               </span>
             )}
@@ -87,7 +87,7 @@ export default function Header() {
           <button
             type="button"
             onClick={openMenu}
-            className="bg-transparent border-none text-black p-1 flex items-center justify-center cursor-pointer"
+            className="bg-transparent border-none text-white p-1 flex items-center justify-center cursor-pointer drop-shadow-md"
           >
             <i className="fa-solid fa-bars text-[24px]" />
           </button>
@@ -341,6 +341,65 @@ export default function Header() {
               Contact
             </Link>
           </nav>
+
+          {/* Mobile Auth Section in Drawer Body */}
+          <div className="mt-8 pt-6 border-t border-[#c9a96e]/20 pb-4">
+            {isAuthenticated ? (
+              <div className="flex flex-col gap-4">
+                <div className="flex items-center gap-4">
+                  {user?.avatar ? (
+                    <img
+                      src={user.avatar}
+                      alt={user.name}
+                      className="w-[45px] h-[45px] rounded-full object-cover border border-[#b39874]/40"
+                    />
+                  ) : (
+                    <div className="w-[45px] h-[45px] rounded-full bg-white/10 flex items-center justify-center border border-[#b39874]/40">
+                      <i className="fa-regular fa-user text-[20px] text-white" />
+                    </div>
+                  )}
+                  <div>
+                    <p className="font-cormorant text-[18px] text-white font-semibold leading-tight tracking-wide">
+                      {user?.name || 'Patron'}
+                    </p>
+                    <p className="font-montserrat text-[12px] text-[#c9a96e] tracking-wider mt-1 truncate max-w-[150px]">
+                      {user?.email || ''}
+                    </p>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    dispatch(logout())
+                    closeMenu()
+                    navigate('/')
+                  }}
+                  className="w-full flex items-center justify-center gap-3 py-3 mt-2 font-montserrat text-[11px] tracking-[.15em] uppercase text-white border border-white/20 rounded hover:bg-white hover:text-black transition-colors duration-200"
+                >
+                  <i className="fa-solid fa-right-from-bracket" />
+                  Sign Out
+                </button>
+              </div>
+            ) : (
+              <div className="flex flex-col gap-3">
+                <p className="font-cormorant text-[16px] text-white mb-2">My Account</p>
+                <Link
+                  to="/login"
+                  onClick={closeMenu}
+                  className="w-full text-center font-montserrat text-[11px] font-bold tracking-[.2em] uppercase bg-[#c9a96e] text-[#1a1410] py-3 rounded hover:bg-white transition-colors duration-200"
+                >
+                  Sign In
+                </Link>
+                <Link
+                  to="/register"
+                  onClick={closeMenu}
+                  className="w-full text-center font-montserrat text-[11px] tracking-[.2em] uppercase text-white border border-[#c9a96e]/40 py-3 rounded hover:bg-[#c9a96e] hover:text-[#1a1410] transition-colors duration-200"
+                >
+                  Create Account
+                </Link>
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Drawer Foot */}

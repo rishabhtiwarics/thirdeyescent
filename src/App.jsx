@@ -16,6 +16,8 @@ import Cart from './pages/Cart'
 import Checkout from './pages/Checkout'
 import Contact from './pages/Contact'
 
+import About from './pages/About'
+
 export default function App() {
   return (
     <Provider store={store}>
@@ -25,6 +27,7 @@ export default function App() {
           <Route path="/" element={<MainLayout />}>
             <Route index element={<Home />} />
             <Route path="shop" element={<Shop />} />
+            <Route path="about" element={<About />} />
             <Route path="product/:id" element={<ProductDetails />} />
             <Route path="cart" element={<Cart />} />
             <Route path="checkout" element={<Checkout />} />
