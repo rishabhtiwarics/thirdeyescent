@@ -2,8 +2,9 @@ import React, { useEffect, useState, useRef } from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { addToCart } from '../store/cartSlice'
-import { products } from '../data/products'
+import { products as fallbackProducts } from '../data/products'
 import ProductCard from '../components/ProductCard'
+import { productAPI } from '../services/api'
 
 // Swiper
 import { Swiper, SwiperSlide } from 'swiper/react'
@@ -12,9 +13,16 @@ import 'swiper/css'
 import 'swiper/css/pagination'
 import 'swiper/css/navigation'
 
+const formatDisplayPrice = (price) => {
+  if (typeof price === 'string' && price.trim().startsWith('₹')) return price
+  return `₹${price}`
+}
+
 export default function ProductDetails() {
   const { id } = useParams()
   const [product, setProduct] = useState(null)
+  const [allProducts, setAllProducts] = useState(fallbackProducts)
+  const [loadingProduct, setLoadingProduct] = useState(true)
   const [heroVisible, setHeroVisible] = useState(false)
 
   // UI States
@@ -56,12 +64,47 @@ export default function ProductDetails() {
 
   useEffect(() => {
     window.scrollTo(0, 0)
-    const p = products.find(prod => prod.id.toString() === id)
-    setProduct(p)
-    if (p) {
-      setActiveImage(p.imgPrimary || p.image)
-      setQuantity(1)
-      setSize('50ml')
+    let isMounted = true
+
+    const loadProduct = async () => {
+      setLoadingProduct(true)
+      try {
+        const [apiProduct, apiProducts] = await Promise.all([
+          productAPI.getProduct(id),
+          productAPI.getProducts({ limit: 100 }),
+        ])
+
+        if (!isMounted) return
+
+        const syncedProducts = Array.isArray(apiProducts) && apiProducts.length ? apiProducts : fallbackProducts
+        const resolvedProduct = apiProduct || syncedProducts.find(prod => prod.id?.toString() === id)
+
+        setAllProducts(syncedProducts)
+        setProduct(resolvedProduct || null)
+        if (resolvedProduct) {
+          setActiveImage(resolvedProduct.imgPrimary || resolvedProduct.image)
+          setQuantity(1)
+          setSize('50ml')
+        }
+      } catch (error) {
+        if (!isMounted) return
+        const fallbackProduct = fallbackProducts.find(prod => prod.id.toString() === id)
+        setAllProducts(fallbackProducts)
+        setProduct(fallbackProduct || null)
+        if (fallbackProduct) {
+          setActiveImage(fallbackProduct.imgPrimary || fallbackProduct.image)
+          setQuantity(1)
+          setSize('50ml')
+        }
+      } finally {
+        if (isMounted) setLoadingProduct(false)
+      }
+    }
+
+    loadProduct()
+
+    return () => {
+      isMounted = false
     }
   }, [id])
 
@@ -87,6 +130,14 @@ export default function ProductDetails() {
     }
   }, [product])
 
+  if (loadingProduct) {
+    return (
+      <div className="pt-40 pb-32 text-center">
+        <h1 className="font-cormorant text-[32px] text-[#1a1410] mb-4">Loading Product...</h1>
+      </div>
+    )
+  }
+
   if (!product) {
     return (
       <div className="pt-40 pb-32 text-center">
@@ -98,7 +149,7 @@ export default function ProductDetails() {
     )
   }
 
-  const relatedProducts = products.filter(p => p.id !== product.id).slice(0, 8)
+  const relatedProducts = allProducts.filter(p => p.id !== product.id).slice(0, 8)
   const gallery = [product.imgPrimary || product.image, product.imgHover, product.image].filter((img, i, arr) => img && arr.indexOf(img) === i)
 
   const handleMouseMove = (e) => {
@@ -208,7 +259,7 @@ export default function ProductDetails() {
               </h1>
 
               <p className="font-cormorant text-[32px] sm:text-[36px] text-[#c9a96e] mb-8">
-                ₹{product.price}
+                {formatDisplayPrice(product.price)}
               </p>
 
               <p className="font-montserrat text-[13px] leading-[1.8] text-[#1a1410]/70 mb-10">
@@ -374,7 +425,7 @@ export default function ProductDetails() {
             <img src={activeImage} alt={product.name} className="w-12 h-14 object-cover rounded border border-[#1a1410]/5" />
             <div>
               <h4 className="font-cormorant font-semibold text-[20px] text-[#1a1410] m-0 leading-tight">{product.name}</h4>
-              <p className="font-montserrat text-[12px] font-medium text-[#c9a96e] mt-1">₹{product.price}</p>
+              <p className="font-montserrat text-[12px] font-medium text-[#c9a96e] mt-1">{formatDisplayPrice(product.price)}</p>
             </div>
           </div>
 

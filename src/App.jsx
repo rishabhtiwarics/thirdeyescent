@@ -15,8 +15,9 @@ import ProductDetails from './pages/ProductDetails'
 import Cart from './pages/Cart'
 import Checkout from './pages/Checkout'
 import Contact from './pages/Contact'
-
+import AdminPanel from './pages/AdminPanel'
 import About from './pages/About'
+import MyOrders from './pages/MyOrders'
 
 export default function App() {
   return (
@@ -32,7 +33,11 @@ export default function App() {
             <Route path="cart" element={<Cart />} />
             <Route path="checkout" element={<Checkout />} />
             <Route path="contact" element={<Contact />} />
+            <Route path="my-orders" element={<MyOrders />} />
           </Route>
+
+          {/* Admin routing (standalone shell, no site header/footer) */}
+          <Route path="/admin" element={<AdminPanel />} />
 
           {/* Authentication layout routing (no header/footer) */}
           <Route path="/" element={<AuthLayout />}>

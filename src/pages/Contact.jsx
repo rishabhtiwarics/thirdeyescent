@@ -1,12 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import SocialMarquee from '../components/SocialMarquee'
+import { contactAPI } from '../services/api'
 
 export default function Contact() {
   const [heroVisible, setHeroVisible] = useState(false)
   const [formData, setFormData] = useState({
     name: '',
     email: '',
+    phone: '',
+    service: 'General Inquiry',
     message: ''
   })
   const [status, setStatus] = useState('')
@@ -24,18 +27,21 @@ export default function Contact() {
     })
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    if (!formData.name || !formData.email || !formData.message) {
+    if (!formData.name || !formData.email || !formData.phone || !formData.service || !formData.message) {
       setStatus('Please fill in all fields.')
       return
     }
-    // Simulate API call
+
     setStatus('Sending...')
-    setTimeout(() => {
+    try {
+      await contactAPI.submitContact(formData)
       setStatus('Thank you for reaching out! We will contact you shortly.')
-      setFormData({ name: '', email: '', message: '' })
-    }, 1500)
+      setFormData({ name: '', email: '', phone: '', service: 'General Inquiry', message: '' })
+    } catch (error) {
+      setStatus(error.message || 'Unable to send your message. Please try again.')
+    }
   }
 
   return (
@@ -196,6 +202,39 @@ export default function Contact() {
                       className="w-full border border-[#1a1410]/15 rounded-none px-4 py-3 font-montserrat text-xs outline-none focus:border-[#c9a96e] focus:bg-white focus:ring-1 focus:ring-[#c9a96e] bg-[#fffaf4]/30 text-[#1a1410] placeholder-[#1a1410]/25 transition-all duration-200"
                       required
                     />
+                  </div>
+
+                  <div>
+                    <label className="font-montserrat text-[9px] uppercase tracking-[.15em] text-[#1a1410]/50 font-bold mb-1.5 block">
+                      Phone
+                    </label>
+                    <input
+                      type="tel"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleChange}
+                      placeholder="Your Phone"
+                      className="w-full border border-[#1a1410]/15 rounded-none px-4 py-3 font-montserrat text-xs outline-none focus:border-[#c9a96e] focus:bg-white focus:ring-1 focus:ring-[#c9a96e] bg-[#fffaf4]/30 text-[#1a1410] placeholder-[#1a1410]/25 transition-all duration-200"
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label className="font-montserrat text-[9px] uppercase tracking-[.15em] text-[#1a1410]/50 font-bold mb-1.5 block">
+                      Service
+                    </label>
+                    <select
+                      name="service"
+                      value={formData.service}
+                      onChange={handleChange}
+                      className="w-full border border-[#1a1410]/15 rounded-none px-4 py-3 font-montserrat text-xs outline-none focus:border-[#c9a96e] focus:bg-white focus:ring-1 focus:ring-[#c9a96e] bg-[#fffaf4]/30 text-[#1a1410] transition-all duration-200"
+                      required
+                    >
+                      <option value="General Inquiry">General Inquiry</option>
+                      <option value="Private Collection">Private Collection</option>
+                      <option value="Bespoke Consultation">Bespoke Consultation</option>
+                      <option value="Order Support">Order Support</option>
+                    </select>
                   </div>
 
                   {/* Message Field - Checkout Style */}

@@ -5,6 +5,7 @@ import * as yup from 'yup'
 import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { loginStart, loginSuccess, loginFailure } from '../../store/slices/authSlice'
+import { authAPI } from '../../services/api'
 
 const schema = yup.object().shape({
   email: yup.string().email('Please enter a valid email address').required('Email is required'),
@@ -24,14 +25,16 @@ export default function LoginForm() {
     resolver: yupResolver(schema),
   })
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     dispatch(loginStart())
     
-    // Simulate API call for luxury feel
-    setTimeout(() => {
-      dispatch(loginSuccess({ email: data.email, name: 'Exclusive Patron' }))
+    try {
+      const response = await authAPI.login(data)
+      dispatch(loginSuccess(response.user))
       navigate('/')
-    }, 1500)
+    } catch (error) {
+      dispatch(loginFailure(error.message || 'Login failed. Please try again.'))
+    }
   }
 
   return (

@@ -196,6 +196,26 @@ export default function Header() {
                             {user?.email || ''}
                           </p>
                         </div>
+                        {/* My Orders link */}
+                        <Link
+                          to="/my-orders"
+                          onClick={() => setUserDropdownOpen(false)}
+                          className="w-full flex items-center gap-3 px-5 py-3.5 font-montserrat text-[10px] tracking-[.18em] uppercase text-white hover:text-[#1a1410] hover:bg-[#c9a96e] transition-colors duration-200 cursor-pointer border-none bg-transparent text-left"
+                        >
+                          <i className="fa-solid fa-box text-[12px]" />
+                          My Orders
+                        </Link>
+                        {/* Admin Panel link */}
+                        {user?.role === 'admin' && (
+                          <Link
+                            to="/admin"
+                            onClick={() => setUserDropdownOpen(false)}
+                            className="w-full flex items-center gap-3 px-5 py-3.5 font-montserrat text-[10px] tracking-[.18em] uppercase text-[#d4af37] hover:text-[#1a1410] hover:bg-[#c9a96e] transition-colors duration-200 cursor-pointer border-none bg-transparent text-left"
+                          >
+                            <i className="fa-solid fa-gauge text-[12px]" />
+                            Admin Panel
+                          </Link>
+                        )}
                         {/* Logout button */}
                         <button
                           type="button"
@@ -334,6 +354,16 @@ export default function Header() {
                 </div>
               </div>
             </div>
+            {isAuthenticated && (
+              <Link to="/my-orders" onClick={closeMenu} className="drawer-nav-link">
+                My Orders
+              </Link>
+            )}
+            {isAuthenticated && user?.role === 'admin' && (
+              <Link to="/admin" onClick={closeMenu} className="drawer-nav-link text-[#d4af37]">
+                Admin Panel
+              </Link>
+            )}
             <Link to="/about" onClick={closeMenu} className="drawer-nav-link">
               About
             </Link>

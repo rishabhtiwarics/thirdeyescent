@@ -1,16 +1,37 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import ProductCard from './ProductCard'
-import { products } from '../data/products'
+import { products as fallbackProducts } from '../data/products'
+import { productAPI } from '../services/api'
 
 export default function Collection() {
+  const [products, setProducts] = useState(fallbackProducts)
+
+  useEffect(() => {
+    let isMounted = true
+
+    productAPI.getProducts({ limit: 100 })
+      .then((apiProducts) => {
+        if (isMounted && Array.isArray(apiProducts) && apiProducts.length) {
+          setProducts(apiProducts)
+        }
+      })
+      .catch(() => {
+        if (isMounted) setProducts(fallbackProducts)
+      })
+
+    return () => {
+      isMounted = false
+    }
+  }, [])
+
   return (
     <section id="collection" className="py-[72px] pb-[80px] bg-white">
       <div className="px-0">
         <div className="text-center mb-[44px]">
           <p className="font-montserrat text-[10px] tracking-[.40em] uppercase mb-2 collection-label-color">Signature Range</p>
           <h2 className="font-cormorant font-light tracking-[.06em] text-[#1a1410] mb-2 collection-title">The Collection</h2>
-          <p className="font-montserrat text-[10px] tracking-[.14em] collection-sub-color">Pre-Fall 2026 &nbsp;·&nbsp; Five Signatures</p>
+          <p className="font-montserrat text-[10px] tracking-[.14em] collection-sub-color">Pre-Fall 2026 &nbsp;·&nbsp; {products.length} Signatures</p>
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5">

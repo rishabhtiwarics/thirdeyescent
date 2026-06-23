@@ -5,6 +5,7 @@ import * as yup from 'yup'
 import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { registerStart, registerSuccess, registerFailure } from '../../store/slices/authSlice'
+import { authAPI } from '../../services/api'
 
 const schema = yup.object().shape({
   name: yup.string().min(2, 'Name must be at least 2 characters').required('Full name is required'),
@@ -29,14 +30,16 @@ export default function RegisterForm() {
     resolver: yupResolver(schema),
   })
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     dispatch(registerStart())
     
-    // Simulate API call for registration
-    setTimeout(() => {
-      dispatch(registerSuccess({ email: data.email, name: data.name }))
+    try {
+      const response = await authAPI.register(data)
+      dispatch(registerSuccess(response.user))
       navigate('/')
-    }, 1500)
+    } catch (error) {
+      dispatch(registerFailure(error.message || 'Registration failed. Please try again.'))
+    }
   }
 
   return (

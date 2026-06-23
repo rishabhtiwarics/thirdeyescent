@@ -46,6 +46,70 @@
   }
 }
 
+@layer components {
+  .admin-panel {
+    @apply min-w-0 border border-[#d4af37]/15 bg-[#11100d] p-4 md:p-6;
+  }
+
+  .admin-section-head {
+    @apply flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6;
+  }
+
+  .admin-kicker {
+    @apply text-[10px] tracking-[.28em] uppercase text-[#a39282];
+  }
+
+  .admin-title {
+    @apply font-cormorant text-3xl md:text-4xl text-white leading-none mt-1;
+  }
+
+  .admin-input {
+    @apply w-full bg-[#0b0a08] border border-[#d4af37]/20 text-white px-4 py-3 text-xs outline-none focus:border-[#d4af37]/70 transition-colors;
+  }
+
+  .admin-primary-btn {
+    @apply inline-flex items-center justify-center gap-2 bg-[#d4af37] text-[#11100d] px-5 py-3 text-[10px] font-semibold tracking-[.2em] uppercase transition-colors hover:bg-[#c29e2d];
+  }
+
+  .admin-secondary-btn {
+    @apply inline-flex items-center justify-center gap-2 border border-[#d4af37]/25 text-[#d4af37] px-5 py-3 text-[10px] font-semibold tracking-[.18em] uppercase transition-colors hover:bg-[#d4af37]/10;
+  }
+
+  .admin-danger-btn {
+    @apply inline-flex items-center justify-center gap-2 border border-[#e35f5f]/30 text-[#ff8c8c] px-4 py-3 text-[10px] font-semibold tracking-[.18em] uppercase transition-colors hover:bg-[#e35f5f]/10;
+  }
+
+  .admin-icon-btn {
+    @apply inline-flex h-10 w-10 items-center justify-center border border-[#d4af37]/20 text-[#d4af37] transition-colors hover:bg-[#d4af37]/10;
+  }
+
+  .admin-row {
+    @apply transition-colors hover:bg-[#d4af37]/5;
+  }
+
+  .admin-table-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(212, 175, 55, 0.75) rgba(255, 255, 255, 0.04);
+  }
+
+  .admin-table-scroll::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  .admin-table-scroll::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.04);
+  }
+
+  .admin-table-scroll::-webkit-scrollbar-thumb {
+    background: linear-gradient(90deg, rgba(179, 152, 116, 0.85), rgba(212, 175, 55, 0.95));
+    border-radius: 999px;
+  }
+
+  .admin-table-scroll::-webkit-scrollbar-thumb:hover {
+    background: #d4af37;
+  }
+}
+
 /* ══ SHOP HERO ══ */
 .shop-hero-section {
   background: #0f0d0b;

@@ -3,10 +3,27 @@ import { useSelector, useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import { setShippingDetails, setPaymentStatus, setOrderId, resetCheckout } from '../store/checkoutSlice'
 import { clearCart } from '../store/cartSlice'
+import { orderAPI, paymentAPI } from '../services/api'
+
+const loadRazorpayScript = () => {
+  return new Promise((resolve) => {
+    if (window.Razorpay) {
+      resolve(true)
+      return
+    }
+
+    const script = document.createElement('script')
+    script.src = 'https://checkout.razorpay.com/v1/checkout.js'
+    script.onload = () => resolve(true)
+    script.onerror = () => resolve(false)
+    document.body.appendChild(script)
+  })
+}
 
 export default function Checkout() {
   const { items, totalPrice } = useSelector(state => state.cart)
   const { paymentStatus, orderId } = useSelector(state => state.checkout)
+  const { isAuthenticated } = useSelector(state => state.auth)
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
@@ -20,12 +37,10 @@ export default function Checkout() {
     lastName: '',
     address: '',
     city: '',
-    country: 'United States',
+    state: '',
+    country: 'India',
     zipCode: '',
-    cardName: '',
-    cardNumber: '',
-    expiry: '',
-    cvv: ''
+    paymentMethod: 'razorpay',
   })
 
   const [heroVisible, setHeroVisible] = useState(false)
@@ -54,8 +69,12 @@ export default function Checkout() {
       }
       setStep(2)
     } else if (step === 2) {
-      if (!formData.firstName || !formData.lastName || !formData.address || !formData.city || !formData.zipCode) {
+      if (!formData.firstName || !formData.lastName || !formData.address || !formData.city || !formData.state || !formData.zipCode) {
         alert('Please fill out all shipping address fields.')
+        return
+      }
+      if (!/^\d{6}$/.test(formData.zipCode)) {
+        alert('Please enter a valid 6 digit PIN code.')
         return
       }
       setStep(3)
@@ -66,32 +85,100 @@ export default function Checkout() {
     setStep(prev => Math.max(1, prev - 1))
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
 
-    if (!formData.cardName || !formData.cardNumber || !formData.expiry || !formData.cvv) {
-      alert('Please fill out all payment fields.')
+    if (!isAuthenticated) {
+      alert('Please sign in before placing your order.')
+      navigate('/login')
       return
     }
 
-    // Start payment processing state
     dispatch(setPaymentStatus('processing'))
 
-    setTimeout(() => {
-      const mockOrderId = 'TES-' + Math.random().toString(36).substr(2, 9).toUpperCase()
-      dispatch(setShippingDetails({
-        email: formData.email,
-        firstName: formData.firstName,
-        lastName: formData.lastName,
-        address: formData.address,
-        city: formData.city,
-        country: formData.country,
-        zipCode: formData.zipCode
-      }))
-      dispatch(setOrderId(mockOrderId))
-      dispatch(setPaymentStatus('success'))
-      dispatch(clearCart())
-    }, 2500)
+    try {
+      const orderPayload = {
+        items: items.map((item) => ({
+          id: item.id,
+          name: item.name,
+          price: item.price,
+          quantity: item.quantity,
+          image: item.image,
+        })),
+        shippingAddress: {
+          name: `${formData.firstName} ${formData.lastName}`.trim(),
+          email: formData.email,
+          addressLine1: formData.address,
+          city: formData.city,
+          state: formData.state,
+          pinCode: formData.zipCode,
+          country: formData.country,
+        },
+        paymentMethod: formData.paymentMethod,
+      }
+
+      if (formData.paymentMethod === 'razorpay') {
+        const scriptLoaded = await loadRazorpayScript()
+
+        if (!scriptLoaded) {
+          throw new Error('Unable to load Razorpay checkout. Please try again.')
+        }
+
+        const checkout = await orderAPI.createRazorpayCheckout(orderPayload)
+        const createdOrder = checkout.order
+        const razorpayOrder = checkout.razorpayOrder
+
+        const paymentResult = await new Promise((resolve, reject) => {
+          const razorpay = new window.Razorpay({
+            key: import.meta.env.VITE_RAZORPAY_KEY_ID,
+            amount: razorpayOrder.amount,
+            currency: razorpayOrder.currency,
+            name: 'Third Eye Scent',
+            description: 'Luxury fragrance order',
+            order_id: razorpayOrder.id,
+            prefill: {
+              name: `${formData.firstName} ${formData.lastName}`.trim(),
+              email: formData.email,
+            },
+            theme: {
+              color: '#c9a96e',
+            },
+            handler: resolve,
+            modal: {
+              ondismiss: () => reject(new Error('Payment cancelled')),
+            },
+          })
+
+          razorpay.open()
+        })
+
+        await paymentAPI.verifyRazorpayPayment(paymentResult)
+        completeOrder(createdOrder)
+        return
+      }
+
+      const order = await orderAPI.createOrder(orderPayload)
+      completeOrder(order)
+    } catch (error) {
+      dispatch(setPaymentStatus('failed'))
+      alert(error.message || 'Failed to place order')
+    }
+  }
+
+  const completeOrder = (order) => {
+    dispatch(setShippingDetails({
+      email: formData.email,
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+      address: formData.address,
+      city: formData.city,
+      state: formData.state,
+      country: formData.country,
+      zipCode: formData.zipCode
+    }))
+    dispatch(setOrderId(order?._id || order?.id || 'ORDER-CREATED'))
+    dispatch(setPaymentStatus('success'))
+    dispatch(clearCart())
   }
 
   const handleFinish = () => {
@@ -311,13 +398,17 @@ export default function Checkout() {
                           <input type="text" name="city" required value={formData.city} onChange={handleChange} className="w-full border border-[#1a1410]/15 rounded-none px-4 py-3 font-montserrat text-xs outline-none focus:border-[#c9a96e] focus:bg-white focus:ring-1 focus:ring-[#c9a96e] bg-[#fffaf4]/30 text-[#1a1410] placeholder-[#1a1410]/25 transition-all duration-200" />
                         </div>
                         <div>
+                          <label className="font-montserrat text-[9px] uppercase tracking-[.15em] text-[#1a1410]/50 font-bold mb-1.5 block">State</label>
+                          <input type="text" name="state" required value={formData.state} onChange={handleChange} className="w-full border border-[#1a1410]/15 rounded-none px-4 py-3 font-montserrat text-xs outline-none focus:border-[#c9a96e] focus:bg-white focus:ring-1 focus:ring-[#c9a96e] bg-[#fffaf4]/30 text-[#1a1410] placeholder-[#1a1410]/25 transition-all duration-200" />
+                        </div>
+                        <div>
                           <label className="font-montserrat text-[9px] uppercase tracking-[.15em] text-[#1a1410]/50 font-bold mb-1.5 block">Country</label>
                           <div className="relative">
                             <select name="country" value={formData.country} onChange={handleChange} className="w-full border border-[#1a1410]/15 rounded-none px-4 py-3 font-montserrat text-xs outline-none focus:border-[#c9a96e] focus:bg-white focus:ring-1 focus:ring-[#c9a96e] bg-[#fffaf4]/30 text-[#1a1410] appearance-none pr-10 transition-all duration-200">
+                              <option value="India">India</option>
                               <option value="United States">United States</option>
                               <option value="Canada">Canada</option>
                               <option value="United Kingdom">United Kingdom</option>
-                              <option value="India">India</option>
                             </select>
                             <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-[#1a1410]/60">
                               <i className="fa-solid fa-chevron-down text-[10px]" />
@@ -325,7 +416,7 @@ export default function Checkout() {
                           </div>
                         </div>
                         <div>
-                          <label className="font-montserrat text-[9px] uppercase tracking-[.15em] text-[#1a1410]/50 font-bold mb-1.5 block">ZIP Code</label>
+                          <label className="font-montserrat text-[9px] uppercase tracking-[.15em] text-[#1a1410]/50 font-bold mb-1.5 block">PIN Code</label>
                           <input type="text" name="zipCode" required value={formData.zipCode} onChange={handleChange} className="w-full border border-[#1a1410]/15 rounded-none px-4 py-3 font-montserrat text-xs outline-none focus:border-[#c9a96e] focus:bg-white focus:ring-1 focus:ring-[#c9a96e] bg-[#fffaf4]/30 text-[#1a1410] placeholder-[#1a1410]/25 transition-all duration-200" />
                         </div>
                       </div>
@@ -361,51 +452,75 @@ export default function Checkout() {
                       <p className="font-montserrat text-[11px] text-[#1a1410]/40 tracking-wider mb-6">Transactions are securely processed and encrypted.</p>
 
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
-                        {/* Left Column: Credit Card Inputs */}
-                        <div className="border border-[#1a1410]/10 rounded-none p-6 space-y-5 bg-[#fffaf4]/20">
+                        {/* Left Column: Payment Method */}
+                        <div className="border border-[#1a1410]/10 rounded-none p-6 space-y-4 bg-[#fffaf4]/20">
                           <div className="flex items-center justify-between border-b border-[#1a1410]/10 pb-4 mb-2">
-                            <span className="font-montserrat text-[10px] font-bold text-[#1a1410] uppercase tracking-widest">Credit Card</span>
+                            <span className="font-montserrat text-[10px] font-bold text-[#1a1410] uppercase tracking-widest">Payment Method</span>
                             <div className="flex gap-2 text-[#1a1410]/60">
                               <i className="fa-brands fa-cc-visa text-xl" />
                               <i className="fa-brands fa-cc-mastercard text-xl" />
-                              <i className="fa-brands fa-cc-amex text-xl" />
+                              <i className="fa-solid fa-building-columns text-lg" />
                             </div>
                           </div>
 
-                          <div>
-                            <label className="font-montserrat text-[9px] uppercase tracking-[.15em] text-[#1a1410]/50 font-bold mb-1.5 block">Cardholder Name</label>
+                          <label
+                            className={`block border p-5 cursor-pointer transition-all duration-200 ${
+                              formData.paymentMethod === 'razorpay'
+                                ? 'border-[#c9a96e] bg-white shadow-[0_12px_30px_rgba(201,169,110,0.18)]'
+                                : 'border-[#1a1410]/10 bg-white/60 hover:border-[#c9a96e]/60'
+                            }`}
+                          >
                             <input
-                              type="text"
-                              name="cardName"
-                              required
-                              value={formData.cardName}
+                              type="radio"
+                              name="paymentMethod"
+                              value="razorpay"
+                              checked={formData.paymentMethod === 'razorpay'}
                               onChange={handleChange}
-                              className="w-full border border-[#1a1410]/15 rounded-none px-4 py-3 font-montserrat text-xs outline-none focus:border-[#c9a96e] focus:bg-white focus:ring-1 focus:ring-[#c9a96e] bg-[#fffaf4]/30 text-[#1a1410] placeholder-[#1a1410]/25 transition-all duration-200"
+                              className="sr-only"
                             />
-                          </div>
+                            <span className="flex items-start gap-4">
+                              <span className="mt-1 flex h-5 w-5 items-center justify-center border border-[#c9a96e] rounded-full">
+                                {formData.paymentMethod === 'razorpay' && <span className="h-2.5 w-2.5 rounded-full bg-[#c9a96e]" />}
+                              </span>
+                              <span className="flex-1">
+                                <span className="flex items-center justify-between gap-3">
+                                  <span className="font-cormorant text-[22px] font-semibold text-[#1a1410]">Razorpay</span>
+                                  <span className="font-montserrat text-[8px] font-bold uppercase tracking-[.18em] text-[#c9a96e]">Recommended</span>
+                                </span>
+                                <span className="mt-1 block font-montserrat text-[11px] leading-relaxed text-[#1a1410]/55">
+                                  Pay securely with UPI, cards, wallets, net banking, or EMI through Razorpay Checkout.
+                                </span>
+                              </span>
+                            </span>
+                          </label>
 
-                          <div>
-                            <label className="font-montserrat text-[9px] uppercase tracking-[.15em] text-[#1a1410]/50 font-bold mb-1.5 block">Card Number</label>
+                          <label
+                            className={`block border p-5 cursor-pointer transition-all duration-200 ${
+                              formData.paymentMethod === 'cod'
+                                ? 'border-[#c9a96e] bg-white shadow-[0_12px_30px_rgba(201,169,110,0.18)]'
+                                : 'border-[#1a1410]/10 bg-white/60 hover:border-[#c9a96e]/60'
+                            }`}
+                          >
                             <input
-                              type="text"
-                              name="cardNumber"
-                              required
-                              value={formData.cardNumber}
+                              type="radio"
+                              name="paymentMethod"
+                              value="cod"
+                              checked={formData.paymentMethod === 'cod'}
                               onChange={handleChange}
-                              className="w-full border border-[#1a1410]/15 rounded-none px-4 py-3 font-montserrat text-xs outline-none focus:border-[#c9a96e] focus:bg-white focus:ring-1 focus:ring-[#c9a96e] bg-[#fffaf4]/30 text-[#1a1410] placeholder-[#1a1410]/25 transition-all duration-200"
+                              className="sr-only"
                             />
-                          </div>
-
-                          <div className="grid grid-cols-2 gap-5">
-                            <div>
-                              <label className="font-montserrat text-[9px] uppercase tracking-[.15em] text-[#1a1410]/50 font-bold mb-1.5 block">Expiry Date</label>
-                              <input type="text" name="expiry" required placeholder="MM/YY" value={formData.expiry} onChange={handleChange} className="w-full border border-[#1a1410]/15 rounded-none px-4 py-3 font-montserrat text-xs outline-none focus:border-[#c9a96e] focus:bg-white focus:ring-1 focus:ring-[#c9a96e] bg-[#fffaf4]/30 text-[#1a1410] placeholder-[#1a1410]/25 transition-all duration-200" />
-                            </div>
-                            <div>
-                              <label className="font-montserrat text-[9px] uppercase tracking-[.15em] text-[#1a1410]/50 font-bold mb-1.5 block">CVV</label>
-                              <input type="text" name="cvv" required placeholder="123" value={formData.cvv} onChange={handleChange} className="w-full border border-[#1a1410]/15 rounded-none px-4 py-3 font-montserrat text-xs outline-none focus:border-[#c9a96e] focus:bg-white focus:ring-1 focus:ring-[#c9a96e] bg-[#fffaf4]/30 text-[#1a1410] placeholder-[#1a1410]/25 transition-all duration-200" />
-                            </div>
-                          </div>
+                            <span className="flex items-start gap-4">
+                              <span className="mt-1 flex h-5 w-5 items-center justify-center border border-[#c9a96e] rounded-full">
+                                {formData.paymentMethod === 'cod' && <span className="h-2.5 w-2.5 rounded-full bg-[#c9a96e]" />}
+                              </span>
+                              <span className="flex-1">
+                                <span className="font-cormorant text-[22px] font-semibold text-[#1a1410]">Cash on Delivery</span>
+                                <span className="mt-1 block font-montserrat text-[11px] leading-relaxed text-[#1a1410]/55">
+                                  Place the order now and collect payment manually when the shipment arrives.
+                                </span>
+                              </span>
+                            </span>
+                          </label>
                         </div>
 
                         {/* Right Column: Address and Identity Review Summary */}
@@ -414,7 +529,7 @@ export default function Checkout() {
                             <h4 className="font-montserrat text-[10px] font-bold uppercase tracking-wider text-[#1a1410]/50 mb-3">Shipping Address</h4>
                             <p className="font-montserrat text-xs font-semibold text-[#1a1410]">{formData.firstName} {formData.lastName}</p>
                             <p className="font-montserrat text-xs text-[#1a1410]/70 mt-1">{formData.address}</p>
-                            <p className="font-montserrat text-xs text-[#1a1410]/70">{formData.city}, {formData.zipCode}</p>
+                            <p className="font-montserrat text-xs text-[#1a1410]/70">{formData.city}, {formData.state} {formData.zipCode}</p>
                             <p className="font-montserrat text-xs text-[#1a1410]/70">{formData.country}</p>
                             <div className="border-t border-[#1a1410]/5 mt-4 pt-3">
                               <span className="font-montserrat text-[9px] uppercase tracking-wider text-[#1a1410]/40 block mb-1">Email Address</span>
@@ -447,7 +562,7 @@ export default function Checkout() {
                         type="submit"
                         className="group inline-flex items-center gap-2.5 bg-[#c9a96e] hover:bg-[#1a1410] text-[#1a1410] hover:text-white font-montserrat text-[11px] font-bold tracking-[.2em] uppercase px-12 py-4 border border-[#c9a96e] hover:border-[#1a1410] transition-all duration-300 rounded-none"
                       >
-                        Place Order (Pay ₹{totalPrice})
+                        {formData.paymentMethod === 'razorpay' ? `Pay ₹${totalPrice} with Razorpay` : `Place COD Order (₹${totalPrice})`}
                         <i className="fa-solid fa-circle-check text-[10px]" />
                       </button>
                     </div>

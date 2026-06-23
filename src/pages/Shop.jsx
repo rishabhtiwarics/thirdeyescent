@@ -2,7 +2,8 @@ import React, { useState, useEffect, useRef } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import ProductCard from '../components/ProductCard'
 import SocialMarquee from '../components/SocialMarquee'
-import { products } from '../data/products'
+import { products as fallbackProducts } from '../data/products'
+import { categoryAPI, productAPI } from '../services/api'
 
 // Clean hero section
 export default function Shop() {
@@ -14,9 +15,12 @@ export default function Shop() {
   const [searchQuery, setSearchQuery] = useState('')
   const [sortOrder, setSortOrder] = useState('default')
   const [sortOpen, setSortOpen] = useState(false)
+  const [products, setProducts] = useState(fallbackProducts)
+  const [categories, setCategories] = useState([])
+  const [loadingProducts, setLoadingProducts] = useState(true)
   const heroRef = useRef(null)
 
-  const filters = ['All', 'Oud', 'Rose', 'Musk']
+  const filters = ['All', ...(categories.length ? categories.map((category) => category.name) : ['Oud', 'Rose', 'Musk'])]
 
   useEffect(() => {
     const timer = setTimeout(() => setHeroVisible(true), 100)
@@ -24,11 +28,40 @@ export default function Shop() {
   }, [])
 
   useEffect(() => {
+    let isMounted = true
+
+    Promise.all([
+      productAPI.getProducts({ limit: 100 }),
+      categoryAPI.getCategories(),
+    ])
+      .then(([apiProducts, apiCategories]) => {
+        if (!isMounted) return
+        if (Array.isArray(apiProducts) && apiProducts.length) {
+          setProducts(apiProducts)
+        }
+        if (Array.isArray(apiCategories)) {
+          setCategories(apiCategories)
+        }
+      })
+      .catch(() => {
+        if (isMounted) setProducts(fallbackProducts)
+      })
+      .finally(() => {
+        if (isMounted) setLoadingProducts(false)
+      })
+
+    return () => {
+      isMounted = false
+    }
+  }, [])
+
+  useEffect(() => {
     setFilterActive(categoryParam)
   }, [categoryParam])
 
   let filteredProducts = products.filter(p => {
-    const matchesCategory = filterActive === 'All' || p.name.toLowerCase().includes(filterActive.toLowerCase())
+    const productCategory = typeof p.category === 'object' ? p.category?.name : p.category
+    const matchesCategory = filterActive === 'All' || productCategory?.toLowerCase() === filterActive.toLowerCase() || p.name.toLowerCase().includes(filterActive.toLowerCase())
     const matchesSearch = p.name.toLowerCase().includes(searchQuery.toLowerCase()) || p.desc.toLowerCase().includes(searchQuery.toLowerCase())
     return matchesCategory && matchesSearch
   })
@@ -184,7 +217,7 @@ export default function Shop() {
           {/* View More CTA */}
           <div className="text-center mt-[44px]">
             <p className="font-montserrat text-[10px] tracking-[.14em] collection-sub-color">
-              Showing all {filteredProducts.length > 0 ? filteredProducts.length : products.length} creations
+              {loadingProducts ? 'Syncing latest creations...' : `Showing ${filteredProducts.length} of ${products.length} creations`}
             </p>
           </div>
         </div>
