@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import ProductCard from '../components/ProductCard'
 import SocialMarquee from '../components/SocialMarquee'
-import { products as fallbackProducts } from '../data/products'
 import { categoryAPI, productAPI } from '../services/api'
 
 // Clean hero section
@@ -15,9 +14,10 @@ export default function Shop() {
   const [searchQuery, setSearchQuery] = useState('')
   const [sortOrder, setSortOrder] = useState('default')
   const [sortOpen, setSortOpen] = useState(false)
-  const [products, setProducts] = useState(fallbackProducts)
+  const [products, setProducts] = useState([])
   const [categories, setCategories] = useState([])
   const [loadingProducts, setLoadingProducts] = useState(true)
+  const [productsError, setProductsError] = useState('')
   const heroRef = useRef(null)
 
   const filters = ['All', ...(categories.length ? categories.map((category) => category.name) : ['Oud', 'Rose', 'Musk'])]
@@ -30,21 +30,23 @@ export default function Shop() {
   useEffect(() => {
     let isMounted = true
 
-    Promise.all([
+    Promise.allSettled([
       productAPI.getProducts({ limit: 100 }),
       categoryAPI.getCategories(),
     ])
-      .then(([apiProducts, apiCategories]) => {
+      .then(([productsResult, categoriesResult]) => {
         if (!isMounted) return
-        if (Array.isArray(apiProducts) && apiProducts.length) {
-          setProducts(apiProducts)
+
+        if (productsResult.status === 'fulfilled') {
+          setProducts(Array.isArray(productsResult.value) ? productsResult.value : [])
+        } else {
+          setProducts([])
+          setProductsError(productsResult.reason?.message || 'Unable to load products.')
         }
-        if (Array.isArray(apiCategories)) {
-          setCategories(apiCategories)
+
+        if (categoriesResult.status === 'fulfilled' && Array.isArray(categoriesResult.value)) {
+          setCategories(categoriesResult.value)
         }
-      })
-      .catch(() => {
-        if (isMounted) setProducts(fallbackProducts)
       })
       .finally(() => {
         if (isMounted) setLoadingProducts(false)
@@ -62,14 +64,14 @@ export default function Shop() {
   let filteredProducts = products.filter(p => {
     const productCategory = typeof p.category === 'object' ? p.category?.name : p.category
     const matchesCategory = filterActive === 'All' || productCategory?.toLowerCase() === filterActive.toLowerCase() || p.name.toLowerCase().includes(filterActive.toLowerCase())
-    const matchesSearch = p.name.toLowerCase().includes(searchQuery.toLowerCase()) || p.desc.toLowerCase().includes(searchQuery.toLowerCase())
+    const matchesSearch = p.name.toLowerCase().includes(searchQuery.toLowerCase()) || (p.desc || '').toLowerCase().includes(searchQuery.toLowerCase())
     return matchesCategory && matchesSearch
   })
 
   if (sortOrder === 'price-asc') {
-    filteredProducts.sort((a, b) => parseInt(a.price.replace(/\D/g, '')) - parseInt(b.price.replace(/\D/g, '')))
+    filteredProducts.sort((a, b) => Number(String(a.price).replace(/\D/g, '')) - Number(String(b.price).replace(/\D/g, '')))
   } else if (sortOrder === 'price-desc') {
-    filteredProducts.sort((a, b) => parseInt(b.price.replace(/\D/g, '')) - parseInt(a.price.replace(/\D/g, '')))
+    filteredProducts.sort((a, b) => Number(String(b.price).replace(/\D/g, '')) - Number(String(a.price).replace(/\D/g, '')))
   }
 
   return (
@@ -208,11 +210,16 @@ export default function Shop() {
           </div>
 
           {/* Product Grid */}
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 w-full">
-            {filteredProducts.map((product) => (
-              <ProductCard key={product.id} product={product} isShopPage={true} />
-            ))}
-          </div>
+          {loadingProducts && <p className="py-16 text-center font-montserrat text-[10px] uppercase tracking-[.2em] text-[#1a1410]/45">Loading products...</p>}
+          {!loadingProducts && productsError && <p className="py-16 text-center font-montserrat text-[10px] uppercase tracking-[.2em] text-[#1a1410]/45">{productsError}</p>}
+          {!loadingProducts && !productsError && filteredProducts.length === 0 && <p className="py-16 text-center font-montserrat text-[10px] uppercase tracking-[.2em] text-[#1a1410]/45">No products match this view.</p>}
+          {filteredProducts.length > 0 && (
+            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 w-full">
+              {filteredProducts.map((product) => (
+                <ProductCard key={product.id} product={product} isShopPage={true} />
+              ))}
+            </div>
+          )}
 
           {/* View More CTA */}
           <div className="text-center mt-[44px]">

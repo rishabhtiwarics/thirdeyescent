@@ -2,7 +2,6 @@ import React, { useEffect, useState, useRef } from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { addToCart } from '../store/cartSlice'
-import { products as fallbackProducts } from '../data/products'
 import ProductCard from '../components/ProductCard'
 import { productAPI } from '../services/api'
 
@@ -21,7 +20,7 @@ const formatDisplayPrice = (price) => {
 export default function ProductDetails() {
   const { id } = useParams()
   const [product, setProduct] = useState(null)
-  const [allProducts, setAllProducts] = useState(fallbackProducts)
+  const [allProducts, setAllProducts] = useState([])
   const [loadingProduct, setLoadingProduct] = useState(true)
   const [heroVisible, setHeroVisible] = useState(false)
 
@@ -69,14 +68,16 @@ export default function ProductDetails() {
     const loadProduct = async () => {
       setLoadingProduct(true)
       try {
-        const [apiProduct, apiProducts] = await Promise.all([
+        const [productResult, productsResult] = await Promise.allSettled([
           productAPI.getProduct(id),
           productAPI.getProducts({ limit: 100 }),
         ])
 
         if (!isMounted) return
 
-        const syncedProducts = Array.isArray(apiProducts) && apiProducts.length ? apiProducts : fallbackProducts
+        const apiProduct = productResult.status === 'fulfilled' ? productResult.value : null
+        const apiProducts = productsResult.status === 'fulfilled' ? productsResult.value : []
+        const syncedProducts = Array.isArray(apiProducts) ? apiProducts : []
         const resolvedProduct = apiProduct || syncedProducts.find(prod => prod.id?.toString() === id)
 
         setAllProducts(syncedProducts)
@@ -86,16 +87,11 @@ export default function ProductDetails() {
           setQuantity(1)
           setSize('50ml')
         }
-      } catch (error) {
+      } catch {
         if (!isMounted) return
-        const fallbackProduct = fallbackProducts.find(prod => prod.id.toString() === id)
-        setAllProducts(fallbackProducts)
-        setProduct(fallbackProduct || null)
-        if (fallbackProduct) {
-          setActiveImage(fallbackProduct.imgPrimary || fallbackProduct.image)
-          setQuantity(1)
-          setSize('50ml')
-        }
+        setAllProducts([])
+        setProduct(null)
+        setActiveImage(null)
       } finally {
         if (isMounted) setLoadingProduct(false)
       }
