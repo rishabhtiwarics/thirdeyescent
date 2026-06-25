@@ -39,7 +39,7 @@ export default function ProductDetails() {
   // Check if current variant is already in cart
   const isAdded = product ? cartItems.some(item => item.id === product.id && item.size === size) : false
   
-  const handleAddToCart = () => {
+  const handlePreBook = () => {
     if (isAdded) {
       navigate('/checkout')
       return
@@ -292,12 +292,12 @@ export default function ProductDetails() {
                   <button onClick={() => setQuantity(quantity + 1)} className="px-5 py-4 text-[#1a1410]/60 hover:text-[#c9a96e] transition-colors"><i className="fa-solid fa-plus text-[10px]" /></button>
                 </div>
 
-                {/* Add to Cart / Checkout */}
+                {/* Pre-book action */}
                 <button 
-                  onClick={handleAddToCart}
+                  onClick={handlePreBook}
                   className={`flex-1 text-white font-montserrat text-[11px] tracking-[.2em] uppercase px-12 py-5 rounded-sm shadow-xl transition-colors ${isAdded ? 'bg-[#c9a96e] hover:bg-[#b0935d]' : 'bg-[#1a1410] hover:bg-[#c9a96e]'}`}
                 >
-                  {isAdded ? 'Proceed to Checkout' : 'Add to Cart'}
+                  {isAdded ? 'Complete Pre-booking' : 'Pre-book Now'}
                 </button>
               </div>
 
@@ -414,7 +414,7 @@ export default function ProductDetails() {
         </section>
       </div>
 
-      {/* Sticky Bottom Add To Cart Bar */}
+      {/* Sticky bottom pre-book bar */}
       <div 
         className={`fixed bottom-0 left-0 w-full bg-white shadow-[0_-10px_30px_rgba(0,0,0,0.06)] z-50 transition-transform duration-500 ease-out border-t border-[#1a1410]/5 ${showStickyCart ? 'translate-y-0' : 'translate-y-full'}`}
       >
@@ -454,12 +454,12 @@ export default function ProductDetails() {
               </button>
             </div>
 
-            {/* Add to Cart / Checkout Button */}
+            {/* Pre-book action */}
             <button 
-              onClick={handleAddToCart}
+              onClick={handlePreBook}
               className={`text-white font-montserrat text-[10px] font-semibold tracking-[.2em] uppercase px-8 h-10 transition-colors whitespace-nowrap flex items-center justify-center gap-2 ${isAdded ? 'bg-[#c9a96e] hover:bg-[#b0935d]' : 'bg-[#1a1410] hover:bg-[#c9a96e]'}`}
             >
-              {isAdded ? 'Checkout' : 'Add to Cart'} 
+              {isAdded ? 'Complete Pre-booking' : 'Pre-book'} 
               <i className={`fa-solid ${isAdded ? 'fa-arrow-right' : 'fa-bag-shopping'}`} />
             </button>
           </div>

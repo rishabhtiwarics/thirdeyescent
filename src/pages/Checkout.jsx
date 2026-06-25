@@ -3,22 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import { setShippingDetails, setPaymentStatus, setOrderId, resetCheckout } from '../store/checkoutSlice'
 import { clearCart } from '../store/cartSlice'
-import { orderAPI, paymentAPI } from '../services/api'
-
-const loadRazorpayScript = () => {
-  return new Promise((resolve) => {
-    if (window.Razorpay) {
-      resolve(true)
-      return
-    }
-
-    const script = document.createElement('script')
-    script.src = 'https://checkout.razorpay.com/v1/checkout.js'
-    script.onload = () => resolve(true)
-    script.onerror = () => resolve(false)
-    document.body.appendChild(script)
-  })
-}
+import { orderAPI } from '../services/api'
 
 export default function Checkout() {
   const { items, totalPrice } = useSelector(state => state.cart)
@@ -40,7 +25,7 @@ export default function Checkout() {
     state: '',
     country: 'India',
     zipCode: '',
-    paymentMethod: 'razorpay',
+    paymentMethod: 'cod',
   })
 
   const [heroVisible, setHeroVisible] = useState(false)
@@ -89,7 +74,7 @@ export default function Checkout() {
     e.preventDefault()
 
     if (!isAuthenticated) {
-      alert('Please sign in before placing your order.')
+      alert('Please sign in before confirming your pre-booking.')
       navigate('/login')
       return
     }
@@ -114,54 +99,14 @@ export default function Checkout() {
           pinCode: formData.zipCode,
           country: formData.country,
         },
-        paymentMethod: formData.paymentMethod,
-      }
-
-      if (formData.paymentMethod === 'razorpay') {
-        const scriptLoaded = await loadRazorpayScript()
-
-        if (!scriptLoaded) {
-          throw new Error('Unable to load Razorpay checkout. Please try again.')
-        }
-
-        const checkout = await orderAPI.createRazorpayCheckout(orderPayload)
-        const createdOrder = checkout.order
-        const razorpayOrder = checkout.razorpayOrder
-
-        const paymentResult = await new Promise((resolve, reject) => {
-          const razorpay = new window.Razorpay({
-            key: import.meta.env.VITE_RAZORPAY_KEY_ID,
-            amount: razorpayOrder.amount,
-            currency: razorpayOrder.currency,
-            name: 'Third Eye Scent',
-            description: 'Luxury fragrance order',
-            order_id: razorpayOrder.id,
-            prefill: {
-              name: `${formData.firstName} ${formData.lastName}`.trim(),
-              email: formData.email,
-            },
-            theme: {
-              color: '#c9a96e',
-            },
-            handler: resolve,
-            modal: {
-              ondismiss: () => reject(new Error('Payment cancelled')),
-            },
-          })
-
-          razorpay.open()
-        })
-
-        await paymentAPI.verifyRazorpayPayment(paymentResult)
-        completeOrder(createdOrder)
-        return
+        paymentMethod: 'cod',
       }
 
       const order = await orderAPI.createOrder(orderPayload)
       completeOrder(order)
     } catch (error) {
       dispatch(setPaymentStatus('failed'))
-      alert(error.message || 'Failed to place order')
+      alert(error.message || 'Failed to confirm pre-booking')
     }
   }
 
@@ -197,7 +142,7 @@ export default function Checkout() {
           <div className="absolute inset-0 rounded-none border-[3px] border-[#c9a96e]/20" />
           <div className="absolute inset-0 rounded-none border-[3px] border-t-[#c9a96e] animate-spin" />
         </div>
-        <h2 className="font-cormorant text-[28px] tracking-widest uppercase mb-2">Processing Payment</h2>
+        <h2 className="font-cormorant text-[28px] tracking-widest uppercase mb-2">Confirming Pre-booking</h2>
         <p className="font-montserrat text-xs text-white/50 tracking-wider">Please do not refresh or close the page...</p>
       </div>
     )
@@ -212,12 +157,12 @@ export default function Checkout() {
             <div className="w-20 h-20 rounded-none bg-[#fffaf4] border border-[#c9a96e]/20 flex items-center justify-center mb-6 shadow-sm">
               <i className="fa-solid fa-circle-check text-4xl text-[#c9a96e]" />
             </div>
-            <h2 className="font-cormorant text-[36px] font-semibold text-[#1a1410] mb-3">Thank You</h2>
+            <h2 className="font-cormorant text-[36px] font-semibold text-[#1a1410] mb-3">Pre-booking Confirmed</h2>
             <p className="font-montserrat text-xs text-[#1a1410]/50 tracking-wider mb-6 leading-relaxed max-w-sm">
-              Thank you for your purchase. Your payment was processed successfully. A confirmation email has been sent.
+              Your fragrance has been reserved. Payment will be collected by cash on delivery.
             </p>
             <div className="bg-[#fffaf4] border border-[#c9a96e]/25 px-6 py-4 mb-8 rounded-none w-full max-w-md">
-              <span className="block font-montserrat text-[10px] uppercase tracking-widest text-[#1a1410]/40 mb-1">Order ID</span>
+              <span className="block font-montserrat text-[10px] uppercase tracking-widest text-[#1a1410]/40 mb-1">Pre-booking ID</span>
               <span className="font-montserrat text-sm font-bold tracking-wider text-[#1a1410]">{orderId}</span>
             </div>
             <button
@@ -265,11 +210,11 @@ export default function Checkout() {
           >
             <nav className="flex items-center gap-3 font-montserrat text-[10px] tracking-[.25em] uppercase text-white/80">
               <Link to="/cart" className="hover:text-[#c9a96e] transition-colors">
-                Cart
+                Pre-book
               </Link>
               <span className="text-white/40">/</span>
               <h1 className="text-[#c9a96e] m-0 font-normal inline-block">
-                Secure Checkout
+                Confirm Pre-booking
               </h1>
             </nav>
           </div>
@@ -283,13 +228,13 @@ export default function Checkout() {
           {/* Header section with Title and Back to Cart link (Aligned with Cart page) */}
           <div className="flex justify-between items-baseline border-b border-[#1a1410]/10 pb-4 mb-8">
             <h2 className="font-cormorant text-[36px] font-semibold text-[#1a1410]">
-              Secure Checkout
+              Confirm Pre-booking
             </h2>
             <Link 
               to="/cart"
               className="font-montserrat text-[11px] font-semibold tracking-[.2em] uppercase text-[#1a1410] hover:text-[#c9a96e] transition-all flex items-center gap-2"
             >
-              <i className="fa-solid fa-arrow-left-long text-[10px]" /> Back to Cart
+              <i className="fa-solid fa-arrow-left-long text-[10px]" /> Back to Pre-booking
             </Link>
           </div>
 
@@ -333,7 +278,7 @@ export default function Checkout() {
                   }`}
                 >
                   <span className="mr-2 text-[8px] opacity-60">03</span>
-                  <span>Payment</span>
+                  <span>Confirmation</span>
                 </div>
               </div>
 
@@ -437,90 +382,44 @@ export default function Checkout() {
                         onClick={handleNextStep}
                         className="group inline-flex items-center gap-2.5 bg-[#1a1410] hover:bg-[#c9a96e] text-white hover:text-[#1a1410] font-montserrat text-[11px] font-bold tracking-[.2em] uppercase px-10 py-4 border border-[#1a1410] hover:border-[#c9a96e] transition-all duration-300 rounded-none"
                       >
-                        Continue to Payment
+                        Review Pre-booking
                         <i className="fa-solid fa-arrow-right text-[10px] transition-transform duration-300 group-hover:translate-x-1" />
                       </button>
                     </div>
                   </div>
                 )}
 
-                {/* STEP 3: PAYMENT */}
+                {/* STEP 3: COD CONFIRMATION */}
                 {step === 3 && (
                   <div className="space-y-6 animate-fadeIn">
                     <div>
-                      <h3 className="font-cormorant text-[20px] font-semibold text-[#1a1410] border-b border-[#1a1410]/5 pb-2 mb-2 uppercase tracking-wider">Payment Details</h3>
-                      <p className="font-montserrat text-[11px] text-[#1a1410]/40 tracking-wider mb-6">Transactions are securely processed and encrypted.</p>
+                      <h3 className="font-cormorant text-[20px] font-semibold text-[#1a1410] border-b border-[#1a1410]/5 pb-2 mb-2 uppercase tracking-wider">Pre-booking Confirmation</h3>
+                      <p className="font-montserrat text-[11px] text-[#1a1410]/40 tracking-wider mb-6">Online payment is temporarily unavailable. Cash on delivery is the only payment method.</p>
 
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
                         {/* Left Column: Payment Method */}
                         <div className="border border-[#1a1410]/10 rounded-none p-6 space-y-4 bg-[#fffaf4]/20">
                           <div className="flex items-center justify-between border-b border-[#1a1410]/10 pb-4 mb-2">
                             <span className="font-montserrat text-[10px] font-bold text-[#1a1410] uppercase tracking-widest">Payment Method</span>
-                            <div className="flex gap-2 text-[#1a1410]/60">
-                              <i className="fa-brands fa-cc-visa text-xl" />
-                              <i className="fa-brands fa-cc-mastercard text-xl" />
-                              <i className="fa-solid fa-building-columns text-lg" />
-                            </div>
+                            <i className="fa-solid fa-hand-holding-dollar text-lg text-[#c9a96e]" />
                           </div>
 
-                          <label
-                            className={`block border p-5 cursor-pointer transition-all duration-200 ${
-                              formData.paymentMethod === 'razorpay'
-                                ? 'border-[#c9a96e] bg-white shadow-[0_12px_30px_rgba(201,169,110,0.18)]'
-                                : 'border-[#1a1410]/10 bg-white/60 hover:border-[#c9a96e]/60'
-                            }`}
-                          >
-                            <input
-                              type="radio"
-                              name="paymentMethod"
-                              value="razorpay"
-                              checked={formData.paymentMethod === 'razorpay'}
-                              onChange={handleChange}
-                              className="sr-only"
-                            />
+                          <div className="block border border-[#c9a96e] bg-white p-5 shadow-[0_12px_30px_rgba(201,169,110,0.18)]">
                             <span className="flex items-start gap-4">
                               <span className="mt-1 flex h-5 w-5 items-center justify-center border border-[#c9a96e] rounded-full">
-                                {formData.paymentMethod === 'razorpay' && <span className="h-2.5 w-2.5 rounded-full bg-[#c9a96e]" />}
+                                <span className="h-2.5 w-2.5 rounded-full bg-[#c9a96e]" />
                               </span>
                               <span className="flex-1">
                                 <span className="flex items-center justify-between gap-3">
-                                  <span className="font-cormorant text-[22px] font-semibold text-[#1a1410]">Razorpay</span>
-                                  <span className="font-montserrat text-[8px] font-bold uppercase tracking-[.18em] text-[#c9a96e]">Recommended</span>
+                                  <span className="font-cormorant text-[22px] font-semibold text-[#1a1410]">Cash on Delivery</span>
+                                  <span className="font-montserrat text-[8px] font-bold uppercase tracking-[.18em] text-[#c9a96e]">Only option</span>
                                 </span>
                                 <span className="mt-1 block font-montserrat text-[11px] leading-relaxed text-[#1a1410]/55">
-                                  Pay securely with UPI, cards, wallets, net banking, or EMI through Razorpay Checkout.
+                                  Confirm your pre-booking now and pay in cash when the shipment arrives.
                                 </span>
                               </span>
                             </span>
-                          </label>
-
-                          <label
-                            className={`block border p-5 cursor-pointer transition-all duration-200 ${
-                              formData.paymentMethod === 'cod'
-                                ? 'border-[#c9a96e] bg-white shadow-[0_12px_30px_rgba(201,169,110,0.18)]'
-                                : 'border-[#1a1410]/10 bg-white/60 hover:border-[#c9a96e]/60'
-                            }`}
-                          >
-                            <input
-                              type="radio"
-                              name="paymentMethod"
-                              value="cod"
-                              checked={formData.paymentMethod === 'cod'}
-                              onChange={handleChange}
-                              className="sr-only"
-                            />
-                            <span className="flex items-start gap-4">
-                              <span className="mt-1 flex h-5 w-5 items-center justify-center border border-[#c9a96e] rounded-full">
-                                {formData.paymentMethod === 'cod' && <span className="h-2.5 w-2.5 rounded-full bg-[#c9a96e]" />}
-                              </span>
-                              <span className="flex-1">
-                                <span className="font-cormorant text-[22px] font-semibold text-[#1a1410]">Cash on Delivery</span>
-                                <span className="mt-1 block font-montserrat text-[11px] leading-relaxed text-[#1a1410]/55">
-                                  Place the order now and collect payment manually when the shipment arrives.
-                                </span>
-                              </span>
-                            </span>
-                          </label>
+                          </div>
                         </div>
 
                         {/* Right Column: Address and Identity Review Summary */}
@@ -540,8 +439,8 @@ export default function Checkout() {
                           <div className="border border-[#1a1410]/10 rounded-none p-5 bg-[#fffaf4]/10 flex items-center gap-3 text-[#c9a96e]">
                             <i className="fa-solid fa-shield-halved text-lg" />
                             <div>
-                              <span className="font-montserrat text-[9px] uppercase tracking-wider font-bold block">Secure Payments</span>
-                              <span className="font-montserrat text-[9px] text-[#1a1410]/50 block">Your information is encrypted & secured</span>
+                              <span className="font-montserrat text-[9px] uppercase tracking-wider font-bold block">Reserved securely</span>
+                              <span className="font-montserrat text-[9px] text-[#1a1410]/50 block">No online payment is required today</span>
                             </div>
                           </div>
                         </div>
@@ -562,7 +461,7 @@ export default function Checkout() {
                         type="submit"
                         className="group inline-flex items-center gap-2.5 bg-[#c9a96e] hover:bg-[#1a1410] text-[#1a1410] hover:text-white font-montserrat text-[11px] font-bold tracking-[.2em] uppercase px-12 py-4 border border-[#c9a96e] hover:border-[#1a1410] transition-all duration-300 rounded-none"
                       >
-                        {formData.paymentMethod === 'razorpay' ? `Pay ₹${totalPrice} with Razorpay` : `Place COD Order (₹${totalPrice})`}
+                        Confirm COD Pre-book (₹{totalPrice})
                         <i className="fa-solid fa-circle-check text-[10px]" />
                       </button>
                     </div>
@@ -588,7 +487,7 @@ export default function Checkout() {
                   style={{ background: 'linear-gradient(120deg, rgba(61,42,16,.70) 0%, rgba(105,74,32,.45) 40%, rgba(45,30,10,.65) 70%, rgba(20,14,6,.50) 100%)' }}
                 >
                   <h3 className="font-montserrat font-semibold text-[14px] tracking-wider text-white uppercase m-0">
-                    In Your Bag
+                    Your Pre-book
                   </h3>
                 </div>
 

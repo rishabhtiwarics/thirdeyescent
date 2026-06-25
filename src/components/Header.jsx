@@ -3,8 +3,12 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { logout } from '../store/slices/authSlice'
 import MiniCart from './cart/MiniCart'
+import { useSiteContent } from '../context/SiteContentContext'
+
+const coreMenuUrls = new Set(['/', '/shop', '/about', '/contact', '/my-orders', '/admin'])
 
 export default function Header() {
+  const { settings, menus } = useSiteContent()
   const [menuOpen, setMenuOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
   const [categoriesOpen, setCategoriesOpen] = useState(false)
@@ -16,6 +20,29 @@ export default function Header() {
   const navigate = useNavigate()
   const totalQuantity = useSelector(state => state.cart?.totalQuantity || 0)
   const { isAuthenticated, user } = useSelector(state => state.auth)
+  const logo = settings?.logo || '/img/logo/logo.png'
+  const siteName = settings?.siteName || 'Third Eye Scent'
+  const hasAnnouncement = settings?.announcementItems?.some((item) => item.trim())
+  const configuredItems = React.useMemo(() => {
+    const headerItems = menus?.header?.items || []
+    const mobileItems = menus?.mobile?.items || []
+    const seenUrls = new Set()
+
+    return [...headerItems, ...mobileItems]
+      .map((item, index) => ({ ...item, menuIndex: index }))
+      .sort((a, b) => (a.order || 0) - (b.order || 0) || a.menuIndex - b.menuIndex)
+      .filter((item) => {
+        const url = item.url?.trim().replace(/\/+$/, '') || '/'
+        if (seenUrls.has(url)) return false
+        seenUrls.add(url)
+        return true
+      })
+      .filter((item) => {
+        const url = item.url?.trim().replace(/\/+$/, '') || '/'
+        return !coreMenuUrls.has(url)
+      })
+  }, [menus?.header?.items, menus?.mobile?.items])
+  const displayUserName = [user?.firstName, user?.lastName].filter(Boolean).join(' ') || user?.name || 'Patron'
 
   React.useEffect(() => {
     const handleScroll = (e) => {
@@ -61,12 +88,13 @@ export default function Header() {
     <>
       {/* MOBILE HEADER */}
       <div
-        className={`md:hidden fixed top-0 left-0 w-full flex items-center justify-between px-5 py-3 z-[100] transition-all duration-300 bg-transparent ${isScrolled ? 'opacity-0 pointer-events-none -translate-y-full' : 'opacity-100 translate-y-0'}`}
+        className={`md:hidden fixed left-0 w-full flex items-center justify-between px-5 py-3 z-[100] transition-all duration-300 bg-transparent ${isScrolled ? 'opacity-0 pointer-events-none -translate-y-full' : 'opacity-100 translate-y-0'}`}
+        style={{ top: hasAnnouncement ? '32px' : '0' }}
       >
         <Link to="/" className="flex items-center">
           <img
-            src="/img/logo/logo.png"
-            alt="Third Eye Scent"
+            src={logo}
+            alt={siteName}
             className="h-[36px] w-auto object-contain brightness-0 invert drop-shadow-md"
             onError={(e) => { e.target.style.display = 'none' }}
           />
@@ -97,14 +125,18 @@ export default function Header() {
       {/* HEADER WRAP (DESKTOP) */}
       <div
         className="hidden md:block hdr-desktop-wrap"
-        style={{ opacity: isScrolled ? 0 : 1, pointerEvents: isScrolled ? 'none' : 'auto' }}
+        style={{
+          opacity: isScrolled ? 0 : 1,
+          pointerEvents: isScrolled ? 'none' : 'auto',
+          top: hasAnnouncement ? '61px' : '29px',
+        }}
       >
         <header className="hdr-glass">
           {/* Logo — centered absolutely */}
           <Link to="/" className="hdr-logo-circle">
             <img
-              src="/img/logo/logo.png"
-              alt="Third Eye Scent"
+              src={logo}
+              alt={siteName}
               className="h-[72px] w-auto block object-contain brightness-0 invert"
               onError={(e) => {
                 e.target.style.display = 'none'
@@ -112,7 +144,7 @@ export default function Header() {
               }}
             />
             <div className="hdr-logo-fallback">
-              Third Eye Scent
+              {siteName}
               <span className="hdr-logo-fallback-sub">Luxury Fragrance</span>
             </div>
           </Link>
@@ -190,7 +222,7 @@ export default function Header() {
                         {/* User info */}
                         <div className="px-5 py-4 border-b border-[#c9a96e]/20">
                           <p className="font-cormorant text-[15px] text-white font-semibold leading-tight tracking-wide truncate">
-                            {user?.name || 'Patron'}
+                            {displayUserName}
                           </p>
                           <p className="font-montserrat text-[10px] text-[#c9a96e] tracking-wider mt-0.5 truncate">
                             {user?.email || ''}
@@ -266,7 +298,7 @@ export default function Header() {
               <button
                 onClick={() => setIsMiniCartOpen(true)}
                 className="relative bg-transparent border-none text-white cursor-pointer flex items-center justify-center p-0 hover:opacity-60 transition-opacity"
-                aria-label="Cart"
+                aria-label="Open pre-booking"
               >
                 <i className="fa-solid fa-bag-shopping hdr-icon-outline" />
                 {totalQuantity > 0 && (
@@ -299,9 +331,9 @@ export default function Header() {
         {/* Drawer Head */}
         <div className="drawer-head">
           <Link to="/" onClick={closeMenu} className="flex items-center gap-[14px] text-white no-underline">
-            <img src="/img/logo/logo.png" alt="Third Eye Scent" className="drawer-logo-img" />
+            <img src={logo} alt={siteName} className="drawer-logo-img" />
             <span>
-              <span className="drawer-logo-name">Third Eye Scent</span>
+              <span className="drawer-logo-name">{siteName}</span>
               <small className="drawer-logo-sub">Luxury Fragrance</small>
             </span>
           </Link>
@@ -354,6 +386,18 @@ export default function Header() {
                 </div>
               </div>
             </div>
+            {configuredItems.map((item) => (
+              <a
+                key={`${item.label}-${item.url}`}
+                href={item.url}
+                target={item.target || '_self'}
+                rel={item.target === '_blank' ? 'noreferrer' : undefined}
+                onClick={closeMenu}
+                className="drawer-nav-link"
+              >
+                {item.label}
+              </a>
+            ))}
             {isAuthenticated && (
               <Link to="/my-orders" onClick={closeMenu} className="drawer-nav-link">
                 My Orders
@@ -390,7 +434,7 @@ export default function Header() {
                   )}
                   <div>
                     <p className="font-cormorant text-[18px] text-white font-semibold leading-tight tracking-wide">
-                      {user?.name || 'Patron'}
+                      {displayUserName}
                     </p>
                     <p className="font-montserrat text-[12px] text-[#c9a96e] tracking-wider mt-1 truncate max-w-[150px]">
                       {user?.email || ''}
@@ -463,12 +507,12 @@ export default function Header() {
           <div className="search-head">
             <div className="flex items-center gap-[14px] min-w-0">
               <img
-                src="/img/logo/logo.png"
-                alt="Third Eye Scent"
+                src={logo}
+                alt={siteName}
                 className="w-[58px] h-[58px] object-contain brightness-0 invert flex-shrink-0"
               />
               <div>
-                <p className="search-brand-title">Third Eye Scent</p>
+                <p className="search-brand-title">{siteName}</p>
                 <p className="search-brand-sub">Search perfume notes, collections and gifts</p>
               </div>
             </div>

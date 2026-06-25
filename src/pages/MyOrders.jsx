@@ -402,7 +402,7 @@ export default function MyOrders() {
                 <div className="border border-[#1a1410]/10 p-4 bg-[#fffaf4]/20">
                   <h4 className="font-montserrat text-[9px] uppercase tracking-wider text-[#1a1410]/55 font-bold mb-2">Order Information</h4>
                   <p className="font-montserrat text-xs font-semibold mb-1">Date: {formatDate(selectedOrder.createdAt)}</p>
-                  <p className="font-montserrat text-xs font-semibold mb-1">Payment Method: <span className="uppercase text-[10px]">{selectedOrder.paymentMethod || 'Razorpay'}</span></p>
+                  <p className="font-montserrat text-xs font-semibold mb-1">Payment Method: <span className="uppercase text-[10px]">{selectedOrder.paymentMethod || 'COD'}</span></p>
                   <p className="font-montserrat text-xs font-semibold">Payment Status: <span className="uppercase text-[10px]">{selectedOrder.paymentStatus || 'Pending'}</span></p>
                 </div>
                 <div className="border border-[#1a1410]/10 p-4 bg-[#fffaf4]/20">

@@ -1,4 +1,7 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
+import { useSiteContent } from '../context/SiteContentContext'
+import { newsletterAPI } from '../services/api'
 
 const footerCats = [
   { img: '/img/footerimg/fotone.png', label: 'Women' },
@@ -18,6 +21,31 @@ const socialLinks = [
 const bottomLinks = ['Privacy Policy', 'Cookie Settings', 'Legal', 'Accessibility', 'Sitemap']
 
 export default function Footer() {
+  const { settings, menus } = useSiteContent()
+  const [email, setEmail] = useState('')
+  const [subscribeState, setSubscribeState] = useState('')
+  const siteName = settings?.siteName || 'Third Eye Scent'
+  const logo = settings?.logo || '/img/logo/logo.png'
+  const footerMenu = menus?.footer?.items?.slice().sort((a, b) => (a.order || 0) - (b.order || 0)) || []
+  const socialMap = {
+    Instagram: settings?.socialLinks?.instagram,
+    Facebook: settings?.socialLinks?.facebook,
+    'X / Twitter': settings?.socialLinks?.twitter,
+    YouTube: settings?.socialLinks?.youtube,
+  }
+
+  const handleSubscribe = async () => {
+    if (!email.trim()) return
+    setSubscribeState('submitting')
+    try {
+      await newsletterAPI.subscribe(email.trim())
+      setEmail('')
+      setSubscribeState('success')
+    } catch (error) {
+      setSubscribeState(error.message || 'Unable to subscribe')
+    }
+  }
+
   return (
     <footer id="site-footer" className="footer-root">
 
@@ -29,8 +57,8 @@ export default function Footer() {
             <div className="flex-shrink-0">
               <a href="#">
                 <img
-                  src="/img/logo/logo.png"
-                  alt="Third Eye Scent"
+                  src={logo}
+                  alt={siteName}
                   className="h-[100px] w-auto footer-logo-filter"
                   onError={(e) => {
                     e.target.style.display = 'none'
@@ -38,7 +66,7 @@ export default function Footer() {
                   }}
                 />
                 <span className="font-cormorant text-[26px] tracking-[.18em] uppercase no-underline block footer-logo-fallback">
-                  Third Eye Scent
+                  {siteName}
                   <span className="block font-montserrat text-[8px] tracking-[.45em] mt-[3px] footer-logo-fallback-sub">Luxury Fragrance</span>
                 </span>
               </a>
@@ -47,20 +75,24 @@ export default function Footer() {
             {/* Newsletter */}
             <div className="flex items-center gap-8 flex-1 justify-end flex-wrap max-[992px]:flex-col max-[992px]:items-center max-[992px]:gap-[10px]">
               <div className="flex flex-col gap-[5px] flex-shrink-0 max-[992px]:items-center max-[992px]:text-center">
-                <p className="font-cormorant text-[17px] tracking-[.07em] text-white whitespace-nowrap m-0">Stay in the World of Third Eye Scent</p>
+                <p className="font-cormorant text-[17px] tracking-[.07em] text-white whitespace-nowrap m-0">Stay in the World of {siteName}</p>
                 <p className="font-montserrat text-[10px] leading-[1.65] max-w-[220px] m-0 footer-newsletter-sub">Exclusive updates on new collections &amp; events curated for you.</p>
               </div>
               <div className="flex overflow-hidden flex-shrink-0 footer-input-wrap">
                 <input
                   type="email"
+                  value={email}
+                  onChange={(event) => setEmail(event.target.value)}
                   placeholder="Your e-mail address"
                   className="w-[190px] border-0 outline-0 px-[14px] py-[10px] font-montserrat text-[10px] tracking-[.1em] text-white placeholder:text-white/30 footer-input-field"
                 />
                 <button
                   type="button"
+                  onClick={handleSubscribe}
+                  disabled={subscribeState === 'submitting'}
                   className="px-4 py-[10px] font-montserrat text-[10px] tracking-[.14em] uppercase text-white whitespace-nowrap cursor-pointer transition-colors hover:bg-white/20 footer-subscribe-btn"
                 >
-                  Subscribe
+                  {subscribeState === 'submitting' ? 'Joining...' : subscribeState === 'success' ? 'Joined' : 'Subscribe'}
                 </button>
               </div>
             </div>
@@ -76,15 +108,14 @@ export default function Footer() {
           <div className="max-[992px]:text-center">
             <p className="font-montserrat text-[11px] font-medium tracking-[.28em] uppercase mb-[18px] pb-[10px] footer-section-label">About</p>
             <div className="font-montserrat text-[11px] leading-[1.9] text-[#3a3530]">
-              <strong className="block font-cormorant text-[20px] font-normal tracking-[.06em] text-[#0f0d0b] mb-[10px]">Third Eye Scent</strong>
-              A fragrance house born from the intersection of intuition and artistry. Every scent is a meditation —
-              crafted to awaken the senses, transcend the ordinary, and leave an impression that lingers long after you've gone.
+              <strong className="block font-cormorant text-[20px] font-normal tracking-[.06em] text-[#0f0d0b] mb-[10px]">{siteName}</strong>
+              {settings?.siteDescription || "A fragrance house born from the intersection of intuition and artistry. Every scent is a meditation — crafted to awaken the senses, transcend the ordinary, and leave an impression that lingers long after you've gone."}
             </div>
             <div className="flex gap-[10px] mt-5 flex-wrap max-[992px]:justify-center">
               {socialLinks.map(({ icon, label }) => (
                 <a
                   key={label}
-                  href="#"
+                  href={socialMap[label] || '#'}
                   aria-label={label}
                   className="w-[30px] h-[30px] rounded-full flex items-center justify-center text-[11px] no-underline transition-all hover:bg-black/7 hover:text-black hover:border-black/40 footer-social-link"
                 >
@@ -122,8 +153,7 @@ export default function Footer() {
                 </div>
                 <div>
                   <p className="font-montserrat text-[8.5px] tracking-[.18em] uppercase mb-[3px] footer-contact-kicker">Flagship</p>
-                  <p className="font-cormorant text-[15px] tracking-[.03em] text-[#0f0d0b] leading-[1.3]">101 Ave. des Champs-Élysées</p>
-                  <p className="font-montserrat text-[9px] tracking-[.05em] mt-[2px] footer-contact-sub">75008 Paris, France</p>
+                  <p className="font-cormorant text-[15px] tracking-[.03em] text-[#0f0d0b] leading-[1.3]">{settings?.address || '101 Ave. des Champs-Élysées'}</p>
                 </div>
               </div>
               <div className="flex items-start gap-[11px]">
@@ -132,8 +162,8 @@ export default function Footer() {
                 </div>
                 <div>
                   <p className="font-montserrat text-[8.5px] tracking-[.18em] uppercase mb-[3px] footer-contact-kicker">Client Services</p>
-                  <p className="font-cormorant text-[15px] tracking-[.03em] text-[#0f0d0b] leading-[1.3]">+1 866 884 8866</p>
-                  <p className="font-montserrat text-[9px] tracking-[.05em] mt-[2px] footer-contact-sub">Mon – Sat &nbsp;|&nbsp; 10:00 – 19:00</p>
+                  <p className="font-cormorant text-[15px] tracking-[.03em] text-[#0f0d0b] leading-[1.3]">{settings?.contactPhone || '+1 866 884 8866'}</p>
+                  <p className="font-montserrat text-[9px] tracking-[.05em] mt-[2px] footer-contact-sub">{settings?.contactEmail || 'Mon – Sat | 10:00 – 19:00'}</p>
                 </div>
               </div>
             </div>
@@ -145,10 +175,10 @@ export default function Footer() {
       {/* Bottom bar */}
       <div className="py-[18px] footer-gold-band footer-gold-band-top">
         <div className="container mx-auto px-4 flex items-center justify-between flex-wrap gap-2">
-          <span className="font-montserrat text-[10px] tracking-[.12em] uppercase text-white/65">© 2026 Third Eye Scent. All rights reserved.</span>
+          <span className="font-montserrat text-[10px] tracking-[.12em] uppercase text-white/65">© 2026 {siteName}. All rights reserved.</span>
           <div className="flex gap-6 flex-wrap">
-            {bottomLinks.map((link) => (
-              <a key={link} href="#" className="font-montserrat text-[10px] tracking-[.10em] uppercase text-white/60 no-underline transition-colors hover:text-white">{link}</a>
+            {(footerMenu.length ? footerMenu : bottomLinks.map((label) => ({ label, url: '#' }))).map((item) => (
+              <Link key={`${item.label}-${item.url}`} to={item.url} className="font-montserrat text-[10px] tracking-[.10em] uppercase text-white/60 no-underline transition-colors hover:text-white">{item.label}</Link>
             ))}
           </div>
         </div>

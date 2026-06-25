@@ -34,7 +34,7 @@ export default function MiniCart({ isOpen, onClose }) {
           style={{ background: 'linear-gradient(120deg, rgba(61,42,16,.70) 0%, rgba(105,74,32,.45) 40%, rgba(45,30,10,.65) 70%, rgba(20,14,6,.50) 100%)' }}
         >
           <h2 className="font-montserrat font-semibold text-[16px] text-white flex items-center gap-2 m-0">
-            Bag
+            Pre-book
             <span className="bg-[#c9a96e] text-white text-[10px] rounded-sm px-2 py-0.5 leading-tight">
               {items.length}
             </span>
@@ -61,7 +61,7 @@ export default function MiniCart({ isOpen, onClose }) {
           {items.length === 0 ? (
             <div className="h-full flex flex-col items-center justify-center text-center">
               <i className="fa-solid fa-bag-shopping text-[40px] text-white/10 mb-4" />
-              <p className="font-cormorant text-[24px] text-white/80 mb-2">Your bag is empty</p>
+              <p className="font-cormorant text-[24px] text-white/80 mb-2">Your pre-book list is empty</p>
               <button
                 onClick={onClose}
                 className="font-montserrat text-[10px] tracking-[.2em] uppercase text-[#c9a96e] border-b border-[#c9a96e]/30 pb-1 hover:text-white hover:border-white transition-colors mt-4"
@@ -94,7 +94,7 @@ export default function MiniCart({ isOpen, onClose }) {
                 onClick={handleCheckout}
                 className="w-full bg-[#c9a96e] hover:bg-white text-[#1a1410] font-montserrat text-[10px] font-bold tracking-[.15em] py-2.5 rounded-none transition-colors uppercase flex items-center justify-center gap-2"
               >
-                Checkout
+                Complete Pre-booking
                 <i className="fa-solid fa-arrow-right text-[9px]" />
               </button>
               
@@ -105,7 +105,7 @@ export default function MiniCart({ isOpen, onClose }) {
                 }}
                 className="w-full bg-transparent hover:bg-white/10 text-white border border-white/20 font-montserrat text-[10px] font-bold tracking-[.15em] py-2.5 rounded-none transition-all uppercase flex items-center justify-center gap-2"
               >
-                View Cart
+                Review Pre-booking
                 <i className="fa-solid fa-bag-shopping text-[9px]" />
               </button>
             </div>

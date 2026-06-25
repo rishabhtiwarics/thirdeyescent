@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react'
+import { Link } from 'react-router-dom'
 import Swiper from 'swiper'
 import { Autoplay, Navigation } from 'swiper/modules'
 
@@ -51,14 +52,14 @@ export default function GalleryStrip() {
                   alt={img.alt}
                   className="w-full h-full object-cover object-top block transition-transform duration-[800ms] group-hover:scale-[1.05] gallery-slide-img"
                 />
-                <a
-                  href="#"
+                <Link
+                  to="/shop"
                   className="absolute inset-[10px] z-[3] flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-[380ms] scale-[.12] group-hover:scale-100 no-underline gallery-shop-overlay"
                 >
                   <span className="inline-flex items-center justify-center font-montserrat text-[10px] font-medium tracking-[.22em] uppercase text-white px-[18px] py-[11px] min-w-[118px] min-h-[38px] transition-all hover:-translate-y-px gallery-shop-btn-inner">
                     Shop Now
                   </span>
-                </a>
+                </Link>
               </div>
             ))}
           </div>

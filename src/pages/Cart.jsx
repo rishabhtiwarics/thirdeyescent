@@ -100,10 +100,10 @@ export default function Cart() {
                 <i className="fa-solid fa-basket-shopping text-3xl text-[#c9a96e]" />
               </div>
               <h2 className="font-cormorant text-[32px] font-semibold text-[#1a1410] mb-3">
-                Your cart is empty
+                Your pre-book list is empty
               </h2>
               <p className="font-montserrat text-[12px] text-[#1a1410]/50 tracking-wider mb-8 max-w-sm leading-relaxed">
-                Before you proceed to checkout, you must add some products to your shopping cart. You will find a lot of interesting creations on our shop.
+                Select a fragrance to begin your pre-booking. You can confirm it with cash on delivery.
               </p>
               <Link
                 to="/shop"
@@ -118,7 +118,7 @@ export default function Cart() {
               {/* Header section with Title and Continue Shopping link */}
               <div className="flex justify-between items-baseline border-b border-[#1a1410]/10 pb-4 mb-8">
                 <h2 className="font-cormorant text-[36px] font-semibold text-[#1a1410]">
-                  Shopping Cart
+                  Your Pre-booking
                 </h2>
                 <Link 
                   to="/shop"
@@ -175,7 +175,7 @@ export default function Cart() {
                     onClick={handleClearCart}
                     className="text-[#1a1410]/60 hover:text-[#c9a96e] transition-colors underline font-montserrat font-semibold text-[12px] tracking-[.1em] cursor-pointer py-2 text-right"
                   >
-                    Clear Shopping Cart
+                    Clear Pre-booking
                   </button>
                 </div>
 
@@ -197,7 +197,7 @@ export default function Cart() {
                     style={{ background: 'linear-gradient(120deg, rgba(61,42,16,.70) 0%, rgba(105,74,32,.45) 40%, rgba(45,30,10,.65) 70%, rgba(20,14,6,.50) 100%)' }}
                   >
                     <h3 className="font-montserrat font-semibold text-[15px] tracking-wider text-white uppercase m-0">
-                      Cart Totals
+                      Pre-book Summary
                     </h3>
                   </div>
 
@@ -228,14 +228,12 @@ export default function Cart() {
                       onClick={() => navigate('/checkout')}
                       className="w-full bg-[#c9a96e] hover:bg-white text-[#1a1410] font-montserrat text-[12px] font-bold tracking-[.2em] py-4 rounded-none transition-colors uppercase mt-8 shadow-md"
                     >
-                      Proceed to Checkout
+                      Continue Pre-booking
                     </button>
 
-                    <div className="flex justify-center items-center gap-4 mt-6 text-white/40">
-                      <i className="fa-brands fa-cc-visa text-2xl hover:text-white/60 transition-colors"></i>
-                      <i className="fa-brands fa-cc-mastercard text-2xl hover:text-white/60 transition-colors"></i>
-                      <i className="fa-brands fa-cc-amex text-2xl hover:text-white/60 transition-colors"></i>
-                      <i className="fa-brands fa-cc-paypal text-2xl hover:text-white/60 transition-colors"></i>
+                    <div className="flex justify-center items-center gap-2 mt-6 text-white/50">
+                      <i className="fa-solid fa-hand-holding-dollar text-sm" />
+                      <span className="font-montserrat text-[9px] uppercase tracking-[.16em]">Cash on delivery only</span>
                     </div>
                   </div>
                 </div>
@@ -265,17 +263,17 @@ export default function Cart() {
               </div>
             </div>
 
-            {/* Feature 2: Flexible Payment */}
+            {/* Feature 2: COD Pre-booking */}
             <div className="flex items-center gap-5">
               <div className="w-12 h-12 rounded-none bg-[#c9a96e] text-[#1a1410] flex-shrink-0 flex items-center justify-center shadow-sm">
                 <i className="fa-solid fa-wallet text-xl" />
               </div>
               <div>
                 <h4 className="font-montserrat font-bold text-[13px] text-[#1a1410] uppercase tracking-wider">
-                  Flexible Payment
+                  COD Pre-booking
                 </h4>
                 <p className="font-montserrat text-[11px] text-[#1a1410]/60 mt-1.5 font-medium">
-                  Multiple secure payment options
+                  Reserve now and pay cash on delivery
                 </p>
               </div>
             </div>

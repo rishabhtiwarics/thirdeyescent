@@ -58,6 +58,8 @@ const apiRequest = async (endpoint, options = {}) => {
   }
 };
 
+export { apiRequest, getResponseData };
+
 // Auth API
 export const authAPI = {
   register: async (userData) => {
@@ -253,22 +255,6 @@ export const orderAPI = {
     });
   },
 
-  createRazorpayCheckout: async (orderData) => {
-    return apiRequest('/order/razorpay', {
-      method: 'POST',
-      body: JSON.stringify(orderData),
-    });
-  },
-};
-
-// Payment API
-export const paymentAPI = {
-  verifyRazorpayPayment: async (paymentData) => {
-    return getResponseData(await apiRequest('/payment/verify', {
-      method: 'POST',
-      body: JSON.stringify(paymentData),
-    }));
-  },
 };
 
 // Review API
@@ -318,6 +304,171 @@ export const contactAPI = {
   },
 };
 
+// Website content API
+export const settingsAPI = {
+  getSettings: async () => {
+    return getResponseData(await apiRequest('/settings'));
+  },
+
+  updateSettings: async (settingsData) => {
+    return getResponseData(await apiRequest('/settings', {
+      method: 'PUT',
+      body: JSON.stringify(settingsData),
+    }));
+  },
+};
+
+export const bannerAPI = {
+  getActiveBanners: async (position = 'homepage') => {
+    return getResponseData(await apiRequest(`/banner/active/${position}`));
+  },
+
+  getBanners: async (params = {}) => {
+    const queryString = new URLSearchParams(params).toString();
+    return getResponseData(await apiRequest(`/banner${queryString ? `?${queryString}` : ''}`));
+  },
+
+  createBanner: async (bannerData) => {
+    return getResponseData(await apiRequest('/banner', {
+      method: 'POST',
+      body: JSON.stringify(bannerData),
+    }));
+  },
+
+  updateBanner: async (bannerId, bannerData) => {
+    return getResponseData(await apiRequest(`/banner/${bannerId}`, {
+      method: 'PUT',
+      body: JSON.stringify(bannerData),
+    }));
+  },
+
+  deleteBanner: async (bannerId) => {
+    return apiRequest(`/banner/${bannerId}`, { method: 'DELETE' });
+  },
+};
+
+export const menuAPI = {
+  getMenuByLocation: async (location) => {
+    return getResponseData(await apiRequest(`/menu/location/${location}`));
+  },
+
+  getMenus: async () => {
+    return getResponseData(await apiRequest('/menu'));
+  },
+
+  saveMenu: async (menuData) => {
+    return getResponseData(await apiRequest('/menu', {
+      method: 'POST',
+      body: JSON.stringify(menuData),
+    }));
+  },
+
+  deleteMenu: async (menuId) => {
+    return apiRequest(`/menu/${menuId}`, { method: 'DELETE' });
+  },
+};
+
+export const pageAPI = {
+  getPublishedPage: async (slug) => {
+    return getResponseData(await apiRequest(`/page/slug/${slug}`));
+  },
+
+  getPages: async () => {
+    return getResponseData(await apiRequest('/page'));
+  },
+
+  createPage: async (pageData) => {
+    return getResponseData(await apiRequest('/page', {
+      method: 'POST',
+      body: JSON.stringify(pageData),
+    }));
+  },
+
+  updatePage: async (pageId, pageData) => {
+    return getResponseData(await apiRequest(`/page/${pageId}`, {
+      method: 'PUT',
+      body: JSON.stringify(pageData),
+    }));
+  },
+
+  deletePage: async (pageId) => {
+    return apiRequest(`/page/${pageId}`, { method: 'DELETE' });
+  },
+};
+
+export const couponAPI = {
+  validateCoupon: async (couponData) => {
+    return getResponseData(await apiRequest('/coupon/validate', {
+      method: 'POST',
+      body: JSON.stringify(couponData),
+    }));
+  },
+
+  getCoupons: async () => {
+    return getResponseData(await apiRequest('/coupon'));
+  },
+
+  createCoupon: async (couponData) => {
+    return getResponseData(await apiRequest('/coupon', {
+      method: 'POST',
+      body: JSON.stringify(couponData),
+    }));
+  },
+
+  updateCoupon: async (couponId, couponData) => {
+    return getResponseData(await apiRequest(`/coupon/${couponId}`, {
+      method: 'PUT',
+      body: JSON.stringify(couponData),
+    }));
+  },
+
+  deleteCoupon: async (couponId) => {
+    return apiRequest(`/coupon/${couponId}`, { method: 'DELETE' });
+  },
+};
+
+export const newsletterAPI = {
+  subscribe: async (email) => {
+    return getResponseData(await apiRequest('/newsletter/subscribe', {
+      method: 'POST',
+      body: JSON.stringify({ email }),
+    }));
+  },
+
+  unsubscribe: async (email) => {
+    return apiRequest(`/newsletter/unsubscribe/${encodeURIComponent(email)}`, { method: 'PUT' });
+  },
+
+  getSubscribers: async () => {
+    return getResponseData(await apiRequest('/newsletter'));
+  },
+
+  updateSubscriber: async (subscriberId, subscriberData) => {
+    return getResponseData(await apiRequest(`/newsletter/${subscriberId}`, {
+      method: 'PUT',
+      body: JSON.stringify(subscriberData),
+    }));
+  },
+
+  deleteSubscriber: async (subscriberId) => {
+    return apiRequest(`/newsletter/${subscriberId}`, { method: 'DELETE' });
+  },
+};
+
+export const seoAPI = {
+  getMeta: async (type, slug) => {
+    const queryString = new URLSearchParams({ type, slug }).toString();
+    return getResponseData(await apiRequest(`/seo/meta?${queryString}`));
+  },
+
+  getBulkMeta: async (slugs) => {
+    return getResponseData(await apiRequest('/seo/bulk-meta', {
+      method: 'POST',
+      body: JSON.stringify({ slugs }),
+    }));
+  },
+};
+
 export default {
   auth: authAPI,
   user: userAPI,
@@ -326,5 +477,11 @@ export default {
   order: orderAPI,
   review: reviewAPI,
   contact: contactAPI,
-  payment: paymentAPI,
+  settings: settingsAPI,
+  banner: bannerAPI,
+  menu: menuAPI,
+  page: pageAPI,
+  coupon: couponAPI,
+  newsletter: newsletterAPI,
+  seo: seoAPI,
 };

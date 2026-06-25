@@ -9,7 +9,7 @@ export default function ProductCard({ product, className = '', isShopPage = fals
   const [added, setAdded] = useState(false)
   const dispatch = useDispatch()
 
-  const handleAddToCart = () => {
+  const handlePreBook = () => {
     if (added) return
     
     // Convert string price like '₹4,800' to a number 4800
@@ -95,11 +95,11 @@ export default function ProductCard({ product, className = '', isShopPage = fals
           style={{ gridArea: 'cart' }}
           onClick={(e) => {
             e.stopPropagation()
-            handleAddToCart()
+            handlePreBook()
           }}
         >
           <i className={`fa-solid ${added ? 'fa-check' : 'fa-bag-shopping'}`} />
-          <span className="max-[640px]:hidden">{added ? 'Added' : 'Add'}</span>
+          <span className="max-[640px]:hidden">{added ? 'Pre-booked' : 'Pre-book'}</span>
         </button>
       </div>
     </div>
