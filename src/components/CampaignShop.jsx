@@ -8,17 +8,17 @@ import React from "react";
 
 const campaignItems = [
 	{
-		img: "/img/prodimg/coming-soon.jpeg",
+		img: "/img/prodimg/cs-4.png",
 		alt: "Oud Noir Campaign",
 		label: "Oud Noir · ₹4,800",
 	},
 	{
-		img: "/img/prodimg/coming-soon.jpeg",
+		img: "/img/prodimg/cs-1.jpeg",
 		alt: "Rose Éternelle Campaign",
 		label: "Rose Éternelle · ₹5,200",
 	},
 	{
-		img: "/img/prodimg/coming-soon.jpeg",
+		img: "/img/prodimg/cs-2.png",
 		alt: "Vetiver Blanc Campaign",
 		label: "Vetiver Blanc · ₹4,500",
 	},
